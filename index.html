@@ -1,400 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>RACER</title>
+<head>
+
+    <title>CMU Mechatronics Project 2015 Team F - SCAR-less</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CMU Mechatronics Project Website" />
+    <meta name="author" content="Foo Lai Choo">
+    <meta charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
+
+
+	<link href="css/jquery.bxslider.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/flexslider.css" rel="stylesheet" >
-    <link href="css/styles.css" rel="stylesheet">
-    <link href="css/queries.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
-      </head>
-      <body id="top">
-        <header id="home">
-          <nav>
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2 col-xs-8 col-xs-offset-2">
-                  <nav class="pull">
-                    <ul class="top-nav">
-                      <li><a href="#intro">Introduction <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li>
-                      <!-- <li><a href="#features">Features <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li>
-                      <li><a href="#responsive">Responsive Design <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li>
-                      <li><a href="#portfolio">Portfolio <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li> -->
-                      <li><a href="#team">Team <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li>
-                      <!-- <li><a href="#contact">Get in Touch <span class="indicator"><i class="fa fa-angle-right"></i></span></a></li> -->
-                    </ul>
-                  </nav>
-                </div>
-              </div>
-            </div>
-          </nav>
-          <section class="hero" id="hero">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-12 text-right navicon">
-                  <a id="nav-toggle" class="nav_slide_button" href="#"><span></span></a>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-8 col-md-offset-2 text-center inner">
-                  <br/><br/><br/><br/><br/><br/><br/><br/>
-                  <h1 class="animated fadeInDown">RACER</h1>
-                  <h2 class="animated fadeInDown delay-05s">R<span>apid</span> A<span>gile</span> C<span>leaning</span><br/>E<span>lectric</span> R<span>obot</span></h2>
-                  <p class="animated fadeInUp delay-1s">A Mechatronic Design (S15) Project</p>
-                </div>
-              </div>
-<!--               <div class="row">
-                <div class="col-md-6 col-md-offset-3 text-center">
-                  <a href="http://tympanus.net/codrops/?p=19439" class="learn-more-btn">Back to the article</a>
-                </div>
-              </div> -->
-            </div>
-          </section>
-        </header>
-        <section class="intro text-center section-padding" id="intro">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-8 col-md-offset-2 wp1">
-                <h1 class="arrow">About RACER</h1>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body data-spy="scroll" data-target=".navbar" data-offset="75">
+
+	<!-- Preloader -->
+	<div class="mask"><div id="loader"></div></div>
+	<!--/Preloader -->
+
+	<!-- Home Section -->
+	<div id="home" class="parallax-slider">
+
+			<!-- Slider -->
+            <ul class="fullwidth-slider">
+
+                <!-- Slide 1 -->
+                <li class="slide" style="background-image: url(images/robot_banner.jpg)" data-anchor-target="section" data-70-top="background-position: center 400px;" data-start="background-position: center 0px;">
+
+                    <!-- Caption -->
+                    <div class="caption">
+                        <div class="caption-inside" data-anchor-target="section"  data-start="top: 200px; opacity: 1;" data-200-top="top: 270px; opacity: 0;">
+                            <div class="slide-caption">
+                                <div class="vertical-align-middle">
+
+                                    <h1 class="ultralarge">R.A.C.E.R</h1>
+                                    <h1 class="titlecap">R<span>apid</span> A<span>gile</span> C<span>leaning</span><br/>E<span>lectric</span> R<span>obot</span></h1>
+                                    <p><a href="#problem-description" class="newave-button medium outline gray">Find out more</a></p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.Caption -->
+
+                </li>
+                <!--/.Slide 1 -->
+
+            </ul>
+			<!--/.Slider -->
+	</div>
+	<!-- End Home Section -->
+
+    <!-- Navigation -->
+    <div id="navigation" class="navbar navbar-fixed-top">
+		<div class="navbar-inner ">
+        	<div class="container no-padding">
+
+					<a class="show-menu" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="show-menu-bar"></span>
+					</a>
+
+					<div id="logo"><a class="external" href="index.html"></a></div>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="menu-1"><a class="colapse-menu1" href="#home">Home</a></li>
+							<li class="menu-2"><a class="colapse-menu1" href="#problem-description">Problem<br/>Description</a></li>
+                            <li class="dropdown menu-3"><a class="dropdown-toggle" data-toggle="dropdown" href="#">System<br/>Design</a>
+                                <ul class="dropdown-menu">
+                                  <li><a class="colapse-menu1" href="#">Performance Specification</a></li>
+                                  <li><a class="colapse-menu1" href="#">Functional Architecture</a></li>
+                                  <li><a class="colapse-menu1" href="#">Cyberphysical Architecture</a></li>
+                                  <li><a class="colapse-menu1" href="#">System Design Description</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-4"><a class="colapse-menu1" href="#system-implementation">System<br/>Implementation</a></li>
+                            <li class="menu-5"><a class="colapse-menu1" href="#clients">System<br/>Performance</a></li>
+                            <li class="dropdown menu-6"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Project<br/>Management</a>
+                                <ul class="dropdown-menu">
+                                  <li><a class="colapse-menu1" href="#">Schedule</a></li>
+                                  <li><a class="colapse-menu1" href="#">Issues Log</a></li>
+                                  <li><a class="colapse-menu1" href="#">Parts List</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown menu-7"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Media</a>
+                                <ul class="dropdown-menu">
+                                  <li><a class="colapse-menu1" href="#">Videos</a></li>
+                                  <li><a class="colapse-menu1" href="#">Pictures</a></li>
+                                </ul>
+                            </li>
+                            <li class="menu-8"><a class="colapse-menu1" href="#team-page">Team<br/>Page</a></li>
+                            <li class="menu-9"><a class="colapse-menu1" href="#contact-parallax">Documents</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	</div>
+    <!--/Navigation -->
+
+	<section id="problem-description">
+		<div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>Problem Description</h1>
+                <span class="border"></span>
                 <p>In 2011, 8 workers in the United States sustained fatal injuries whilst cleaning the exterior of buildings. These cleaners suspend themselves midair and work with soapy water, putting themselves at a high risk of falling. Hence, this project serves to minimize the number of injuries and fatalities of window cleaning by automating the process, eliminating the need for workers to put themselves at risk.</p>
+                <br/>
                 <p>Aptly named <em>RACER</em>, this robot is fully automated. By placing the robot in a predefined location on the window, it will automatically sense the dimensions of the window and perform the cleaning without any human inputs. In addition, our robot aims to be faster than other available robotic window cleaners out in the commercial market.</p>
-              </div>
+
             </div>
-          </div>
-        </section>
-        <!-- <section class="features text-center section-padding" id="features">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h1 class="arrow">Love what you do, and you'll do it well</h1>
-                <div class="features-wrapper">
-                  <div class="col-md-4 wp2">
-                    <div class="icon">
-                      <i class="fa fa-laptop shadow"></i>
+			<!--/Section Title -->
+
+		</div>
+	</section>
+
+    <!-- Our Team -->
+	<section id="team-page">
+        <!-- Container -->
+		<div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>Our team</h1>
+                <span class="border"></span>
+                <p>We're a team of 5 from Carnegie Mellon University, comprising of</p><p>3 Mechanical engineers and 2 Electrical and Computer(ECE) engineers.</p>
+            </div>
+			<!--/Section Title -->
+
+			<ul class="our-team">
+            	<li class="team-person element_from_left">
+                	<img src="images/team1.png" alt="" />
+                    <div class="team-profile">
+                    	<h5>Foo Lai Choo</h5>
+                    	<p>ECE Senior</p>
+                        <p class="about-team">I am an ECE senior who specializes in software engineering. My primary responsibility lies in selecting and interfacing the sensors with the other sub-system. I will be assisting Simon in the grip sub-system.</p>
+                        <ul class="socials-icons">
+                        	<li><a href="mailto:fchoo@andrew.cmu.edu"><img src="images/email.png" alt="" /></a></li>
+                        </ul>
+                	</div>
+                </li>
+
+                <li class="team-person">
+                	<img src="images/team1.png" alt="" />
+                    <div class="team-profile">
+                    	<h5>Telson Erebor</h5>
+                    	<p>Mechanical Engineering Masters Student</p>
+                        <p class="about-team">TO BE INSERTED</p>
+                        <ul class="socials-icons">
+                            <li><a href="#"><img src="images/email.png" alt="" /></a></li>
+                        </ul>
+                	</div>
+                </li>
+
+                <li class="team-person element_from_right">
+                    <img src="images/team1.png" alt="" />
+                    <div class="team-profile">
+                        <h5>Joshua Flareau</h5>
+                        <p>Mechanical Engineering Masters Student</p>
+                        <p class="about-team">TO BE INSERTED</p>
+
+                        <ul class="socials-icons">
+                            <li><a href="#"><img src="images/email.png" alt="" /></a></li>
+                        </ul>
                     </div>
-                    <h2>Digital Design</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum
-                    primis in faucibus.</p>
-                  </div>
-                  <div class="col-md-4 wp2 delay-05s">
-                    <div class="icon">
-                      <i class="fa fa-code shadow"></i>
+                </li>
+
+                <li class="team-person element_from_left">
+                    <img src="images/team1.png" alt="" />
+                    <div class="team-profile">
+                        <h5>Simon Kalouche</h5>
+                        <p>Robotics Masters Student</p>
+                        <p class="about-team">I am a Robotics Masters Student who specializes in robot mechanical design and control. I am responsible for the integration, motor control, and systems design of the locomotion and grip subsystems for RACER.</p>
+
+                        <ul class="socials-icons">
+                            <li><a href="#"><img src="images/email.png" alt="" /></a></li>
+                        </ul>
                     </div>
-                    <h2>Web Development</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum
-                    primis in faucibus.</p>
-                  </div>
-                  <div class="col-md-4 wp2 delay-1s">
-                    <div class="icon">
-                      <i class="fa fa-heart shadow"></i>
-                    </div>
-                    <h2>Creative Direction</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed a lorem quis neque interdum consequat ut sed sem. Duis quis tempor nunc. Interdum et malesuada fames ac ante ipsum
-                    primis in faucibus.</p>
-                  </div>
-                  <div class="clearfix"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="text-center" id="responsive">
-          <div class="container-fluid nopadding responsive-services">
-            <div class="wrapper">
-              <div class="iphone">
-                <div class="wp3"></div>
-              </div>
-              <div class="fluid-white"></div>
-            </div>
-            <div class="container designs">
-              <div class="row">
-                <div class="col-md-5 col-md-offset-7">
-                  <div id="servicesSlider">
-                    <ul class="slides">
-                      <li>
-                        <h1 class="arrow">Responsive Design Specialists</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero. </p>
-                        <p>
-                        Mauris ultrices odio vitae nulla ultrices iaculis. Nulla rhoncus odio eu lectus faucibus facilisis. Maecenas ornare augue vitae sollicitudin accumsan. </p>
-                        <p>Etiam eget libero et erat eleifend consectetur a nec lectus. Sed id tellus lorem. Suspendisse sed venenatis odio, quis lobortis eros.</p>
-                      </li>
-                      <li>
-                        <h1 class="arrow">Bootstrap Professionals</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero. </p>
-                        <p>
-                        Mauris ultrices odio vitae nulla ultrices iaculis. Nulla rhoncus odio eu lectus faucibus facilisis. Maecenas ornare augue vitae sollicitudin accumsan. </p>
-                        <p>Etiam eget libero et erat eleifend consectetur a nec lectus. Sed id tellus lorem. Suspendisse sed venenatis odio, quis lobortis eros.</p>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="swag text-center">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-8 col-md-offset-2">
-                <h1>I got 99 Problems<span>but <em>design</em> 'aint one</span></h1>
-                <a href="#portfolio" class="down-arrow-btn"><i class="fa fa-chevron-down"></i></a>
-              </div>
-            </div>
-          </div>
-        </section>
-        <section class="portfolio text-center section-padding" id="portfolio">
-          <div class="container">
-            <div class="row">
-              <div id="portfolioSlider">
-                <ul class="slides">
-                  <li>
-                    <div class="col-md-4 wp4">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-01.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Minds</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                    <div class="col-md-4 wp4 delay-05s">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-02.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Hearts</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                    <div class="col-md-4 wp4 delay-1s">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-03.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Ideas</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="col-md-4 wp4">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-01.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Minds</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                    <div class="col-md-4 wp4 delay-05s">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-02.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Hearts</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                    <div class="col-md-4 wp4 delay-1s">
-                      <div class="overlay-effect effects clearfix">
-                        <div class="img">
-                          <img src="img/portfolio-03.jpg" alt="Portfolio Item">
-                          <div class="overlay">
-                            <a href="#" class="expand"><i class="fa fa-search"></i><br>View More</a>
-                            <a class="close-overlay hidden">x</a>
-                          </div>
-                        </div>
-                      </div>
-                      <h2>Creative Ideas</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultricies nulla non metus pulvinar imperdiet. Praesent non adipiscing libero.</p>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-        <div class="ignite-cta text-center">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <a href="#" class="ignite-btn">Ignite Your Passion</a>
-              </div>
-            </div>
-          </div>
-        </div> -->
-        <section class="team text-center section-padding" id="team">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h1 class="arrow"><p>We're a team of 5 from Carnegie Mellon University, comprising of</p><p>3 Mechanical engineers and 2 Electrical and Computer(ECE) engineers.</p><p>We're a team that adore what we do.</p></h1>
-              </div>
-            </div>
-            <div class="row">
-              <div class="team-wrapper">
-                <div id="teamSlider">
-                  <ul class="slides">
-                    <li>
-                      <div class="col-md-4 wp5">
-                        <img src="img/team-01.png" alt="Team Member">
-                        <h2>Foo Lai Choo</h2>
-                        <p>I am an ECE senior who specializes in software engineering. My primary responsibility lies in selecting and interfacing the sensors with the other sub-system. I will be assisting Simon in the grip sub-system.</p>
-                        <div class="social">
-                          <ul class="social-buttons">
-                            <li><a href="mailto:fchoo@andrew.cmu.edu" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-md-4 wp5 delay-05s">
-                        <img src="img/team-01.png" alt="Team Member">
-                        <h2>Telson Erebor</h2>
-                        <p>TO BE INSERTED</p>
-                        <div class="social">
-                          <ul class="social-buttons">
-                            <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-md-4 wp5 delay-1s">
-                        <img src="img/team-01.png" alt="Team Member">
-                        <h2>Joshua Flareau</h2>
-                        <p>TO BE INSERTED</p>
-                        <div class="social">
-                          <ul class="social-buttons">
-                            <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                    <li>
-                      <div class="col-md-4 wp5">
-                        <img src="img/team-01.png" alt="Team Member">
-                        <h2>Simon Kalouche</h2>
-                        <p>TO BE INSERTED</p>
-                        <div class="social">
-                          <ul class="social-buttons">
-                            <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="col-md-4 wp5 delay-05s">
-                        <img src="img/team-01.png" alt="Team Member">
-                        <h2>Nicholas Tan</h2>
-                        <p>TO BE INSERTED</p>
-                        <div class="social">
-                          <ul class="social-buttons">
-                            <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                          </ul>
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-<!--         <section class="subscribe text-center">
-          <div class="container">
-            <h1><i class="fa fa-paper-plane"></i><span>Subscribe to stay in the loop</span></h1>
-            <form action="#">
-              <input type="text" name="" value="" placeholder="" required>
-              <input type="submit" name="" value="Send">
-            </form>
-          </div>
-        </section>
-        <section class="dark-bg text-center section-padding contact-wrap" id="contact">
-          <a href="#top" class="up-btn"><i class="fa fa-chevron-up"></i></a>
-          <div class="container">
-            <div class="row">
-              <div class="col-md-12">
-                <h1 class="arrow">Drop us a line</h1>
-              </div>
-            </div>
-            <div class="row contact-details">
-              <div class="col-md-4">
-                <div class="light-box box-hover">
-                  <h2><i class="fa fa-map-marker"></i><span>Address</span></h2>
-                  <p>Level 6, 23 Pitt St, Sydney</p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="light-box box-hover">
-                  <h2><i class="fa fa-mobile"></i><span>Phone</span></h2>
-                  <p>+61 9 211 3747</p>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="light-box box-hover">
-                  <h2><i class="fa fa-paper-plane"></i><span>Email</span></h2>
-                  <p><a href="#">hey@halcyondays.com</a></p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <ul class="social-buttons">
-                  <li><a href="#" class="social-btn"><i class="fa fa-dribbble"></i></a></li>
-                  <li><a href="#" class="social-btn"><i class="fa fa-twitter"></i></a></li>
-                  <li><a href="#" class="social-btn"><i class="fa fa-envelope"></i></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section> -->
-        <footer>
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6">
-<!--                 <ul class="legals">
-                  <li><a href="#">Terms &amp; Conditions</a></li>
-                  <li><a href="#">Legals</a></li>
-                </ul> -->
-              </div>
-              <div class="col-md-6 credit">
-                <p>Designed &amp; Developed by <a href="http://www.peterfinlan.com/">Peter Finlan</a></p>
-              </div>
-            </div>
-          </div>
-        </footer>
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/waypoints.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/scripts.js"></script>
-        <script src="js/jquery.flexslider.js"></script>
-        <script src="js/modernizr.js"></script>
-      </body>
-    </html>
+                </li>
+
+                <li class="team-person element_from_right">
+                	<img src="images/team1.png" alt="" />
+                    <div class="team-profile">
+                    	<h5>Nicholas Tan</h5>
+                    	<p>ECE Senior</p>
+                        <p class="about-team">TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. TO BE INSERTED. </p>
+
+                        <ul class="socials-icons">
+                            <li><a href="#"><img src="images/email.png" alt="" /></a></li>
+                        </ul>
+                	</div>
+                </li>
+
+            </ul>
+		</div>
+        <!--/Container -->
+
+	</section>
+	<!--/Our Team -->
+
+    <!-- Footer -->
+<!--     <footer>
+		<div class="container no-padding">
+
+            <a id="back-top"><div id="menu_top"><div id="menu_top_inside"></div></div></a>
+
+            <ul class="socials-icons">
+                <li><a href="#"><img src="images/facebook.png" alt="" /></a></li>
+                <li><a href="#"><img src="images/twitter.png" alt="" /></a></li>
+                <li><a href="#"><img src="images/google.png" alt="" /></a></li>
+            </ul>
+
+			<p class="copyright">2013 &copy; newave. All rights reserved.</p>
+
+		</div>
+	</footer> -->
+	<!--/Footer -->
+
+
+	<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js'></script>
+    <script src="js/jquery.sticky.js"></script>
+	<script src="js/jquery.easing-1.3.pack.js" type="text/javascript"></script>
+	<script src="js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="js/jquery.parallax-1.1.3.js" type="text/javascript"></script>
+	<script src="js/appear.js" type="text/javascript" ></script>
+	<script src="js/modernizr.js" type="text/javascript"></script>
+	<script src="js/jquery.prettyPhoto.js" type="text/javascript"></script>
+    <script src="js/isotope.js" type="text/javascript"></script>
+    <script src="js/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="js/jquery.tweet.js"></script>
+    <script src="js/jquery.cycle.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery.maximage.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/sscr.js"></script>
+    <script src="js/skrollr.js"></script>
+    <script src="js/jquery.jigowatt.js"></script>
+    <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
+	<script src="js/scripts.js" type="text/javascript"></script>
+
+
+	</body>
+</html>
