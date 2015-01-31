@@ -1353,12 +1353,13 @@
 	}
 
 	.team-profile h5 {
-		color:#222222;
+		color:#282828;
 		text-transform:uppercase;
 	}
 
 	p.about-team {
-		margin:20px 0 30px 0;
+		color: #282828;
+		margin:20px 0 5px 0;
 		font-size:13px;
 	}
 
