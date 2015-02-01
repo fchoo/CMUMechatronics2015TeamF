@@ -851,28 +851,16 @@
 		height:auto;
 	}
 
+	#system-req {
+		background-color:#FFF;
+	}
+
+	#cyberphysical-arch {
+		background-color:#FFF;
+	}
+
 	#team-page {
 		background-color:#FFF;
-	}
-
-	#we-are-good-at {
-		background-color:#FFF;
-	}
-
-	#services {
-		background-color:#FFF;
-	}
-
-	#we-love-technology {
-		background-color:#FFF;
-	}
-
-	#portfolio {
-		background-color:#FFF;
-	}
-
-	#contact {
-		background-color:#fff;
 	}
 
 	footer {
@@ -1227,6 +1215,27 @@
 		position:relative;
 	}
 
+	.func-arch {
+		width:680px;
+		height:auto;
+		margin:0 auto;
+		z-index:100;
+	}
+
+	.cyberphysical-arch {
+		width:1080px;
+		height:auto;
+		margin:0 auto;
+		z-index:100;
+	}
+
+	.racer {
+		width:840px;
+		height:auto;
+		margin:0 auto;
+		z-index:100;
+	}
+
 	.big-screen {
 		width:620px;
 		height:auto;
@@ -1536,7 +1545,7 @@
 
 	.service-item {
 		float:left;
-		margin:30px 0;
+		margin:10px 0;
 	}
 
 	.service-item h5 {

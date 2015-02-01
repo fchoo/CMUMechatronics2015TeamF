@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <title>CMU Mechatronics Project 2015 Team F - SCAR-less</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="CMU Mechatronics Project Website" />
@@ -12,13 +11,11 @@
     <link href="css/bootstrap.min.css" rel="stylesheet" />
     <link href="style.css" rel="stylesheet" />
 
-
 	<link href="css/jquery.bxslider.css" rel="stylesheet" />
     <link href="css/font-awesome.min.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css' />
     <link href='http://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-
 </head>
 
 <body data-spy="scroll" data-target=".navbar" data-offset="75">
@@ -29,34 +26,27 @@
 
 	<!-- Home Section -->
 	<div id="home" class="parallax-slider">
-
-			<!-- Slider -->
-            <ul class="fullwidth-slider">
-
-                <!-- Slide 1 -->
-                <li class="slide" style="background-image: url(images/robot_banner.jpg)" data-anchor-target="section" data-70-top="background-position: center 400px;" data-start="background-position: center 0px;">
-
-                    <!-- Caption -->
-                    <div class="caption">
-                        <div class="caption-inside" data-anchor-target="section"  data-start="top: 200px; opacity: 1;" data-200-top="top: 270px; opacity: 0;">
-                            <div class="slide-caption">
-                                <div class="vertical-align-middle">
-
-                                    <h1 class="ultralarge">R.A.C.E.R</h1>
-                                    <h1 class="titlecap">R<span>apid</span> A<span>utomated</span> C<span>leaning</span><br/>E<span>lectric</span> R<span>obot</span></h1>
-                                    <p><a href="#problem-description" class="newave-button medium outline gray">Find out more</a></p>
-
-                                </div>
+		<!-- Slider -->
+        <ul class="fullwidth-slider">
+            <!-- Slide 1 -->
+            <li class="slide" style="background-image: url(images/robot_banner.jpg)" data-anchor-target="section" data-70-top="background-position: center 400px;" data-start="background-position: center 0px;">
+                <!-- Caption -->
+                <div class="caption">
+                    <div class="caption-inside" data-anchor-target="section"  data-start="top: 200px; opacity: 1;" data-200-top="top: 270px; opacity: 0;">
+                        <div class="slide-caption">
+                            <div class="vertical-align-middle">
+                                <h1 class="ultralarge">R.A.C.E.R</h1>
+                                <h1 class="titlecap">R<span>apid</span> A<span>utomated</span> C<span>leaning</span><br/>E<span>lectric</span> R<span>obot</span></h1>
+                                <p><a href="#problem-description" class="newave-button medium outline gray">Find out more</a></p>
                             </div>
                         </div>
                     </div>
-                    <!--/.Caption -->
-
-                </li>
-                <!--/.Slide 1 -->
-
-            </ul>
-			<!--/.Slider -->
+                </div>
+                <!--/.Caption -->
+            </li>
+            <!--/.Slide 1 -->
+        </ul>
+		<!--/.Slider -->
 	</div>
 	<!-- End Home Section -->
 
@@ -64,68 +54,218 @@
     <div id="navigation" class="navbar navbar-fixed-top">
 		<div class="navbar-inner ">
         	<div class="container no-padding">
+				<a class="show-menu" data-toggle="collapse" data-target=".nav-collapse">
+					<span class="show-menu-bar"></span>
+				</a>
 
-					<a class="show-menu" data-toggle="collapse" data-target=".nav-collapse">
-						<span class="show-menu-bar"></span>
-					</a>
-
-					<div id="logo"><a class="external" href="index.html"></a></div>
-					<div class="nav-collapse collapse">
-						<ul class="nav">
-							<li class="menu-1"><a class="colapse-menu1" href="#home">Home</a></li>
-							<li class="menu-2"><a class="colapse-menu1" href="#problem-description">Problem<br/>Description</a></li>
-                            <li class="dropdown menu-3"><a class="dropdown-toggle" data-toggle="dropdown" href="#">System<br/>Design</a>
-                                <ul class="dropdown-menu">
-                                  <li><a class="colapse-menu1" href="#">Performance Specification</a></li>
-                                  <li><a class="colapse-menu1" href="#">Functional Architecture</a></li>
-                                  <li><a class="colapse-menu1" href="#">Cyberphysical Architecture</a></li>
-                                  <li><a class="colapse-menu1" href="#">System Design Description</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-4"><a class="colapse-menu1" href="#system-implementation">System<br/>Implementation</a></li>
-                            <li class="menu-5"><a class="colapse-menu1" href="#clients">System<br/>Performance</a></li>
-                            <li class="dropdown menu-6"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Project<br/>Management</a>
-                                <ul class="dropdown-menu">
-                                  <li><a class="colapse-menu1" href="#">Schedule</a></li>
-                                  <li><a class="colapse-menu1" href="#">Issues Log</a></li>
-                                  <li><a class="colapse-menu1" href="#">Parts List</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown menu-7"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Media</a>
-                                <ul class="dropdown-menu">
-                                  <li><a class="colapse-menu1" href="#">Videos</a></li>
-                                  <li><a class="colapse-menu1" href="#">Pictures</a></li>
-                                </ul>
-                            </li>
-                            <li class="menu-8"><a class="colapse-menu1" href="#team-page">Team<br/>Page</a></li>
-                            <li class="menu-9"><a class="colapse-menu1" href="#contact-parallax">Documents</a></li>
-						</ul>
-					</div>
+				<div id="logo"><a class="external" href="index.html"></a></div>
+				<div class="nav-collapse collapse">
+					<ul class="nav">
+						<li class="menu-1"><a class="colapse-menu1" href="#home">Home</a></li>
+						<li class="menu-2"><a class="colapse-menu1" href="#problem-description">Problem<br/>Description</a></li>
+                        <li class="dropdown menu-3"><a class="dropdown-toggle" data-toggle="dropdown" href="#">System<br/>Design</a>
+                            <ul class="dropdown-menu">
+                              <li><a class="colapse-menu1" href="#system-req">System Requirements</a></li>
+                              <li><a class="colapse-menu1" href="#func-arch">Functional Architecture</a></li>
+                              <li><a class="colapse-menu1" href="#cyberphysical-arch">Cyberphysical Architecture</a></li>
+                              <li><a class="colapse-menu1" href="#system-desc">System Design Description</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-4"><a class="colapse-menu1" href="#system-implementation">System<br/>Implementation</a></li>
+                        <li class="menu-5"><a class="colapse-menu1" href="#clients">System<br/>Performance</a></li>
+                        <li class="dropdown menu-6"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Project<br/>Management</a>
+                            <ul class="dropdown-menu">
+                              <li><a class="colapse-menu1" href="#">Schedule</a></li>
+                              <li><a class="colapse-menu1" href="#">Issues Log</a></li>
+                              <li><a class="colapse-menu1" href="#">Parts List</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown menu-7"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Media</a>
+                            <ul class="dropdown-menu">
+                              <li><a class="colapse-menu1" href="#">Videos</a></li>
+                              <li><a class="colapse-menu1" href="#">Pictures</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-8"><a class="colapse-menu1" href="#team-page">Team<br/>Page</a></li>
+                        <li class="menu-9"><a class="colapse-menu1" href="#contact-parallax">Documents</a></li>
+					</ul>
 				</div>
 			</div>
+		</div>
 	</div>
     <!--/Navigation -->
 
-	<section id="problem-description">
+    <!--/Problem Description-->
+    <section id="problem-description">
+    <div class="container">
+        <!-- Section Title -->
+        <div class="section-title">
+            <h1>Problem Description</h1>
+            <span class="border"></span>
+            <p>In 2011, 8 workers in the United States sustained fatal injuries whilst cleaning the exterior of buildings. These cleaners suspend themselves midair and work with soapy water, putting themselves at a high risk of falling. Hence, this project serves to minimize the number of injuries and fatalities of window cleaning by automating the process, eliminating the need for workers to put themselves at risk.</p>
+            <br/>
+            <p>Aptly named <em>RACER</em>, this robot is fully automated. By placing the robot in a predefined location on the window, it will automatically sense the dimensions of the window and perform the cleaning without any human inputs. In addition, our robot aims to be faster than other available robotic window cleaners out in the commercial market.</p>
+        </div>
+        <!--/Section Title -->
+    </div>
+    </section>
+
+    <!--/System Requirements-->
+	<section id="system-req">
 		<div class="container">
             <!-- Section Title -->
             <div class="section-title">
-                <h1>Problem Description</h1>
+                <h1>System Requirements</h1>
                 <span class="border"></span>
-                <p>In 2011, 8 workers in the United States sustained fatal injuries whilst cleaning the exterior of buildings. These cleaners suspend themselves midair and work with soapy water, putting themselves at a high risk of falling. Hence, this project serves to minimize the number of injuries and fatalities of window cleaning by automating the process, eliminating the need for workers to put themselves at risk.</p>
+                <h3>Explicit Design Requirements</h3><br/>
+                <p>From the project specifications, there are several explicit requirements the robot has to meet. With regards to performance, the robot should fully clean one side of a window automatically, where the window size can range from 3' x 4' to 5' x 6'. More specifically, the robot must clean the entire surface of the window at a speed of at least 10 ft2 per min. In terms of cleanliness, the window will be visibly clean from a distance of 3 feet away with no streaks, moisture or residue left on the window after 30 seconds of completion. The robot should also be able to clean both glass and acrylic plastics without scratching or damaging the window surface.</p>
                 <br/>
-                <p>Aptly named <em>RACER</em>, this robot is fully automated. By placing the robot in a predefined location on the window, it will automatically sense the dimensions of the window and perform the cleaning without any human inputs. In addition, our robot aims to be faster than other available robotic window cleaners out in the commercial market.</p>
-
+                <p>The robot's physical structure should fit within a 2 ft2 footprint. However, the robot can have retractable parts and a variable aspect ratio as long as the robot maintains the aforementioned 2 ft2 footprint. The cleaning devices should not cross the vertical plane of the window - this space would generally not be available due to protrusions around the window border. Cleaning supplies should also be contained within the robot. There should not be any infrastructure installed external to the robot with the exception of tethers connecting it to an external compressor and/or power. In addition, the robot should not be operated from the ground.</p>
+                <br/><br/>
+                <h3>Derived and Additional "Coolness" Factors</h3><br/>
+                <p>Additional factors are included into our robot to stand out from the designs from other teams. We have chosen to increase the speed of the robot by 50% (cleaning at least 15 ft2 per min) while maintaining the high cleanliness standards required. Also, the robot is also designed to minimize the use of cleaning supplies (water and cleaning solution) in order to reduce its weight. Finally, the robot will be able to cross the boundary separating windows and also maneuver around obstacles.</p>
             </div>
 			<!--/Section Title -->
-
 		</div>
 	</section>
 
-    <!-- Our Team -->
-	<section id="team-page">
+    <!-- Functional Architecture -->
+    <section id="func-arch">
         <!-- Container -->
-		<div class="container">
+        <div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>Functional Architecture</h1>
+                <span class="border"></span>
+                <p>From the design requirements, our team derived four main functions the robot must have – movement, suction, environment-sensing and cleaning. The figure below depicts the major functions and flows between the functions.</p>
+            </div>
+            <div class="screens">
+                <div class="func-arch"><img class="element_fade_in" src="images/func-arch.png" alt="" /></div>
+            </div>
+            <br/>
+            <div class="section-title">
+                <p>The sensors will be in-charged of providing the environmental information (such as cleanliness of window and position of the robot) to the controller. With the information, the controller then further instructs the locomotion subsystem. In the meantime, the controller will separately instruct the cleaning component(s).</p>
+            </div>
+        </div>
+        <!--/Container -->
+    </section>
+
+
+    <!-- Cyberphysical Architecture -->
+    <section id="cyberphysical-arch">
+        <!-- Container -->
+        <div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>Cyberphysical Architecture</h1>
+                <span class="border"></span>
+                <p>The following architecture describes the flow of information between the different subsystems within our robot. As described previously, the following four main subsystems in the robot’s physical architecture (main controller, sensors, cleaning, and locomotion) are depicted below. The supply of power will be distributed by the main controller (an Arduino Uno) to the other subsystems.</p>
+                <br/>
+            </div>
+            <div class="screens">
+                <div class="cyberphysical-arch"><img class="element_fade_in" src="images/cyberphysical-arch.png" alt="" /></div>
+            </div>
+            <br/>
+            <div class="one_half">
+                <div class="service-item text-right element_from_left">
+                    <h4>Sensor</h4>
+                    <p>The sensors component exists to interpret information from the current environment as well as the orientation of the robot. In this subsystem, there are two main components - grip sensors and boundary detection sensors. The grip sensors consist of force-sensitive resistors at the wheels and an inertial measurement unit (IMU) to sense the displacement off the window surface and the direction that the robot is facing with respect to gravity. The controller will make use of this information to calculate the required gripping force. The boundary detection component serves as the "eyes" of the robot. The tactile and IR sensors will provide feedback on the immediate surroundings of the robot, such as the distance to the nearest window boundary or obstacle.</p>
+                </div>
+            </div>
+            <div class="one_half last">
+                <div class="service-item text-left element_from_right">
+                    <h4>Locomotion</h4>
+                    <p>The locomotion subsystem consists of the robot’s movement and the adhesive grip on the window surface. Based on the information (direction, speed of travel, and fan speed) the controller subsystem provides, the locomotion subsystem carries out the movement direction by the controller. Our robot’s ability to move will be enabled by four independent wheels driven by motors. With independent movement for each of the wheels, the robot will have the additional flexibility to turn in place.</p>
+                    <br/>
+                    <p>Our robot will employ an electric ducted fan as the adhesive component. The EDF creates a constant vacuum force onto the window, hence allowing the robot to be held in place on the window. An advantage of using the EDF would include the ability to manipulate the fan speed (and hence, the adhesive force) based on feedback from the sensors (FSR and IMU).</p>
+                </div>
+            </div>
+            <div class="one_half">
+                <div class="service-item text-right element_from_left">
+                    <h4>Cleaning</h4>
+                    <p>The cleaning subsystem has two main mechanisms – scrubbing and solution dispensing. The bristle brushes will be continuously running as long as the robot is functioning. Hence, the scrubbing component will not require any form of input from the controller.</p>
+                    <p>However, the solution dispenser will require a periodic signal from the controller every few seconds. When the controller signals the spray nozzle, a small amount of cleaning solution will be sprayed onto the window surface.</p>
+                </div>
+            </div>
+            <div class="one_half last">
+                <div class="service-item text-left element_from_right">
+                    <h4>Controller</h4>
+                    <p>The controller (an Arduino Uno) can be seen as the core component in our robot. It receives information from sensors on the robot, such as the current adhesive grip on the window surface and if the robot has reached some form of obstacle. Based on the information and signals received, the controller then sends signals to the motors and the electric ducted fan (EDF) in order to control the movement and suction force of the robot on the window surface.</p>
+                </div>
+            </div>
+        </div>
+        <!--/Container -->
+    </section>
+
+    <!-- System Description and Depiction-->
+    <section id="system-desc" class="content">
+        <!-- Container -->
+        <div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>System<br/>Description & Depiction</h1>
+                <span class="border"></span>
+                <p>The system is modelled after a racecar, with a four-wheeled chassis and a suction fan mounted in the center. There are bristle brushes attached to the front and back of the robot for the cleaning mechanism.<br/><br/>The robot’s controllers and sensors are not depicted in this proposal model.</p>
+            </div>
+
+            <div class="screens">
+                <div class="racer"><img class="element_fade_in" src="images/racer.png" alt="" /></div>
+            </div>
+            <br/>
+
+            <!--/Section Title -->
+            <ul class="technology">
+                <li class="element_fade_in">
+                    <i class="fa fa-truck"></i>
+                    <h5>Chassis and Suction</h5>
+                    <p>The chassis is made of laser acrylic and wood and measures 15" by 15". The robot is held normal to the wall with the use of a 5" electric duct fan.</p>
+                </li>
+
+                <li class="element_fade_in">
+                    <i class="fa fa-cog"></i>
+                    <h5>Locomotion</h5>
+                    <p>Four DC motors are used to drive the wheels of the robot as shown. The robot would use tank steering to navigate the corners.</p>
+                </li>
+
+                <li class="element_fade_in">
+                    <i class="fa fa-laptop"></i>
+                    <h5>Controller</h5>
+                    <p>The main controller used will be an Arduino Uno (Figure 7). It has several features, such as 14 digital I/O and 6 analog I/O channels, 32 KB of storage, and 2KB of RAM.</p>
+                </li>
+
+                <li class="element_fade_in">
+                    <i class="fa fa-eraser"></i>
+                    <h5>Cleaning</h5>
+                    <p>The cleaning system on the robot uses 4 high speed cylindrically spiraled bristle brushes and buffers. Each high speed brush is coupled to a drive motor so that no additional actuators are necessary to power the brushes. This design reduces weight considerably and also offers a mechanical fix that automatically adjusts the speed of the rotating bristles proportionally to the speed of the robot.</p>
+                    <br/>
+                    <p>The robot will have a small onboard tank to carry the cleaning solution and will have 2 to 4 spray nozzles to disperse the cleaning solution on the window.</p>
+                </li>
+
+                <li class="element_fade_in">
+                    <i class="fa fa-road"></i>
+                    <h5>Boundary Detection Sensors</h5>
+                    <p>For boundary detection, we have chosen E-Switch TS0101F020P as a tactile sensor to detect the window frame upon contact.</p>
+                    <br/>
+                    <p>To allow for more precise maneuver near the boundaries, we are also using Sharp GP2Y0D815Z0F Digital Distance Sensor 15cm (Figure 8, right) with a range of 0.5-15cm. This proximity sensor provides us with distance measurement of the boundaries with good precision.</p>
+                </li>
+
+                <li class="element_fade_in">
+                    <i class="fa fa-magnet"></i>
+                    <h5>Grip Detection Sensors</h5>
+                    <p>For the grip sub-system, we are using Popolu MinIMU-9 v3 to measure and calculate the orientation of the robot. With nine independent rotation, acceleration, we can use the provided Arduino library to calculate estimated roll, pitch, and yaw angles, and visualize orientation of the board with the 3D test program.</p>
+                    <br/>
+                    <p>To ensure the gripping force stay within the allowance range, we are using two 1.5 inch Force Sensing Resistors (FSR) to measure the pressure of the chassis on the axles of the wheels. The readings from the FSRs provide a good enough approximation to check the stability of the gripping force.</p>
+                </li>
+            </ul>
+        </div>
+        <!--/Container -->
+    </section>
+    <!--/We love technology-->
+
+  <!-- Our Team -->
+    <section id="team-page">
+        <!-- Container -->
+        <div class="container">
             <!-- Section Title -->
             <div class="section-title">
                 <h1>Our team</h1>
