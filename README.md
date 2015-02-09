@@ -1,6 +1,6 @@
 # CMUMechatronics2015TeamF
 
-[16-778/18-578/24-778 Mechatronic Design S15](https://sites.google.com/site/cmumechatronicdesign/)
+[16-778/18-578/24-778 Mechatronic Design S15](https://sites.google.com/site/cmumechatronicdesign/)  
 Codebase for Team F (RACER)
 
 ## Sensors Lab
