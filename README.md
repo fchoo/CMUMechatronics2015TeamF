@@ -1,7 +1,6 @@
 # CMUMechatronics2015TeamF
 Codebase for Team F (RACER)
-
-*16-778/18-578/24-778 Mechatronic Design*
+*16-778/18-578/24-778 Mechatronic Design S15*
 
 ## Sensors Lab
 - Interfaced with potentiometer, FSR and Sharp IR sensor
