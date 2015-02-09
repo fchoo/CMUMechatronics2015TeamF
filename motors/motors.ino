@@ -12,6 +12,7 @@
     #define servoPin 2 // servo signal pin
     #define dcMotorPlus 3 // Brushed DC motor +
     #define dcMotorMinus 4 // Brushed DC motor -
+    #define ledPin 13 // arduino LED
     
     #define loopCount 14
     #define ENC_THRESH 150
@@ -34,6 +35,14 @@
     // Initialize Motors
     Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin); 
     Servo servo;
+    
+    // Switch Debouncing
+    int lastButtonState = LOW;
+    int ledState = HIGH;
+    long lastDebounceTime = 0;  // the last time the output pin was toggled
+    long debounceDelay = 50;    // the debounce time; increase if the output flickers
+    int buttonState;
+
     
     
     void setup()
@@ -59,6 +68,7 @@
       pinMode(inputIR, INPUT);
       pinMode(inputENC, INPUT_PULLUP);
       pinMode(inputMS, INPUT_PULLUP);
+      pinMode(ledPin, OUTPUT);
       Serial.begin(9600);
       
       // Print Command Line Instructions
@@ -130,13 +140,63 @@
                 } 
             }
             
-            if (chooseSensor == 5) // micro switch
+            if (chooseSensor == 5) // micro switch with DEBOUNCING
             {
              while (timeNow < runTime)
                 {
                  readSensors();
                  Serial.print("Switch: ");
                  Serial.println(switchVal);
+                
+                // read the state of the switch into a local variable:
+                int reading = digitalRead(inputMS);
+              
+                // check to see if you just pressed the button 
+                // (i.e. the input went from LOW to HIGH),  and you've waited 
+                // long enough since the last press to ignore any noise:  
+              
+                // If the switch changed, due to noise or pressing:
+                if (reading != lastButtonState) {
+                  // reset the debouncing timer
+                  lastDebounceTime = millis();
+                } 
+                
+                if ((millis() - lastDebounceTime) > debounceDelay) {
+                  // whatever the reading is at, it's been there for longer
+                  // than the debounce delay, so take it as the actual current state:
+              
+                  // if the button state has changed:
+                  if (reading != buttonState) {
+                    buttonState = reading;
+              
+                    // only toggle the LED if the new button state is HIGH
+                    if (buttonState == HIGH) {
+                      ledState = !ledState;
+                      motor.setSpeed(20);
+                      motor.step(10);
+                    }
+                  }
+                }
+                
+                // set the LED:
+                digitalWrite(ledPin, ledState);
+                
+              
+                // save the reading.  Next time through the loop,
+                // it'll be the lastButtonState:
+                lastButtonState = reading;
+                
+                 
+                 // Button without debouncing
+//                   if (switchVal == HIGH) {     
+//                        // turn LED on:    
+//                        digitalWrite(ledPin, HIGH);  
+//                      } 
+//                      else {
+//                        // turn LED off:
+//                        digitalWrite(ledPin, LOW); 
+//                      }
+                      
                  delay(PAUSE);
                  timeNow = millis() - startTime;  // calculate elapsed time    
                 } 
