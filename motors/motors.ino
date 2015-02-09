@@ -12,7 +12,12 @@
     #define servoPin 2 // servo signal pin
     #define dcMotorPlus 3 // Brushed DC motor +
     #define dcMotorMinus 4 // Brushed DC motor -
-    
+    // Stepper input pins
+    #define in1Pin 12
+    #define in2Pin 11
+    #define in3Pin 10
+    #define in4Pin 9
+
     #define loopCount 14
     #define ENC_THRESH 150
     #define PAUSE 10
@@ -24,17 +29,10 @@
     unsigned int startByte1 = 0xDEAD; // Decimal value of 57005
     unsigned long serialData;
     int inbyte;
-   
-    // Stepper input pins
-    int in1Pin = 12;
-    int in2Pin = 11;
-    int in3Pin = 10;
-    int in4Pin = 9;
     
     // Initialize Motors
     Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin); 
     Servo servo;
-    
     
     void setup()
     {
@@ -63,138 +61,135 @@
       
       // Print Command Line Instructions
       help();
-    
     }
     
-    
-    void loop() {
-        if (Serial.available() > 0) // check for input from serial
-        {
-          int mode = getSerial();
-          
-          switch(mode) {
-            case 67:        // 's' == 67 in ASCII, 's' is for sensors
-            {
-             int chooseSensor = getSerial();
-             int runTime = getSerial()*1000; // convert to seconds
-             int startTime = millis();    // start clock
-             int timeNow = 0;  
+    void loop() 
+    {
+      if (Serial.available() > 0) // check for input from serial
+      {
+        int mode = getSerial();
+        
+        switch(mode) {
+          case 67:        // 's' == 67 in ASCII, 's' is for sensors
+          {
+            int chooseSensor = getSerial();
+            int runTime = getSerial()*1000; // convert to seconds
+            int startTime = millis();    // start clock
+            int timeNow = 0;
+           
+            if (chooseSensor == 1)    // potentiometer
+            {  
+              while (timeNow < runTime)
+              {
+                readSensors();
+                Serial.print("Potentiometer: ");
+                Serial.println(potVal);
+                delay(PAUSE);
+                timeNow = millis() - startTime;  // calculate elapsed time    
+              }
+            } 
              
-             if (chooseSensor == 1)    // potentiometer
-               {  
-                while (timeNow < runTime)
-                {
-                 readSensors();
-                 Serial.print("Potentiometer: ");
-                 Serial.println(potVal);
-                 delay(PAUSE);
-                 timeNow = millis() - startTime;  // calculate elapsed time    
-                }
-               } 
-               
-                        
-             if (chooseSensor == 2)    // FSR
-               { 
-                while (timeNow < runTime)
-                {
-                 readSensors();
-                 Serial.print("FSR: ");
-                 Serial.println(fsrVal);
-                 delay(PAUSE);
-                 timeNow = millis() - startTime;  // calculate elapsed time    
-                }
-               } 
-               
-                        
-             if (chooseSensor == 3)    // IR
-               { 
-                while (timeNow < runTime)
-                {
-                 readSensors();
-                 Serial.print("IR: ");
-                 Serial.println(irLinear);
-                 delay(PAUSE);
-                 timeNow = millis() - startTime;  // calculate elapsed time    
-                }
-               } 
-            
+                      
+            if (chooseSensor == 2)    // FSR
+            { 
+              while (timeNow < runTime)
+              {
+                readSensors();
+                Serial.print("FSR: ");
+                Serial.println(fsrVal);
+                delay(PAUSE);
+                timeNow = millis() - startTime;  // calculate elapsed time    
+              }
+            } 
+                      
+            if (chooseSensor == 3)    // IR
+            { 
+              while (timeNow < runTime)
+              {
+                readSensors();
+                Serial.print("IR: ");
+                Serial.println(irLinear);
+                delay(PAUSE);
+                timeNow = millis() - startTime;  // calculate elapsed time    
+              }
+            } 
+
             if (chooseSensor == 4) // encoder
             {
-             while (timeNow < runTime)
-                {
-                 readSensors();
-                 Serial.print("Enc: ");
-                 Serial.println(encVal);
-                 delay(PAUSE);
-                 timeNow = millis() - startTime;  // calculate elapsed time    
-                } 
+              while (timeNow < runTime)
+              {
+                readSensors();
+                Serial.print("Enc: ");
+                Serial.println(encVal);
+                delay(PAUSE);
+                timeNow = millis() - startTime;  // calculate elapsed time    
+              } 
             }
-            
+
             if (chooseSensor == 5) // micro switch
             {
-             while (timeNow < runTime)
-                {
-                 readSensors();
-                 Serial.print("Switch: ");
-                 Serial.println(switchVal);
-                 delay(PAUSE);
-                 timeNow = millis() - startTime;  // calculate elapsed time    
-                } 
+              while (timeNow < runTime)
+              {
+                readSensors();
+                Serial.print("Switch: ");
+                Serial.println(switchVal);
+                delay(PAUSE);
+                timeNow = millis() - startTime;  // calculate elapsed time    
+              } 
             }
-            
-            
-           break; 
-          }
-            
-           case 61:         // motor controller
-           {
-             int chooseMotor = getSerial();
-             long motorInput = getSerial();
-             int motorSpeed;
-             
-             if (chooseMotor == 1 || chooseMotor == 2)
-             {
-              motorSpeed = 255; 
-              if (motorInput < 0 ) {
-                 motorInput = -(motorInput + 3000);   }      
-             }
-             else {
-              motorSpeed = sign(motorInput)*255;
-              if (motorInput < 0) {
-                motorInput = motorInput + 3000;  }
-              Serial.println(motorSpeed);
-              Serial.println(motorInput);
-             }   
-                
-             motorController(chooseMotor, motorInput, motorSpeed);  
-             break;
-           }
         
-           case 66:     // 'r' == 66 in ASCII, robot control
-           {
+            break; 
+          }
+          
+          case 61:         // motor controller
+          {
+            int motorNum = getSerial();
+            long motorInput = getSerial();
+            int motorSpeed;
+            // Stepper or servo
+            if (motorNum == 1 || motorNum == 2)
+            {
+              motorSpeed = 255; 
+              if (motorInput < 0 )
+                motorInput = -(motorInput + 3000); //TODO: why the diff?
+            }
+            // Brushed Motor
+            else 
+            {
+              motorSpeed = sign(motorInput)*255;
+              if (motorInput < 0)
+                motorInput = motorInput + 3000;
+            }   
+            Serial.println(motorSpeed);
+            Serial.println(motorInput);
+
+            motorController(motorNum, motorInput, motorSpeed);  
+            break;
+          }
+
+          case 66:     // 'r' == 66 in ASCII, robot control
+          {
             int moduleSensor = getSerial();
             int moduleMotor = getSerial();
             int runTime = getSerial()*1000;
             int startTime = millis();
             int timeNow = 0;
-            
+
             while (timeNow < runTime) {
-            robotController(moduleSensor, moduleMotor); 
-            timeNow = millis() - startTime;
+              robotController(moduleSensor, moduleMotor); 
+              timeNow = millis() - startTime;
             }
-            
+
             break; 
-           }
-            
-           case 56:     // 'h' == 56 in ASCII, display help menu and command options
-           {
+          }
+          
+          case 56:     // 'h' == 56 in ASCII, display help menu and command options
+          {
             help();
             break; 
-           }
-            
           }
         }
-    
+      }
     }
     
     
@@ -206,57 +201,54 @@
           while (inbyte != '/')
           {
             inbyte = Serial.read(); 
-            if (inbyte > 0 && inbyte != '/')
+            if (inbyte >= 0)
             {
              //serialData = Serial.parseInt();
              serialData = serialData * 10 + inbyte - '0';
              //serialdata = inbyte;
             }
           }
-          inbyte = 0;
           return serialData;
         }
               
     //*********************** Read Sensors ****************************************
     
     long readSensors()
+    {
+      potVal = 0; fsrVal = 0; irVal = 0; encVal = 0; switchVal = 0;// Resetting saved values
+      // read and averages readings over a (100us*loopCount) time period
+      for (int i = 0; i < loopCount; i++) 
       {
-         potVal = 0; fsrVal = 0; irVal = 0; encVal = 0; switchVal = 0;// Resetting saved values
-        // read and averages readings over a (100us*loopCount) time period
-        for (int i = 0; i < loopCount; i++) {
-          fsrVal += analogRead(inputFSR);
-          potVal += analogRead(inputPOT);
-          irVal += analogRead(inputIR);
-          encVal += analogRead(inputENC);
-          delay(1);
-        }
-        fsrVal /= loopCount;
-        potVal /= loopCount;
-        irVal /= loopCount;
-        encVal /= loopCount;
-        irLinear = round(12343.85 * pow(irVal, -1.15)); // Linearizing eqn, accuracy +- 5%
-        
-        // switch
-        switchVal = digitalRead(inputMS);
-        
-        
-      //  // Interlace the startBytes (0xDEAD, 0xCAFE, 0xBABE) with data bytes
-      //  Serial.write((unsigned byte*)&startByte1, 2);
-      //  Serial.write((unsigned byte*)&fsrVal, 2);
-      //  Serial.write((unsigned byte*)&startByte2, 2);
-      //  Serial.write((unsigned byte*)&potVal, 2);
-      //  Serial.write((unsigned byte*)&startByte3, 2);
-      //  Serial.write((unsigned byte*)&irLinear, 2);
-      //  Serial.print("volt = ");
-      //  Serial.print(float(irVal)/1023*5);
-      //  Serial.print("\n");
-      //  Serial.print("linearized = ");
-      //  Serial.print(irLinear);
-      //  Serial.print("\n"); 
+        fsrVal += analogRead(inputFSR);
+        potVal += analogRead(inputPOT);
+        irVal += analogRead(inputIR);
+        encVal += analogRead(inputENC);
+        delay(1);
+      }
+      fsrVal /= loopCount;
+      potVal /= loopCount;
+      irVal /= loopCount;
+      encVal /= loopCount;
+      irLinear = round(12343.85 * pow(irVal, -1.15)); // Linearizing eqn, accuracy +- 5%
       
+      // switch
+      switchVal = digitalRead(inputMS);
       
+    //TODO: remove old code  
+    //  // Interlace the startBytes (0xDEAD, 0xCAFE, 0xBABE) with data bytes
+    //  Serial.write((unsigned byte*)&startByte1, 2);
+    //  Serial.write((unsigned byte*)&fsrVal, 2);
+    //  Serial.write((unsigned byte*)&startByte2, 2);
+    //  Serial.write((unsigned byte*)&potVal, 2);
+    //  Serial.write((unsigned byte*)&startByte3, 2);
+    //  Serial.write((unsigned byte*)&irLinear, 2);
+    //  Serial.print("volt = ");
+    //  Serial.print(float(irVal)/1023*5);
+    //  Serial.print("\n");
+    //  Serial.print("linearized = ");
+    //  Serial.print(irLinear);
+    //  Serial.print("\n"); 
       return fsrVal, potVal, irLinear, encVal, switchVal;
-      
     }
     
     
@@ -279,80 +271,71 @@
       
       if (motorNum == 3)      // Brushed DC motor
       {
-           if (motorSpeed >= 0 )
-            {
-              analogWrite(dcMotorPlus, motorSpeed);
-              analogWrite(dcMotorMinus, LOW);
-              encoder(inputENC, motorInput);
-              analogWrite(dcMotorPlus, 0);
-              analogWrite(dcMotorMinus, 0);
-            }
-            else if (motorSpeed < 0)
-            {
-              analogWrite(dcMotorPlus, LOW);
-              analogWrite(dcMotorMinus, -motorSpeed);
-              encoder(inputENC, motorInput);
-              analogWrite(dcMotorPlus, 0);
-              analogWrite(dcMotorMinus, 0);
-            }
-        
-        
+        if (motorSpeed >= 0 )
+        {
+          analogWrite(dcMotorPlus, motorSpeed);
+          analogWrite(dcMotorMinus, LOW);
+          encoder(inputENC, motorInput);
+          analogWrite(dcMotorPlus, 0);
+          analogWrite(dcMotorMinus, 0);
+        }
+        else if (motorSpeed < 0)
+        {
+          analogWrite(dcMotorPlus, LOW);
+          analogWrite(dcMotorMinus, -motorSpeed);
+          encoder(inputENC, motorInput);
+          analogWrite(dcMotorPlus, 0);
+          analogWrite(dcMotorMinus, 0);
+        }
       }  
-      
-      
-      
     }
     
     
     //*********************** Encoder Function ***********************************
        
-      void encoder(int pin_num, long deg)
+    void encoder(int pin_num, long deg)
+    {
+      // define variables
+      long ticks;
+      
+      int n_tick=0;
+      int old_tick_val=0;
+      int tick_val=0;
+      int sensor;
+      
+      // convert input degrees into encoder ticks
+      // every rotation of the 3-tooth encoder wheel should generate 6 ticks
+      // if statement differentiates between motors with different gearbox ratios
+      long gearRatio = 298;
+      ticks = 6*gearRatio*deg/360;
+      
+      while (n_tick<= ticks)
       {
-        // define variables
-        long ticks;
-        
-        int n_tick=0;
-        int old_tick_val=0;
-        int tick_val=0;
-        int sensor;
-        
-        // convert input degrees into encoder ticks
-        // every rotation of the 3-tooth encoder wheel should generate 6 ticks
-        // if statement differentiates between motors with different gearbox ratios
-        long gearRatio = 298;
-        ticks = 6*gearRatio*deg/360;
-        
-        while (n_tick<= ticks)
-        {
-          sensor=analogRead(pin_num); // 0 = IO_C0
-          if (sensor>= ENC_THRESH)
-          { 
-            tick_val=0;  
-            if (old_tick_val==1)
-            {
-              n_tick++;
-              old_tick_val=0;
-            }
-            else ;
-          }
-        
-          if (sensor< ENC_THRESH)
+        sensor=analogRead(pin_num); // 0 = IO_C0
+        if (sensor>= ENC_THRESH)
+        { 
+          tick_val=0;  
+          if (old_tick_val==1)
           {
-            tick_val=1;
-            if (old_tick_val==0)
-            {
-              n_tick++;
-              old_tick_val=1;
-            }
-            else ;
+            n_tick++;
+            old_tick_val=0;
           }
-          
-          //Serial.println(sensor);
-        } 
-          
         }
-    
-    
+      
+        if (sensor< ENC_THRESH)
+        {
+          tick_val=1;
+          if (old_tick_val==0)
+          {
+            n_tick++;
+            old_tick_val=1;
+          }
+        }
+        //Serial.println(sensor);
+      } 
+    }
+  
+  
     //********************** ROBOT Controller **********************************
     void robotController(int sensor, int motor)
     {
@@ -374,40 +357,40 @@
         sensorVal = encVal;      // 
         
        // run motor controller with specified parameters 
-   
-       if (motor == 1 && sensor == 2) {
-         if (sensorVal > 100)
-         {
-           motorController(motor, 10, 255);   
-         }      
-       }
-       
-       if (motor == 1 && sensor == 1) 
-         {
-           if (sensorVal > 90)
-             motorController(motor, 10, 20);
-           else if (sensorVal < 90)
-             motorController(motor, -10, 20);
-         }
-       if (motor == 2) {
-         motorController(motor, sensorVal/2, 255);  }
-       if (motor == 3) {
-         long gearRatio = 6 * 298;
-         long rotations = gearRatio * 1/360;
-         Serial.println(sensorVal);
-         float speedVal = (sensorVal * (195.0/360.0))+60.0;
-         Serial.println(speedVal);
-         motorController(motor, rotations , speedVal); } 
-       
-     
-      
+      if (motor == 1)
+      {
+        if (sensor == 2) 
+        {
+          if (sensorVal > 100)
+            motorController(motor, 10, 255);   
+        }
+        else if (sensor == 1) 
+        {
+          if (sensorVal > 90)
+            motorController(motor, 10, 20);
+          else if (sensorVal < 90)
+            motorController(motor, -10, 20);
+        }
+      }
+      else if (motor == 2) 
+      {
+        motorController(motor, sensorVal/2, 255);  
+      }
+      else if (motor == 3) 
+      {
+        long gearRatio = 6 * 298;
+        long rotations = gearRatio * 1/360;
+        Serial.println(sensorVal);
+        float speedVal = (sensorVal * (195.0/360.0))+60.0;
+        Serial.println(speedVal);
+        motorController(motor, rotations , speedVal); 
+      } 
     }    
     
     //*************************** HELP *****************************************
+    // Print Command Line Instructions
     void help()
     {
-      
-        // Print Command Line Instructions
       Serial.print("Select a mode then type '/': \n\t's' - Sensor Package \n\t'm' - Motor Control\n\t'r' - Robot Control (sensors actuate motors) \n");
       
       Serial.print("('s') Select a Sensor: \n\t'1' - Potentiometer \n\t'2' - FSR \n\t'3' - IR \n\t'4' - Encoder\n\t'5' - Switch \n\t");
@@ -428,17 +411,12 @@
       Serial.print("Example: 's/2/10/' -> the program will return the FSR sensor feedback over serial for 10 seconds\n\n");
       Serial.print("Enter 'h/' for help menu\n");
       //Serial.print("Enjoy mechatronics because it's fun!\n");
-      
     }
     
     int sign(long input)
     {
-      int output = 0;
-      
-      if (input < 0 ) 
-        output = -1; 
+      if (input < 0) 
+        return -1; 
       else
-        output = 1;
-      
-      return output;   
+        return 1;
     }
