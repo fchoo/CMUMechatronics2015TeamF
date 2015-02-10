@@ -30,11 +30,9 @@
     unsigned int startByte3 = 0xBABE; // Decimal value of 47806
     unsigned int startByte2 = 0xCAFE; // Decimal value of 51966
     unsigned int startByte1 = 0xDEAD; // Decimal value of 57005
-    unsigned long serialData;
-    int inbyte;
     
     // Initialize Motors
-    Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin); 
+    Stepper (512, in1Pin, in2Pin, in3Pin, in4Pin); 
     Servo servo;
     
     // Switch Debouncing
@@ -214,15 +212,15 @@
             if (motorNum == 1 || motorNum == 2)
             {
               motorSpeed = 255; 
-              if (motorInput < 0 )
-                motorInput = -(motorInput + 3000); //TODO: why the diff?
+              // if (motorInput < 0 )
+              //   motorInput = -(motorInput + 3000);
             }
             // Brushed Motor
             else 
             {
               motorSpeed = sign(motorInput)*255;
-              if (motorInput < 0)
-                motorInput = motorInput + 3000;
+              // if (motorInput < 0)
+              //   motorInput = motorInput + 3000;
             }   
             Serial.println(motorSpeed);
             Serial.println(motorInput);
@@ -260,21 +258,26 @@
     //*********************** Serial Command ****************************************
       
     long getSerial()
-        {
-          serialData = 0;
-          while (inbyte != '/')
-          {
-            inbyte = Serial.read(); 
-            if (inbyte >= 0)
-            {
-             //serialData = Serial.parseInt();
-             serialData = serialData * 10 + inbyte - '0';
-             //serialdata = inbyte;
-            }
-          }
-          return serialData;
-        }
-              
+    {
+      boolean negative = false;
+      long serialData = 0;
+      while (Serial.available() > 0)
+      {
+        byte aChar = Serial.read();
+        if (aChar == '/') // Terminate current read
+          break;
+        else if (aChar == '-') // Current read is negative
+          negative = true;
+        else if (aChar >= '0' && aChar <= '9')
+          serialData = serialData * 10 + aChar - '0';
+        else if (aChar >= 'a' && aChar <= 'z')
+          serialData = aChar;
+      }
+      if (negative)
+        serialData *= -1;
+      return serialData;
+    }
+          
     //*********************** Read Sensors ****************************************
     
     long readSensors()
