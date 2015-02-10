@@ -27,9 +27,9 @@
 
     // initialize variables
     int potVal, fsrVal, irVal, irLinear, encVal, switchVal;
-    unsigned int startByte3 = 0xBABE; // Decimal value of 47806
-    unsigned int startByte2 = 0xCAFE; // Decimal value of 51966
-    unsigned int startByte1 = 0xDEAD; // Decimal value of 57005
+    unsigned int senStartByteFSR = 0xAAAA;
+    unsigned int senStartBytePOT = 0xAABB;
+    unsigned int senStartByteIR = 0xAACC;
 
     // Initialize Motors
     Stepper motor(512, in1Pin, in2Pin, in3Pin, in4Pin);
@@ -205,6 +205,7 @@
 
           case 61:         // motor controller
           {
+            Serial.println("motor");
             int motorNum = getSerial();
             long motorInput = getSerial();
             int motorSpeed;
@@ -300,14 +301,13 @@
       // switch
       switchVal = digitalRead(inputMS);
 
-    //TODO: remove old code
-    //  // Interlace the startBytes (0xDEAD, 0xCAFE, 0xBABE) with data bytes
-    //  Serial.write((unsigned byte*)&startByte1, 2);
-    //  Serial.write((unsigned byte*)&fsrVal, 2);
-    //  Serial.write((unsigned byte*)&startByte2, 2);
-    //  Serial.write((unsigned byte*)&potVal, 2);
-    //  Serial.write((unsigned byte*)&startByte3, 2);
-    //  Serial.write((unsigned byte*)&irLinear, 2);
+     // Interlace the startBytes with data bytes
+     // Serial.write((unsigned byte*)&senStartByteFSR, 2);
+     // Serial.write((unsigned byte*)&fsrVal, 2);
+     // Serial.write((unsigned byte*)&senStartBytePOT, 2);
+     // Serial.write((unsigned byte*)&potVal, 2);
+     // Serial.write((unsigned byte*)&senStartByteIR, 2);
+     // Serial.write((unsigned byte*)&irLinear, 2);
     //  Serial.print("volt = ");
     //  Serial.print(float(irVal)/1023*5);
     //  Serial.print("\n");
