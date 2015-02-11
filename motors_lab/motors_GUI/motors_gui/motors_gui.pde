@@ -55,13 +55,19 @@ String potString = "Resistance (k Ohms)";
 /* Modes:
    (0) - Default, doesn't do anything
    (1) - Display sensor readings
-   (2) - Control motors using GUI 
+   (2) - Control motors using GUI
    (3) - Control motors using sensors
           mode2 -- (1) FSR&stepper (2) pot&servo (3) IR->dc
 */
 int mode = 0;
 int mode2 = 0;
-int counter = 0;
+
+float stepperAngle = PI/2;
+int stepperAngleInt = 360; // starts off at 0
+int stepperDir = 0; // (0) CW (1) CCW
+float servoAngle = PI/2;
+int servoAngleInt = 90;
+
 // Handshake
 int sensorHSnum = 2;
 byte sensorDisplayHandShake[] = {(byte)0xAA,(byte)0xAA};
@@ -76,30 +82,66 @@ void setup() {
   arduinoPort = new Serial(this, portName, 9600);
 }
 
+void mouseClicked() {
+    if ((455 <= mouseY) && (mouseY < 505) && (75 <= mouseX) && (mouseX < 175) && (mode == 2)){ // send cw
+      print("CW : ");
+      println(stepperAngleInt);
+    }
+    else if ((455 <= mouseY) && (mouseY < 505) && (190 <= mouseX) && (mouseX < 290) && (mode == 2)){ // send ccw
+      print("CCW : ");
+      println(stepperAngleInt);
+    }
+}
+
 void draw() {
-  
+
   // Mode selection - default mode = 0
   if (mousePressed) {
     if ((50 <= mouseY) && (mouseY <= 100) && (50 <= mouseX) && (mouseX <= 325)) {
       if (mode != 1) clearSensorData();
       mode = 1; mode2 = 0;
     }
-    else if ((50 <= mouseY) && (mouseY <= 100) && (425 <= mouseX) && (mouseX <= 700)){
-      mode = 3; mode2 = 0;
+    else if ((50 <= mouseY) && (mouseY <= 100) && (425 <= mouseX) && (mouseX <= 700)) {
+      mode = 3; mode2 = 1;
     }
-    else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)){
+    else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)) {
       mode = 2; mode2 = 0;
     }
-    else if ((275 <= mouseY) && (mouseY <= 325) && (50 <= mouseX) && (mouseX <= 200) && (mode == 3)){
+    else if ((275 <= mouseY) && (mouseY <= 325) && (50 <= mouseX) && (mouseX <= 200) && (mode == 3)) {
       mode2 = 1;
     }
-    else if ((275 <= mouseY) && (mouseY <= 325) && (300 <= mouseX) && (mouseX <= 450) && (mode == 3)){
+    else if ((275 <= mouseY) && (mouseY <= 325) && (300 <= mouseX) && (mouseX <= 450) && (mode == 3)) {
       mode2 = 2;
     }
-    else if ((275 <= mouseY) && (mouseY <= 325) && (550 <= mouseX) && (mouseX <= 700) && (mode == 3)){
+    else if ((275 <= mouseY) && (mouseY <= 325) && (550 <= mouseX) && (mouseX <= 700) && (mode == 3)) {
       mode2 = 3;
     }
+
+    // CONTROL STEPPER MOTOR
+    else if ((340 <= mouseY) && (mouseY < 390) && (182 <= mouseX) && (mouseX <= 235) && (mode == 2)) { // quadrant 1
+      stepperAngle = atan(float(390-mouseY)/(mouseX-182));
+      stepperAngleInt = 90 - round(degrees(stepperAngle));
+    }
+    else if ((340 <= mouseY) && (mouseY < 390) && (130 <= mouseX) && (mouseX < 182) && (mode == 2)) { // quadrant 2
+      stepperAngle = atan(float(390-mouseY)/(182-mouseX));
+      stepperAngleInt = 270 + round(degrees(stepperAngle));
+    }
+    else if ((390 <= mouseY) && (mouseY < 445) && (130 <= mouseX) && (mouseX < 182) && (mode == 2)) { // quadrant 3
+      stepperAngle = atan(float(mouseY-390)/(182-mouseX));
+      stepperAngleInt = 270 - round(degrees(stepperAngle));
+    }
+    else if ((390 <= mouseY) && (mouseY < 445) && (182 <= mouseX) && (mouseX < 235) && (mode == 2)) { // quadrant 4
+      stepperAngle = atan(float(mouseY-390)/(mouseX-182));
+      stepperAngleInt = 90 + round(degrees(stepperAngle));
+    }
+
+    // SERVO MOTOR CONTROL
+    else if ((330 <= mouseY) && (mouseY < 445) && (460 <= mouseX) && (mouseX < 560) && (mode == 2)) { // left side
+      servoAngle = atan(float(440-mouseY)/(560-mouseX));
+      servoAngleInt = round(degrees(servoAngle));
+    }
   }
+
 
   // Clear current canvas
   background(#DEC9C9);
@@ -123,8 +165,8 @@ void draw() {
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(16);
-  text("Control motors with sensor", 375, 175);
-  
+  text("Control motors with Computer", 375, 175);
+
   // Draw mode 3 button (control motor with sensors)
   strokeWeight(2);
   rectMode(CORNERS);
@@ -134,8 +176,15 @@ void draw() {
   fill(0);
   textAlign(CENTER, CENTER);
   textSize(16);
-  text("Control motors with computer", 558, 75);
-  
+  text("Control motors with sensors", 558, 75);
+
+  // Default empty handshake
+  if (mode == 0) {
+    arduinoPort.write(0xFF);
+    arduinoPort.write(0xFF);
+
+  }
+
   if (mode == 3) { // control motor with sensors
     strokeWeight(2);
     rectMode(CENTER);
@@ -153,9 +202,10 @@ void draw() {
     text("FSR->Stepper", 125, 300);
     text("POT->Servo", 375, 300);
     text("IR->DC", 625, 300);
-  }  
-  
+  }
+
   if (mode == 2) { // control motor with computer
+
     // Draw Servo Controls
     fill(0);
     textAlign(CENTER, CENTER);
@@ -172,8 +222,38 @@ void draw() {
     textAlign(CENTER, CENTER);
     text("CW", 125, 480);
     text("CCW", 240, 480);
+    text(stepperAngleInt, 182, 390);
+    fill(255, 0, 0);
+    ellipseMode(CENTER);
+    if ((90 <= stepperAngleInt) && (stepperAngleInt < 180))
+      ellipse(182+50*cos(stepperAngle), 390+50*sin(stepperAngle), 10, 10);
+    else if ((0 <= stepperAngleInt) && (stepperAngleInt < 90))
+      ellipse(182+50*cos(stepperAngle), 390-50*sin(stepperAngle), 10, 10);
+    else if ((180 <= stepperAngleInt) && (stepperAngleInt < 270))
+      ellipse(182-50*cos(stepperAngle), 390+50*sin(stepperAngle), 10, 10);
+    else if ((270 <= stepperAngleInt) && (stepperAngleInt <= 360))
+      ellipse(182-50*cos(stepperAngle), 390-50*sin(stepperAngle), 10, 10);
+
+    // Draw Servo controls
+    fill(0);
+    text("Servo", 560, 300);
+    text("0", 447, 440);
+    text("180", 680, 440);
+    line(535, 310, 585, 310); // underline
+    fill(222, 201, 201);
+    strokeWeight(4);
+    arc(560, 440, 200, 200, -PI, 0);
+    fill(0);
+    text(servoAngleInt, 560, 440);
+    line(457, 440, 463, 440); line(657, 440, 663, 440);
+    fill(255, 0, 0);
+    strokeWeight(2);
+    if ((0 <= servoAngleInt) && (servoAngleInt < 90))
+      ellipse(560-100*cos(servoAngle), 640-100*sin(servoAngle), 10, 10);
+    else if ((90 <= servoAngleInt) && (servoAngleInt <= 180))
+      ellipse(560-100*cos(servoAngle), 640-100*sin(servoAngle), 10, 10);
   }
-  
+
   print("mode = ");
   println(mode);
   // Mode 1 - Display sensor readings
@@ -182,20 +262,20 @@ void draw() {
       arduinoPort.write(sensorDisplayHandShake[0]);
       arduinoPort.write(sensorDisplayHandShake[1]);
     }
-    
+
     // Ensure all transmitted data is read
     while (arduinoPort.available() >= 4*numSensors) {
       // 2 bytes for start bits, 2 bytes for data bits
       processSerialData(0xDE, 0xAD, "FSR");
       processSerialData(0xCA, 0xFE, "POT");
       processSerialData(0xBA, 0xBE, "IR");
-      
+
       // Tell Arduino to send next set of data
       arduinoPort.write(sensorDisplayHandShake[0]);
-      arduinoPort.write(sensorDisplayHandShake[1]);  
+      arduinoPort.write(sensorDisplayHandShake[1]);
     }
   }
-  
+
   // Mode 3 - Control motors using sensor
   if (mode == 3) {
     print("mode2 = ");
@@ -207,16 +287,16 @@ void draw() {
     }
     else if (mode2 == 2) {
       arduinoPort.write(0xDD);
-      arduinoPort.write(0xDD);  
+      arduinoPort.write(0xDD);
     }
     else if (mode2 == 3) {
       arduinoPort.write(0xEE);
-      arduinoPort.write(0xEE);  
+      arduinoPort.write(0xEE);
     }
   }
-  
-  
-  
+
+
+
   // Draw the boxes for the 3 different graphs
   strokeWeight(0);
   IR_graph.drawGraphBox(irString);
@@ -235,7 +315,7 @@ void draw() {
     drawPOTgraph();
     drawIRgraph();
     drawFSRgraph();
-  }  
+  }
 
   stroke(0);
 }
@@ -293,7 +373,7 @@ class cGraph
       textAlign(CENTER, TOP);
       text("0", m_gLeft-10, m_gBottom);
     }
-    
+
     // Max Value label
     textAlign(RIGHT, CENTER);
     if      (axisLabel == irString)  text(irMaxValue, m_gLeft-10, m_gTop);
