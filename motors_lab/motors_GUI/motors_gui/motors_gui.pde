@@ -182,7 +182,6 @@ void draw() {
   if (mode == 0) {
     arduinoPort.write(0xFF);
     arduinoPort.write(0xFF);
-
   }
 
   if (mode == 3) { // control motor with sensors
@@ -262,7 +261,8 @@ void draw() {
       arduinoPort.write(sensorDisplayHandShake[0]);
       arduinoPort.write(sensorDisplayHandShake[1]);
     }
-
+    print("available byte: ");
+    println(arduinoPort.available());
     // Ensure all transmitted data is read
     while (arduinoPort.available() >= 4*numSensors) {
       // 2 bytes for start bits, 2 bytes for data bits
@@ -282,16 +282,16 @@ void draw() {
     println(mode2);
     arduinoPort.clear(); // flush serial buffer
     if (mode2 == 1) {
-      arduinoPort.write(0xCC);
-      arduinoPort.write(0xCC);
+      arduinoPort.write(0x11);
+      arduinoPort.write(0x11);
     }
     else if (mode2 == 2) {
-      arduinoPort.write(0xDD);
-      arduinoPort.write(0xDD);
+      arduinoPort.write(0x22);
+      arduinoPort.write(0x22);
     }
     else if (mode2 == 3) {
-      arduinoPort.write(0xEE);
-      arduinoPort.write(0xEE);
+      arduinoPort.write(0x44);
+      arduinoPort.write(0x44);
     }
   }
 
