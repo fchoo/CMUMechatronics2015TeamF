@@ -85,7 +85,7 @@ void draw() {
       mode = 1; mode2 = 0;
     }
     else if ((50 <= mouseY) && (mouseY <= 100) && (425 <= mouseX) && (mouseX <= 700)){
-      mode = 3; mode2 = 0;
+      mode = 3; mode2 = 1;
     }
     else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)){
       mode = 2; mode2 = 0;
@@ -199,18 +199,22 @@ void draw() {
   if (mode == 3) {
     println(mode2);
     if (mode2 == 1) {
-      arduinoPort.write(0xAA);
-      arduinoPort.write(0xCC);  
+      arduinoPort.write(0xCC);
+      arduinoPort.write(0xAA);  
     }
     else if (mode2 == 2) {
-      arduinoPort.write(0xBB);
-      arduinoPort.write(0xCC);  
+      arduinoPort.write(0xCC);
+      arduinoPort.write(0xBB);  
     }
     else if (mode2 == 3) {
       arduinoPort.write(0xCC);
       arduinoPort.write(0xCC);  
     }
+    while (arduinoPort.available() <2);
+    println(hex(arduinoPort.read()));    println(hex(arduinoPort.read()));
   }
+  
+  
   
   // Draw the boxes for the 3 different graphs
   strokeWeight(0);
