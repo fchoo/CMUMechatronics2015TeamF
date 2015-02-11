@@ -13,6 +13,10 @@
     #define dcMotorPlus 3 // Brushed DC motor +
     #define dcMotorMinus 4 // Brushed DC motor -
 
+    #define MOTORSTEPPER 1
+    #define MOTORSERVO 2
+    #define MOTORDC 3
+
     // Stepper input pins
     #define in1Pin 12
     #define in2Pin 11
@@ -187,14 +191,14 @@
 
 
                // Button without debouncing
-//                   if (switchVal == HIGH) {
-//                        // turn LED on:
-//                        digitalWrite(ledPin, HIGH);
-//                      }
-//                      else {
-//                        // turn LED off:
-//                        digitalWrite(ledPin, LOW);
-//                      }
+                   if (switchVal == HIGH) {
+                        // turn LED on:
+                        digitalWrite(ledPin, HIGH);
+                      }
+                      else {
+                        // turn LED off:
+                        digitalWrite(ledPin, LOW);
+                      }
 
                 delay(PAUSE);
                 timeNow = millis() - startTime;  // calculate elapsed time
@@ -232,14 +236,14 @@
 
           case 66:     // 'r' == 66 in ASCII, robot control
           {
-            int moduleSensor = getSerial();
-            int moduleMotor = getSerial();
+            // int moduleSensor = getSerial();
+            // int moduleMotor = getSerial();
             int runTime = getSerial()*1000;
             int startTime = millis();
             int timeNow = 0;
 
             while (timeNow < runTime) {
-              robotController(moduleSensor, moduleMotor);
+              robotController();
               timeNow = millis() - startTime;
             }
 
@@ -403,55 +407,29 @@
 
 
     //********************** ROBOT Controller **********************************
-    void robotController(int sensor, int motor)
+    void robotController()
     {
-      long sensorVal;
+      long rPOTVal, rFSRVal, rIRVal;
 
       readSensors();
 
       // use designated sensor feedback as motor control input
-      if (sensor == 1)  {
-        sensorVal = potVal;      // 511 - 1022
-        sensorVal = (sensorVal - 511.0)*(360.0/(1022.0-511.0)); } // convert pot val from 0 to 360
-      else if (sensor == 2)  {
-        sensorVal = fsrVal;      // 50 - 550
-        sensorVal = (sensorVal - 300.0)*(360.0/(800.0-300.0)); }
-      else if (sensor == 3) {
-        sensorVal = irLinear;    // 10 - 60
-        sensorVal = (sensorVal - 10)*(360/(60-10)); }
-      else if (sensor == 4)
-        sensorVal = encVal;      //
+      rPOTVal = (potVal - 511.0)*(360.0/(1022.0-511.0)); // 511-1022 convert pot val from 0 to 360
+      rFSRVal = (fsrVal - 300.0)*(360.0/(800.0-300.0)); // 50-550
+      rIRVal = (irLinear - 10)*(360/(60-10)); // 10-60
 
-       // run motor controller with specified parameters
-      if (motor == 1)
-      {
-        if (sensor == 2)
-        {
-          if (sensorVal > 100)
-            motorController(motor, 10, 255);
-        }
-        else if (sensor == 1)
-        {
-          if (sensorVal > 90)
-            motorController(motor, 10, 20);
-          else if (sensorVal < 90)
-            motorController(motor, -10, 20);
-        }
-      }
-      else if (motor == 2)
-      {
-        motorController(motor, sensorVal/2, 255);
-      }
-      else if (motor == 3)
-      {
-        long gearRatio = 6 * 298;
-        long rotations = gearRatio * 1/360;
-        Serial.println(sensorVal);
-        float speedVal = (sensorVal * (195.0/360.0))+60.0;
-        Serial.println(speedVal);
-        motorController(motor, rotations , speedVal);
-      }
+      // FSR - STEPPER
+      if (rFSRVal > 100)
+        motorController(MOTORSTEPPER, 10, 255);
+      // POT - SERVO
+      motorController(MOTORSERVO, rPOTVal/2, 255);
+      // IR - DC MOTOR
+      long gearRatio = 6 * 298;
+      long rotations = gearRatio * 1/360;
+      float speedVal = (rIRVal * (195.0/360.0))+60.0;
+      motorController(MOTORDC, rotations , speedVal);
     }
+
 
     //*************************** HELP *****************************************
     // Print Command Line Instructions
