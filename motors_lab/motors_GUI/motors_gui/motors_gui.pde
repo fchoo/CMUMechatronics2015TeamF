@@ -69,6 +69,8 @@ int servoAngleInt = 90;
 float dcAngle = PI/2;
 int dcAngleInt = 360;
 int dcSpeed = 0;
+int delay = 200;
+int limit = delay;
 
 // Handshake
 int sensorHSnum = 2;
@@ -89,32 +91,77 @@ void mouseClicked() {
     if ((455 <= mouseY) && (mouseY < 505) && (75 <= mouseX) && (mouseX < 175) && (mode == 2)){ // send cw
       print("CW : ");
       println(stepperAngleInt);
+      guiHS1 = (byte)0x22;
+      guiHS2 = (byte)0x22;
+      guiHS3 = (byte)(stepperAngleInt >> 8);
+      guiHS4 = (byte)(stepperAngleInt & 0xFF);
+      sendGUIHS();
     }
     else if ((455 <= mouseY) && (mouseY < 505) && (190 <= mouseX) && (mouseX < 290) && (mode == 2)){ // send ccw
       print("CCW : ");
       println(stepperAngleInt);
+      guiHS1 = (byte)0x33;
+      guiHS2 = (byte)0x33;
+      guiHS3 = (byte)(stepperAngleInt >> 8);
+      guiHS4 = (byte)(stepperAngleInt & 0xFF);
+      sendGUIHS();
     }
     else if ((450 <= mouseY) && (mouseY < 500) && (510 <= mouseX) && (mouseX < 610) && (mode == 2)){ // send ccw
       print("Servo: ");
       println(servoAngleInt);
+      guiHS1 = (byte)0x44;
+      guiHS2 = (byte)0x44;
+      guiHS3 = (byte)(servoAngleInt >> 8);
+      guiHS4 = (byte)(servoAngleInt & 0xFF);
+      sendGUIHS();
     }
     else if ((600 <= mouseY) && (mouseY < 650) && (400 <= mouseX) && (mouseX < 500) && (mode == 2)){ // send cw
       dcSpeed = 0; // keep this
       print("CW DC Degree: ");
       println(dcAngleInt);
+      guiHS1 = (byte)0x55;
+      guiHS2 = (byte)0x55;
+      guiHS3 = (byte)(dcAngleInt >> 8);
+      guiHS4 = (byte)(dcAngleInt & 0xFF);
+      sendGUIHS();
     }
     else if ((600 <= mouseY) && (mouseY < 650) && (550 <= mouseX) && (mouseX < 650) && (mode == 2)){ // send ccw
       dcSpeed = 0; // keep this
       print("CCW DC Degree: ");
       println(dcAngleInt);
+      guiHS1 = (byte)0x66;
+      guiHS2 = (byte)0x66;
+      guiHS3 = (byte)(dcAngleInt >> 8);
+      guiHS4 = (byte)(dcAngleInt & 0xFF);
+      sendGUIHS();
     }
     else if ((725 <= mouseY) && (mouseY < 775) && (475 <= mouseX) && (mouseX < 575) && (mode == 2)){ // send speed
       dcAngleInt = 360; // keep this
       dcAngle = PI/2; // keep this too
       print("DC Speed: ");
       println(dcSpeed);
+      if (dcSpeed >= 0) {
+        guiHS1 = (byte)0x77;
+        guiHS2 = (byte)0x77;
+        guiHS3 = (byte)(dcSpeed >> 8);
+        guiHS4 = (byte)(dcSpeed & 0xFF);
+      }
+      else {
+        guiHS1 = (byte)0x88;
+        guiHS2 = (byte)0x88;
+        guiHS3 = (byte)(-(dcSpeed) >> 8);
+        guiHS4 = (byte)(-(dcSpeed) & 0xFF);
+      }
+      sendGUIHS();
     }
->>>>>>> 24690e30fdff65f694b25d23c972d0d21f9d2ceb
+}
+
+void sendGUIHS() {
+    arduinoPort.clear();
+    arduinoPort.write(guiHS1);
+    arduinoPort.write(guiHS2);
+    arduinoPort.write(guiHS3);
+    arduinoPort.write(guiHS4);
 }
 
 void draw() {
@@ -126,7 +173,7 @@ void draw() {
       mode = 1; mode2 = 0;
     }
     else if ((50 <= mouseY) && (mouseY <= 100) && (425 <= mouseX) && (mouseX <= 700)) {
-      mode = 3; mode2 = 1;
+      mode = 3; mode2 = 0;
     }
     else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)) {
       mode = 2; mode2 = 0;
@@ -143,6 +190,7 @@ void draw() {
     else if ((450 <= mouseY) && (mouseY <= 500) && (450 <= mouseX) && (mouseX <= 600) && (mode == 3)) {
       mode2 = 4;
     }
+
     // CONTROL STEPPER MOTOR
     else if ((340 <= mouseY) && (mouseY < 390) && (182 <= mouseX) && (mouseX <= 235) && (mode == 2)) { // quadrant 1
       stepperAngle = atan(float(390-mouseY)/(mouseX-182));
@@ -195,7 +243,6 @@ void draw() {
       if (dcSpeed > 255) dcSpeed = 255;
       if (dcSpeed < -255) dcSpeed = -255;
     }
-
   }
 
 
@@ -238,6 +285,7 @@ void draw() {
   if (mode == 0) {
     arduinoPort.write(0xFF);
     arduinoPort.write(0xFF);
+
   }
 
   if (mode == 3) { // control motor with sensors
@@ -261,6 +309,7 @@ void draw() {
     text("POT->Servo", 225, 475);
     text("IR->DC", 525, 275);
     text("Switch->Stepper", 525, 475);
+  }
 
   if (mode == 2) { // control motor with computer
 
@@ -356,16 +405,13 @@ void draw() {
     text("GO", 525, 750);
   }
 
-  print("mode = ");
-  println(mode);
   // Mode 1 - Display sensor readings
   if (mode == 1) {
-    for (int i=0; i<sensorHSnum;i++) {
-      arduinoPort.write(sensorDisplayHandShake[0]);
-      arduinoPort.write(sensorDisplayHandShake[1]);
+    for (int i=0; i< sensorHSnum; i++) {
+      arduinoPort.write(0x11);
+      arduinoPort.write(0x11);
     }
-    print("available byte: ");
-    println(arduinoPort.available());
+
     // Ensure all transmitted data is read
     while (arduinoPort.available() >= 4*numSensors) {
       // 2 bytes for start bits, 2 bytes for data bits
@@ -397,15 +443,8 @@ void draw() {
       arduinoPort.write(0xCC);
       arduinoPort.write(0xCC);
     }
-
-    // Mode 2 - Control motors using comp
-    if (mode == 2) {
-      arduinoPort.write(guiHS1);
-      arduinoPort.write(guiHS2);
-      arduinoPort.write(guiHS3);
-      arduinoPort.write(guiHS4);
-    }
   }
+
 
   // Draw the boxes for the 3 different graphs
   strokeWeight(0);
