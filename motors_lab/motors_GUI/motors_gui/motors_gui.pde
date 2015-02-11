@@ -61,7 +61,7 @@ String potString = "Resistance (k Ohms)";
 */
 int mode = 0;
 int mode2 = 0;
-
+int counter = 0;
 // Handshake
 int sensorHSnum = 2;
 byte sensorDisplayHandShake[] = {(byte)0xAA,(byte)0xAA};
@@ -85,7 +85,7 @@ void draw() {
       mode = 1; mode2 = 0;
     }
     else if ((50 <= mouseY) && (mouseY <= 100) && (425 <= mouseX) && (mouseX <= 700)){
-      mode = 3; mode2 = 1;
+      mode = 3; mode2 = 0;
     }
     else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)){
       mode = 2; mode2 = 0;
@@ -174,12 +174,13 @@ void draw() {
     text("CCW", 240, 480);
   }
   
+  print("mode = ");
+  println(mode);
   // Mode 1 - Display sensor readings
   if (mode == 1) {
-    if (sensorHSnum > 0) {
+    for (int i=0; i<sensorHSnum;i++) {
       arduinoPort.write(sensorDisplayHandShake[0]);
       arduinoPort.write(sensorDisplayHandShake[1]);
-      sensorHSnum--;
     }
     
     // Ensure all transmitted data is read
@@ -197,21 +198,21 @@ void draw() {
   
   // Mode 3 - Control motors using sensor
   if (mode == 3) {
+    print("mode2 = ");
     println(mode2);
+    arduinoPort.clear(); // flush serial buffer
     if (mode2 == 1) {
       arduinoPort.write(0xCC);
-      arduinoPort.write(0xAA);  
+      arduinoPort.write(0xCC);
     }
     else if (mode2 == 2) {
-      arduinoPort.write(0xCC);
-      arduinoPort.write(0xBB);  
+      arduinoPort.write(0xDD);
+      arduinoPort.write(0xDD);  
     }
     else if (mode2 == 3) {
-      arduinoPort.write(0xCC);
-      arduinoPort.write(0xCC);  
+      arduinoPort.write(0xEE);
+      arduinoPort.write(0xEE);  
     }
-    while (arduinoPort.available() <2);
-    println(hex(arduinoPort.read()));    println(hex(arduinoPort.read()));
   }
   
   
