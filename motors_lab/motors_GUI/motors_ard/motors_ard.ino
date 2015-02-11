@@ -142,16 +142,23 @@
         motorController(MOTORDC, 360, -speed);
       }
       // FSR control stepper
-      else if (isValidHS("FSR-STEPPER"))
+      else if (isValidHS("FSR-STEPPER")) {
         robotController("FSR-STEPPER");
+        sendSensorsData();
+      }
       // POT control servo
-      else if (isValidHS("POT-SERVO"))
+      else if (isValidHS("POT-SERVO")){
+        sendSensorsData();
         robotController("POT-SERVO");
+      }
       // POT control servo
-      else if (isValidHS("IR-DC"))
+      else if (isValidHS("IR-DC")){
+        sendSensorsData();
         robotController("IR-DC");
+      }
       else if (isValidHS("SW-STEPPER"))
       {
+        sendSensorsData();
         debounce();
         robotController("SW-STEPPER");
       }
