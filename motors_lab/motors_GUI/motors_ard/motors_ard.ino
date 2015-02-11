@@ -92,7 +92,6 @@
         robotController("POT-SERVO");
       else if (isValidHS("IR-DC"))
         robotController("IR-DC");
-      }
     }
 
 
@@ -264,4 +263,12 @@
         float speedVal = (rIRVal * (195.0/360.0))+60.0;
         motorController(MOTORDC, rotations , speedVal);
       }
+    }
+
+    int sign(long input)
+    {
+      if (input < 0)
+        return -1;
+      else
+        return 1;
     }
