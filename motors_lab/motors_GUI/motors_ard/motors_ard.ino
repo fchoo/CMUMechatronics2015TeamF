@@ -30,7 +30,7 @@
     #define PAUSE 10
 
     #define DC_SPEED_MAX 245
-
+    #define TIMEOUT_MAX 200
 
     // initialize variables
     int potVal, fsrVal, irVal, irLinear, encVal, switchVal;
@@ -92,7 +92,7 @@
       // Controlling Stepper Angle Clockwise
       else if (isValidHS("STEPPER-CW"))
       {
-        getData((byte *)&data);;
+        getData((byte *)&data);
         angle = int(data[0])*256 + int(data[1]);
         motorController(MOTORSTEPPER, angle, 20);
       }
@@ -116,6 +116,7 @@
         getData((byte *)&data);
         angle = int(data[0])*256 + int(data[1]);
         motorController(MOTORDC, angle, DC_SPEED_MAX);
+
       }
       // Controlling DC Angle Anti-Clockwise
       else if (isValidHS("DC-ANGLE-ACW"))
@@ -128,14 +129,16 @@
       else if (isValidHS("DC-SPEED-CW"))
       {
         getData((byte *)&data);
-        getSpeed();
+        speed = int(data[0])*256 + int(data[1]);
+        motorController(MOTORDC, 360, speed);
         motorController(MOTORDC, 360, speed);
       }
       // Controlling DC Speed Anti-Clockwise
       else if (isValidHS("DC-SPEED-ACW"))
       {
         getData((byte *)&data);
-        getSpeed();
+        speed = int(data[0])*256 + int(data[1]);
+        motorController(MOTORDC, 360, -speed);
         motorController(MOTORDC, 360, -speed);
       }
       // FSR control stepper
@@ -152,17 +155,8 @@
         debounce();
         robotController("SW-STEPPER");
       }
-      handShake[0] = 0x00;
-      handShake[1] = 0x00;
     }
 
-
-    void getSpeed()
-    {
-      speed = int(data[0])*256 + int(data[1]);
-      if (speed < 50) speed = 50;
-      if (speed > 245) speed = 245;
-    }
 
     //*********************** Serial Command ****************************************
 
@@ -268,7 +262,7 @@
 
       else if (motorNum == 3)      // Brushed DC motor
       {
-        if (motorSpeed >= 0 )
+        if (motorSpeed >= 0)
         {
           analogWrite(DCMOTOR_PLUS, motorSpeed);
           analogWrite(DCMOTOR_MINUS, LOW);
@@ -376,7 +370,7 @@
       int old_tick_val=0;
       int tick_val=0;
       int sensor;
-
+      int timeout = TIMEOUT_MAX;
       // convert input degrees into encoder ticks
       // every rotation of the 3-tooth encoder wheel should generate 6 ticks
       // if statement differentiates between motors with different gearbox ratios
@@ -385,13 +379,20 @@
 
       while (n_tick <= ticks)
       {
-        // Interrupt handler for different handshake received
-//        getData((byte *)&handShake);
-//        if (!(isValidHS("IR-DC") || isValidHS("SW-DC") ||
-//            isValidHS("DC-ANGLE-ACW") || isValidHS("DC-ANGLE-CW") ||
-//            isValidHS("DC-SPEED-ACW") || isValidHS("DC-SPEED-CW")))
-//          break;
-        if (isValidHS("IR-DC")) getData((byte *)&handShake);
+        if (isValidHS("IR-DC")) {
+            timeout--;
+          if (timeout == 0) {
+            timeout = TIMEOUT_MAX;
+            break;
+          }
+        }
+        // if (Serial.available() >= 2 &&
+        //     (isValidHS("DC-SPEED-CW") ||
+        //      isValidHS("DC-SPEED-ACW"))) {
+        //     getData((byte *)&handShake);
+        //     if (!(isValidHS("DC-SPEED-CW") || isValidHS("DC-SPEED-ACW")))
+        //         break;
+        // }
         sensor=analogRead(pin_num); // 0 = IO_C0
         if (sensor>= ENC_THRESH)
         {

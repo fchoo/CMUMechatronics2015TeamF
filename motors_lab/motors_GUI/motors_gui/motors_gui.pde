@@ -157,7 +157,6 @@ void mouseClicked() {
 }
 
 void sendGUIHS() {
-    arduinoPort.clear();
     arduinoPort.write(guiHS1);
     arduinoPort.write(guiHS2);
     arduinoPort.write(guiHS3);
@@ -177,6 +176,10 @@ void draw() {
     }
     else if ((150 <= mouseY) && (mouseY <= 200) && (50 <= mouseX) && (mouseX <= 700)) {
       mode = 2; mode2 = 0;
+      arduinoPort.clear();
+      arduinoPort.stop();
+      String portName = Serial.list()[0];
+      arduinoPort = new Serial(this, portName, 9600);
     }
     else if ((250 <= mouseY) && (mouseY <= 300) && (150 <= mouseX) && (mouseX <= 300) && (mode == 3)) {
       mode2 = 1;
@@ -285,9 +288,7 @@ void draw() {
   if (mode == 0) {
     arduinoPort.write(0xFF);
     arduinoPort.write(0xFF);
-
   }
-
   if (mode == 3) { // control motor with sensors
     strokeWeight(2);
     rectMode(CENTER);
