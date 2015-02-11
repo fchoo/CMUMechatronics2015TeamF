@@ -210,7 +210,7 @@
       long gearRatio = 298;
       ticks = 6*gearRatio*deg/360;
 
-      while (n_tick<= ticks)
+      while (n_tick<= ticks && isValidHS("IR-DC"))
       {
         sensor=analogRead(pin_num); // 0 = IO_C0
         if (sensor>= ENC_THRESH)
