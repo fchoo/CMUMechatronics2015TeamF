@@ -79,8 +79,11 @@
     {
       getData((byte *)&handShake); // Blocking until receive correct handshake
       // for sensors reading
-      if (isValidHS("sensors"))
+      if (isValidHS("sensors")) 
+      {
         readSensors();
+        sendSensorsData();
+      }
       // for manual-input motors
       else if (isValidHS("man-motors"))
       {
@@ -145,16 +148,20 @@
 
       // switch
       switchVal = digitalRead(INPUT_MS);
-
+      
      // Interlace the startBytes (0xDEAD, 0xCAFE, 0xBABE) with data bytes
+    }
+
+    void sendSensorsData()
+    {
       Serial.write((unsigned byte*)&senStartByteFSR, 2);
       Serial.write((unsigned byte*)&fsrVal, 2);
       Serial.write((unsigned byte*)&senStartBytePOT, 2);
       Serial.write((unsigned byte*)&potVal, 2);
       Serial.write((unsigned byte*)&senStartByteIR, 2);
       Serial.write((unsigned byte*)&irLinear, 2);
-    }
 
+    }
 
     //*********************** Motor Controller ***********************************
     void motorController(int motorNum, long motorInput, long motorSpeed)
@@ -212,9 +219,11 @@
 
       while (n_tick <= ticks)
       {
+        // Interrupt handler for different handshake received
         getData((byte *)&handShake);
         if (!isValidHS("IR-DC"))
           break;
+
         sensor=analogRead(pin_num); // 0 = IO_C0
         if (sensor>= ENC_THRESH)
         {
