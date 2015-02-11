@@ -79,6 +79,8 @@
     {
       getData((byte *)&handShake); // Blocking until receive correct handshake
       // for sensors reading
+//      Serial.write(handShake[0]);
+//      Serial.write(handShake[1]);
       if (isValidHS("sensors"))
         readSensors();
       // for manual-input motors
