@@ -720,7 +720,9 @@
 		margin-top:0px;
 		background:#fff;
 		font-size:13px;
+		border: 1px solid;
 	}
+
 
 /*  Tabs-SI  */
 
@@ -756,6 +758,7 @@
 		margin-top:0px;
 		background:#fff;
 		font-size:13px;
+		border: 1px solid;
 	}
 
 /*  Folders  */
@@ -805,6 +808,7 @@
 		margin-top:0px;
 		background:#fff;
 		font-size:13px;
+		border: 1px solid;
 	}
 
 
