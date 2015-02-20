@@ -135,14 +135,12 @@
             <div class="section-title">
                 <h1>Functional Architecture</h1>
                 <span class="border"></span>
-                <p>From the design requirements, our team derived four main functions the robot must have – movement, suction, environment-sensing and cleaning. The figure below depicts the major functions and flows between the functions.</p>
-            </div>
-            <div class="screens">
-                <div class="func-arch"><img class="element_fade_in" src="images/func-arch.png" alt="" /></div>
-            </div>
-            <br/>
-            <div class="section-title">
-                <p>The sensors will be in-charged of providing the environmental information (such as cleanliness of window and position of the robot) to the controller. With the information, the controller then further instructs the locomotion subsystem. In the meantime, the controller will separately instruct the cleaning component(s).</p>
+                <p>From the design requirements, our team derived four main functions the robot must have – movement, suction, environment-sensing and cleaning. Figure 2 depicts the major functions and flows between the functions.</p>
+                <br/>
+                <p class="imgtext"><br/><img src="images/func-arch.png" alt=""/>Figure 2: Main systems and sub-systems</p>
+                <br/>
+                <p>The sensors will be in-charged of providing the environmental information (such as cleanliness of window and position of the robot) to the controller. With the information, the controller then further instructs the locomotion subsystem. Figure 2 shows the logic flow of the robot's movement. In the meantime, the controller will separately instruct the cleaning component(s).</p>
+                <p class="imgtext"><br/><img src="images/movement_logic.jpg" alt=""/><br/>Figure 2: Logic flow of robot's movement</p>
             </div>
         </div>
         <!--/Container -->
@@ -156,11 +154,9 @@
             <div class="section-title">
                 <h1>Cyberphysical Architecture</h1>
                 <span class="border"></span>
-                <p>The following architecture describes the flow of information between the different subsystems within our robot. As described previously, the following four main subsystems in the robot’s physical architecture (main controller, sensors, cleaning, and locomotion) are depicted below. The supply of power will be distributed by the main controller (an Arduino Uno) to the other subsystems.</p>
+                <p>The following architecture describes the flow of information between the different subsystems within our robot. As described previously, the following four main subsystems in the robot’s physical architecture (main controller, sensors, cleaning, and locomotion) are depicted in Figure 3 below. The supply of power will be distributed by the main controller (an Arduino Mega) to the other subsystems.</p>
                 <br/>
-            </div>
-            <div class="screens">
-                <div class="cyberphysical-arch"><img class="element_fade_in" src="images/cyberphysical-arch.png" alt="" /></div>
+                <p class="imgtext"><br/><img src="images/cyberphysical-arch.png" alt=""/><br/>Figure 3: Cyberphysical block diagram</p>
             </div>
             <br/>
             <div class="one_half">
@@ -203,14 +199,11 @@
             <div class="section-title">
                 <h1>System<br/>Description & Depiction</h1>
                 <span class="border"></span>
-                <p>The system is modelled after a racecar, with a four-wheeled chassis and a suction fan mounted in the center. There are bristle brushes attached to the front and back of the robot for the cleaning mechanism.<br/><br/>The robot’s controllers and sensors are not depicted in this proposal model.</p>
-            </div>
-
-            <div class="screens">
-                <div class="racer"><img class="element_fade_in" src="images/racer.png" alt="" /></div>
+                <p>The system is modelled after a racecar, with a four-wheeled chassis and a suction fan mounted in the center. There are bristle brushes attached to the front and back of the robot for the cleaning mechanism.<br/><br/>The robot’s controllers and sensors are not depicted in this CAD model as shown in Figure 4.</p>
+                <br/>
+                <p class="imgtext"><br/><img class="element_fade_in" src="images/racer.png" alt=""/><br/>Figure 4: CAD model of RACER</p>
             </div>
             <br/>
-
             <!--/Section Title -->
             <ul class="technology">
                 <li class="element_fade_in">
@@ -297,17 +290,17 @@
                     <li><a href="#tabs-si-5">Controller</a></li>
                 </ul>
                 <div id="tabs-si-1" class="tab-si_container">
-                    <p>Currently, the pathfinding algorithm has been integrated with the IR sensor, while the locomotion’s grip and movement components has also been integrated into one component. Figure 1 shows a screenshot of a visualization done for the pathfinding algorithm in conjunction with the IR sensor, while Figure 2 shows the second prototype chassis with the EDF and motors together on the same.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/1.png" alt=""/><br>Figure 1: Screenshot of Pathfinding Algorithm Enabled by IR Sensor</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/2.png" alt=""/><br>Figure 2: Integration EDF and 4 Wheeled DC Motor Chassis</p>
+                    <p>Currently, the pathfinding algorithm has been integrated with the IR sensor, while the locomotion’s grip and movement components has also been integrated into one component. Figure 5 shows a screenshot of a visualization done for the pathfinding algorithm in conjunction with the IR sensor, while Figure 6 shows the second prototype chassis with the EDF and motors together on the same.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/1.png" alt=""/><br>Figure 5: Screenshot of Pathfinding Algorithm Enabled by IR Sensor</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/2.png" alt=""/><br>Figure 6: Integration EDF and 4 Wheeled DC Motor Chassis</p>
 
                 </div>
                 <div id="tabs-si-2" class="tab-si_container">
                     <h4 class="header-divider">Movement</h4>
-                    <p>The robot’s movement will be enabled by four independent DC motors and wheel system. The wheels have independent motion so as to allow the robot to turn in place. More specifically, the robot will have the capability to turn 90° right or left, depending on its current position. Figure 3 below shows a prototype of the window cleaning robot, with its four distinct wheel system.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/3.png" alt=""/><br>Figure 3: Picture Displaying RACER’s Locomotion Mechanisms</p>
+                    <p>The robot’s movement will be enabled by four independent DC motors and wheel system. The wheels have independent motion so as to allow the robot to turn in place. More specifically, the robot will have the capability to turn 90° right or left, depending on its current position. Figure 7 below shows a prototype of the window cleaning robot, with its four distinct wheel system.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/3.png" alt=""/><br>Figure 7: Picture Displaying RACER’s Locomotion Mechanisms</p>
                     <h4 class="header-divider">Grip</h4>
-                    <p>The robot will be held in place via the electric duct fan (EDF). The EDF will create a normal suction force toward the window, while the wheels will provide the friction for the robot to maintain its position. In Figure 3 above, the EDF is placed at the centre of the chassis, supported by a wooden frame. The wooden frame’s purpose is to evenly distribute the force generated by the EDF to the four different wheels.</p>
+                    <p>The robot will be held in place via the electric duct fan (EDF). The EDF will create a normal suction force toward the window, while the wheels will provide the friction for the robot to maintain its position. In Figure 7 above, the EDF is placed at the centre of the chassis, supported by a wooden frame. The wooden frame’s purpose is to evenly distribute the force generated by the EDF to the four different wheels.</p>
                     <p><br/>The video below demonstrates how a prototype of our robot is able to cling onto a surface. The robot in the video has a substantially smaller fan, but its chassis is also smaller.<br/><br/></p>
                     <div class="para-video-container">
                         <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0B3oeo4VD6R1QT2QwdDl1M0cwY3M/preview" width="640" height="480"></iframe>
@@ -315,14 +308,14 @@
                 </div>
                 <div id="tabs-si-3" class="tab-si_container">
                     <h4 class="header-divider">Grip</h4>
-                    <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. Figure 4 below shows a possible position of the IMU (Figure 4, left), as well as a computer visualization of its position (Figure 4, right).</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure 4: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
-                    <p><br/>The FSR will be a second sensor we would use to determine the adhesive force applied by the EDF. FSRs will be placed between the chassis and the motor. In sensors lab, we managed to calibrate and utlize the FSR to output minute variations of force applied on the FSR. Figure 5 below shows a screenshot of the different values it received. </p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/5.png" alt=""/><br>Figure 5: Screenshot of FSR’s reading</p>
+                    <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. Figure 8 below shows a possible position of the IMU (Figure 8, left), as well as a computer visualization of its position (Figure 8, right).</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure 8: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
+                    <p><br/>The FSR will be a second sensor we would use to determine the adhesive force applied by the EDF. FSRs will be placed between the chassis and the motor. In sensors lab, we managed to calibrate and utlize the FSR to output minute variations of force applied on the FSR. Figure 9 below shows a screenshot of the different values it received. </p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/5.png" alt=""/><br>Figure 9: Screenshot of FSR’s reading</p>
                     <p><br/>In addition, the extra grip sensor serves to fulfill reliability engineering’s notion of dual modular redundancy, as the IMU and FSR will provide independent readings of the adhesive force.</p>
                     <h4 class="header-divider">Boundary detection</h4>
-                    <p>The boundary detection will be achieved using both an infrared sensor (IR sensor) as well as a tactile sensor. <br/></br>The IR sensor is used to detect the any obstacles in the direction facing the IR sensor. The sensor transmit the data to the microcontroller through variations of voltages, and the microcontroller will have to decipher the corresponding distance of the obstacle. Figure 6 below shows linearization equation used to calculate the real-life distance of the obstacle from a voltage reading.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/6.png" alt=""/><br>Figure 6: Power Trend-line for IR Sensor’s Analog to Digital Conversion</p>
+                    <p>The boundary detection will be achieved using both an infrared sensor (IR sensor) as well as a tactile sensor. <br/></br>The IR sensor is used to detect the any obstacles in the direction facing the IR sensor. The sensor transmit the data to the microcontroller through variations of voltages, and the microcontroller will have to decipher the corresponding distance of the obstacle. Figure 10 below shows linearization equation used to calculate the real-life distance of the obstacle from a voltage reading.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/6.png" alt=""/><br>Figure 10: Power Trend-line for IR Sensor’s Analog to Digital Conversion</p>
                     <p><br/>The tactile sensor will be mounted at the front of the chassis, and will primarily be used as a form of switch. When the robot hits an obstacle or a boundary, the tactile sensor will be triggered and alert the microcontroller of the existence of the obstacle or boundary. This is also an implementation of dual modular redundancy.</p>
                 </div>
                 <div id="tabs-si-4" class="tab-si_container">
@@ -330,14 +323,14 @@
                     <div class="para-video-container">
                         <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0BzhOFz6a2zTVbkdTYnBweUtGbzQ/preview" width="640" height="480"></iframe>
                     </div>
-                    <p>In addition, RACER will have an inbuilt scrubbing mechanism (consisting of four bristle brushes attached to each of the four motors). Figure 7 below shows a CAD model of the scrubbing mechanism to be attached to the wheels.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/7.png" alt=""/><br>Figure 7: Depiction of Scrubbing Mechanism (attached to wheels)</p>
+                    <p>In addition, RACER will have an inbuilt scrubbing mechanism (consisting of four bristle brushes attached to each of the four motors). Figure 11 below shows a CAD model of the scrubbing mechanism to be attached to the wheels.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/7.png" alt=""/><br>Figure 11: Depiction of Scrubbing Mechanism (attached to wheels)</p>
                 </div>
                 <div id="tabs-si-5" class="tab-si_container">
-                    <p>RACER will be controller via one microcontroller – the Arduino Mega. Figure 8 below shows a picture of the Arduino Mega.<br/><br/></p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/8.jpg" alt=""/><br>Figure 8: Picture of Arduino Mega</p>
-                    <p><br/>In addition, the microcontroller will implement a pathfinding algorithm to allow the robot to clean the entire window. Currently, the microcontroller is able to implement a naïve method of cleaning the window by controlling RACER to zig-zag across the window from a corner to another corner. Figure 9 below shows the route RACER will take with the above implementation of the pathfinding algorithm.<br/><br/></p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/9.jpg" alt=""/><br>Figure 9: Basic Implementation of a Pathfinding Algorithm</p>
+                    <p>RACER will be controller via one microcontroller – the Arduino Mega. Figure 12 below shows a picture of the Arduino Mega.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/8.jpg" alt=""/><br>Figure 12: Picture of Arduino Mega</p>
+                    <p><br/>In addition, the microcontroller will implement a pathfinding algorithm to allow the robot to clean the entire window. Currently, the microcontroller is able to implement a naïve method of cleaning the window by controlling RACER to zig-zag across the window from a corner to another corner. Figure 13 below shows the route RACER will take with the above implementation of the pathfinding algorithm.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/9.jpg" alt=""/><br>Figure 13: Basic Implementation of a Pathfinding Algorithm</p>
                 </div>
             </div>
             <!--/Section Title -->
@@ -618,13 +611,14 @@
                 <ul class="clearfix">
                     <li><a id="all" href="#" data-filter="*" class="active"><h5>All</h5></a></li>
                     <li><a href="#" data-filter=".design-proposal"><h5>Design Proposal</h5></a></li>
+                    <li><a href="#" data-filter=".mockup"><h5>Mockup</h5></a></li>
                 </ul>
             </div>
             <!--/Portfolio Filters -->
             <!-- Portfolio Wrap -->
             <div id="portfolio-wrap">
                 <!-- Portfolio Item With PrettyPhoto  -->
-                <div class="portfolio-item one-four   design-proposal">
+                <div class="portfolio-item one-four design-proposal">
                     <div class="portfolio-image">
                         <img src="images/design_proposal/racer.jpg" alt=""/>
                     </div>
@@ -632,8 +626,8 @@
                         <div class="project-overlay">
                             <div class="project-info">
                                 <div class="zoom-icon"></div>
-                                <h4 class="project-name">Design Proposal</h4>
-                                <p class="project-categories">Conceptual Images</p>
+                                <h4 class="project-name">CAD Images</h4>
+                                <p class="project-categories">Initial Conceptual Images</p>
                             </div>
                         </div>
                     <!-- All other images in the gallery -->
@@ -643,6 +637,21 @@
                     <a title="RACER Alt Design #1" rel="prettyPhoto[design_proposal]" href="images/design_proposal/racer-1.jpg"/>
                     <a title="RACER Alt Design #2" rel="prettyPhoto[design_proposal]" href="images/design_proposal/racer-2.jpg"/>
                     <!-- /All other images -->
+                    </a>
+                </div>
+                <!-- Portfolio Item With PrettyPhoto  -->
+                <div class="portfolio-item one-four mockup">
+                    <div class="portfolio-image">
+                        <img src="images/mockup.jpg" alt=""/>
+                    </div>
+                    <a title="Mockup of RACER" rel="prettyPhoto[mockup]" href="images/mockup.jpg">
+                        <div class="project-overlay">
+                            <div class="project-info">
+                                <div class="zoom-icon"></div>
+                                <h4 class="project-name">Mockup</h4>
+                                <p class="project-categories">Mockup of RACER</p>
+                            </div>
+                        </div>
                     </a>
                 </div>
                 <!--/Portfolio Item With PrettyPhoto  -->
