@@ -258,7 +258,7 @@
 
             <h4 class="title-divider">Design Trade Studies</h4>            <dl class="accordion">
                 <dt><span class="accordion-status"></span><span>Controller</span></dt>
-                <dd class="accordion-content">A microcontroller is required to interface with the motors, sensors and cleaning mechanism. Given analog inputs and outputs required by motors and sensors, we have selected two primary options – Arduino Mega and TI MSP430 LaunchPad. Some advantages of Arduino MEga include a massive online community support and libraries which would accelerate our robot’s development. Furthermore, the Arduino Mega has a lot more I/O pins as compared to TI MSP430 which can be helpful given the number of sensors and motors we are using.<br/><br/>However, the TI MSP430 is much cheaper and has more flexible PWM controls as it uses a 16 bit timer rather than ATMega328P’s 8 bit timer. Furthermore, the TI MSP430 has a low power draw features which allow us to consider the possibility of battery-supported operation.<br/><br/>Given the complexity of our prototyping and possibly high I/O pins requirement, we have selected Arduino Mega as our microcontroller.</dd>
+                <dd class="accordion-content">A microcontroller is required to interface with the motors, sensors and cleaning mechanism. Given analog inputs and outputs required by motors and sensors, we have selected two primary options – Arduino Mega and TI MSP430 LaunchPad. Some advantages of Arduino Mega include a massive online community support and libraries which would accelerate our robot’s development. Furthermore, the Arduino Mega has a lot more I/O pins as compared to TI MSP430 which can be helpful given the number of sensors and motors we are using.<br/><br/>However, the TI MSP430 is much cheaper and has more flexible PWM controls as it uses a 16 bit timer rather than ATMega328P’s 8 bit timer. Furthermore, the TI MSP430 has a low power draw features which allow us to consider the possibility of battery-supported operation.<br/><br/>Given the complexity of our prototyping and possibly high I/O pins requirement, we have selected Arduino Mega as our microcontroller.</dd>
 
                 <dt><span class="accordion-status"></span><span>Boundary Detection</span></dt>
                 <dd class="accordion-content">There are primarily three types of sensors – tactile, proximity and visual – that fulfill the function of detecting a window edge. We evaluated these sensors based on three criteria: accuracy, range and ease of implementation. Accuracy refers to the sensor’s ability to detect the window boundary; a sensor’s range is evaluated based on its maximum and minimum operational range; the ease of implementation is dependent on the ease of processing the information a sensor returns.<br/><br/>By requiring direct physical contact with an object to trigger a tactile sensor’s response, a tactile sensor is deemed to be more accurate than a proximity sensor. The increased accuracy allows for more precise movement at the boundaries of the window. However, a proximity sensor has greater range than tactile sensor and provides additional information (such as the distance between the edge and the sensor). This helps us in fine-tuning movements near the boundaries<br/><br/>Visual sensors have the advantage of increased range as well as an additional capability of differentiating between a window edge and unexpected obstacles. However, the implementation of visual sensor is more complicated than tactile and proximity sensors, severely discounting its effectiveness and efficiency.<br/><br/>Based on the comparison, we chose to utilize tactile and proximity sensors for our robot.</dd>
@@ -291,20 +291,53 @@
             <div class="tab-shortcode">
                 <ul class="clearfix tabs-si">
                     <li><a href="#tabs-si-1">Integration</a></li>
-                    <li><a href="#tabs-si-2">Controller</a></li>
-                    <li><a href="#tabs-si-3">Locomotion</a></li>
-                    <li><a href="#tabs-si-4">Sensors</a></li>
-                    <li><a href="#tabs-si-5">Cleaning</a></li>
+                    <li><a href="#tabs-si-2">Locomotion</a></li>
+                    <li><a href="#tabs-si-3">Sensors</a></li>
+                    <li><a href="#tabs-si-4">Cleaning</a></li>
+                    <li><a href="#tabs-si-5">Controller</a></li>
                 </ul>
                 <div id="tabs-si-1" class="tab-si_container">
+                    <p>Currently, the pathfinding algorithm has been integrated with the IR sensor, while the locomotion’s grip and movement components has also been integrated into one component. Figure 1 shows a screenshot of a visualization done for the pathfinding algorithm in conjunction with the IR sensor, while Figure 2 shows the second prototype chassis with the EDF and motors together on the same.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/1.png" alt=""/><br>Figure 1: Screenshot of Pathfinding Algorithm Enabled by IR Sensor</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/2.png" alt=""/><br>Figure 2: Integration EDF and 4 Wheeled DC Motor Chassis</p>
+
                 </div>
                 <div id="tabs-si-2" class="tab-si_container">
+                    <h4 class="header-divider">Movement</h4>
+                    <p>The robot’s movement will be enabled by four independent DC motors and wheel system. The wheels have independent motion so as to allow the robot to turn in place. More specifically, the robot will have the capability to turn 90° right or left, depending on its current position. Figure 3 below shows a prototype of the window cleaning robot, with its four distinct wheel system.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/3.png" alt=""/><br>Figure 3: Picture Displaying RACER’s Locomotion Mechanisms</p>
+                    <h4 class="header-divider">Grip</h4>
+                    <p>The robot will be held in place via the electric duct fan (EDF). The EDF will create a normal suction force toward the window, while the wheels will provide the friction for the robot to maintain its position. In Figure 3 above, the EDF is placed at the centre of the chassis, supported by a wooden frame. The wooden frame’s purpose is to evenly distribute the force generated by the EDF to the four different wheels.</p>
+                    <p><br/>The video below demonstrates how a prototype of our robot is able to cling onto a surface. The robot in the video has a substantially smaller fan, but its chassis is also smaller.<br/><br/></p>
+                    <div class="para-video-container">
+                        <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0B3oeo4VD6R1QT2QwdDl1M0cwY3M/preview" width="640" height="480"></iframe>
+                    </div>
                 </div>
                 <div id="tabs-si-3" class="tab-si_container">
+                    <h4 class="header-divider">Grip</h4>
+                    <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. Figure 4 below shows a possible position of the IMU (Figure 4, left), as well as a computer visualization of its position (Figure 4, right).</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure 4: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
+                    <p><br/>The FSR will be a second sensor we would use to determine the adhesive force applied by the EDF. FSRs will be placed between the chassis and the motor. In sensors lab, we managed to calibrate and utlize the FSR to output minute variations of force applied on the FSR. Figure 5 below shows a screenshot of the different values it received. </p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/5.png" alt=""/><br>Figure 5: Screenshot of FSR’s reading</p>
+                    <p><br/>In addition, the extra grip sensor serves to fulfill reliability engineering’s notion of dual modular redundancy, as the IMU and FSR will provide independent readings of the adhesive force.</p>
+                    <h4 class="header-divider">Boundary detection</h4>
+                    <p>The boundary detection will be achieved using both an infrared sensor (IR sensor) as well as a tactile sensor. <br/></br>The IR sensor is used to detect the any obstacles in the direction facing the IR sensor. The sensor transmit the data to the microcontroller through variations of voltages, and the microcontroller will have to decipher the corresponding distance of the obstacle. Figure 6 below shows linearization equation used to calculate the real-life distance of the obstacle from a voltage reading.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/6.png" alt=""/><br>Figure 6: Power Trend-line for IR Sensor’s Analog to Digital Conversion</p>
+                    <p><br/>The tactile sensor will be mounted at the front of the chassis, and will primarily be used as a form of switch. When the robot hits an obstacle or a boundary, the tactile sensor will be triggered and alert the microcontroller of the existence of the obstacle or boundary. This is also an implementation of dual modular redundancy.</p>
                 </div>
                 <div id="tabs-si-4" class="tab-si_container">
+                    <p>The cleaning subsystem will consist of 2 main mechanisms – dispensing of cleaning solution and the scrubbing mechanism.<br/><br/>The robot will periodically dispense cleaning solution via a pump and nozzle onto the window. The cleaning solution was decided to be dispensed periodically to save on solution (and hence reduce the weight RACER is supposed to carry), as well as to ensure a relatively dry environment for RACER to work in. The video below shows the motor pump dispensing solution using a plastic tube. A microcontroller will be used to send a periodic signal to activate the pump (not shown in the video).<br/><br/></p>
+                    <div class="para-video-container">
+                        <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0BzhOFz6a2zTVbkdTYnBweUtGbzQ/preview" width="640" height="480"></iframe>
+                    </div>
+                    <p>In addition, RACER will have an inbuilt scrubbing mechanism (consisting of four bristle brushes attached to each of the four motors). Figure 7 below shows a CAD model of the scrubbing mechanism to be attached to the wheels.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/7.png" alt=""/><br>Figure 7: Depiction of Scrubbing Mechanism (attached to wheels)</p>
                 </div>
                 <div id="tabs-si-5" class="tab-si_container">
+                    <p>RACER will be controller via one microcontroller – the Arduino Mega. Figure 8 below shows a picture of the Arduino Mega.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/8.jpg" alt=""/><br>Figure 8: Picture of Arduino Mega</p>
+                    <p><br/>In addition, the microcontroller will implement a pathfinding algorithm to allow the robot to clean the entire window. Currently, the microcontroller is able to implement a naïve method of cleaning the window by controlling RACER to zig-zag across the window from a corner to another corner. Figure 9 below shows the route RACER will take with the above implementation of the pathfinding algorithm.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/9.jpg" alt=""/><br>Figure 9: Basic Implementation of a Pathfinding Algorithm</p>
                 </div>
             </div>
             <!--/Section Title -->

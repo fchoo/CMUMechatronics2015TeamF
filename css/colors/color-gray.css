@@ -30,7 +30,7 @@ span.text-color {
 	color:#fff;
 }
 
-.bar li span { 
+.bar li span {
 	background-color:#222222;
 }
 
@@ -49,7 +49,7 @@ ul.technology li i {
 ul.technology li:hover {
 	background-color:#222222;
 }
-	
+
 ul.technology li:hover:before {
 	border-color:#fff #fff #4e4e4e #4e4e4e;
 }
@@ -126,8 +126,16 @@ ul.technology li:hover:before {
 	background: #222222;
 }
 
-ul.tabs .tab-active a { 
-	background-color: #222; 
+ul.tabs .tab-active a {
+	background-color: #222;
+}
+
+ul.tabs-si .tab-si-active a {
+	background-color: #222;
+}
+
+ul.folders .folder-active a {
+	background-color: #222;
 }
 
 .dropcap-normal {
