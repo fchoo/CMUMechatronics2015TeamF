@@ -341,7 +341,6 @@
                 </div>
             </div>
             <!--/Section Title -->
-
         </div>
     </section>
 
@@ -357,20 +356,26 @@
             <div class="tab-shortcode">
                 <ul class="clearfix tabs">
                     <li><a href="#tabs-1">Overall System</a></li>
-                    <li><a href="#tabs-2">Controller</a></li>
-                    <li><a href="#tabs-3">Locomotion</a></li>
-                    <li><a href="#tabs-4">Sensors</a></li>
-                    <li><a href="#tabs-5">Cleaning</a></li>
+                    <li><a href="#tabs-2">Locomotion</a></li>
+                    <li><a href="#tabs-3">Sensors</a></li>
+                    <li><a href="#tabs-4">Cleaning</a></li>
+                    <li><a href="#tabs-5">Controller</a></li>
                 </ul>
                 <div id="tabs-1" class="tab_container">
+                    <p>No tests have been conducted yet.</p>
                 </div>
                 <div id="tabs-2" class="tab_container">
+                    <p>Currently, the EDF is able to output a continuous thrust of approximately 6 kg. This is done by setting up a test rig consisting of wooden frames and a weighing scale. Figure 10 below shows the setup of the test rig while experimenting with various EDF fan speed.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_performance/10.png" alt=""/><br>Figure 10: Test Rig to Measure EDF Output Thrust</p>
                 </div>
                 <div id="tabs-3" class="tab_container">
+                    <p>From tests in sensors lab, we managed to achieve accuracy in the IR sensor’s readings up to the centimeter. However, there is a great increase in noise signal when the closest obstacle or boundary is greater than 50cm. However, that does not affect our system as the maximum distance reading required is 30cm.<br/><br/>In addition, from another systems test, the inertial measurement unit (IMU) is able to calculate and transmit orientation and bearings up to 0.01° accuracy. This is far better than we expected, as we only require accuracy up to the degree.</p>
                 </div>
                 <div id="tabs-4" class="tab_container">
+                    <p>The current motor pump for the cleaning solution is able to dispense solution with varying speed based on the input voltages. With increasing voltages (minimum of 6V, capped at 20V), the motor is able to speed up the rate of pump. However, since we have decided to control the frequency of the pump via the microcontroller, the solution dispenser can also be powered via a battery instead of a varying voltage source.  </p>
                 </div>
                 <div id="tabs-5" class="tab_container">
+                    <p>Currently, the algorithm is able navigate a basic environment – boundaries on all sides of the window, as well as no obstacles. In future iterations of the algorithm, it should be able to detect the boundaries of the window as well as to navigate past obstacles.</p>
                 </div>
             </div>
 
@@ -405,7 +410,7 @@
                     <tr>
                         <td>3</td>
                         <td>26-Jan</td>
-                        <td>DesignConcept Proposal (M)</td>
+                        <td>Design Concept Proposal (M)</td>
                         <td>Order parts (EDF + test rig)
                         <br/>Build mock-up design
                         <br/>Complete sensors lab</td>
