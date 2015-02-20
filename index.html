@@ -23,7 +23,6 @@
 
 	<!-- Preloader -->
 	<div class="mask"><div id="loader"></div></div>
-	<!--/Preloader -->
 
 	<!-- Home Section -->
 	<div id="home" class="parallax-slider">
@@ -49,7 +48,6 @@
         </ul>
 		<!--/.Slider -->
 	</div>
-	<!-- End Home Section -->
 
     <!-- Navigation -->
     <div id="navigation" class="navbar navbar-fixed-top">
@@ -94,21 +92,20 @@
 			</div>
 		</div>
 	</div>
-    <!--/Navigation -->
 
     <!--/Problem Description-->
     <section id="problem-description">
-    <div class="container">
-        <!-- Section Title -->
-        <div class="section-title">
-            <h1>Problem Description</h1>
-            <span class="border"></span>
-            <p>In 2011, 8 workers in the United States sustained fatal injuries whilst cleaning the exterior of buildings. These cleaners suspend themselves midair and work with soapy water, putting themselves at a high risk of falling. Hence, this project serves to minimize the number of injuries and fatalities of window cleaning by automating the process, eliminating the need for workers to put themselves at risk.</p>
-            <br/>
-            <p>Aptly named <em>RACER</em>, this robot is fully automated. By placing the robot in a predefined location on the window, it will automatically sense the dimensions of the window and perform the cleaning without any human inputs. In addition, our robot aims to be faster than other available robotic window cleaners out in the commercial market.</p>
+        <div class="container">
+            <!-- Section Title -->
+            <div class="section-title">
+                <h1>Problem Description</h1>
+                <span class="border"></span>
+                <p>In 2011, 8 workers in the United States sustained fatal injuries whilst cleaning the exterior of buildings. These cleaners suspend themselves midair and work with soapy water, putting themselves at a high risk of falling. Hence, this project serves to minimize the number of injuries and fatalities of window cleaning by automating the process, eliminating the need for workers to put themselves at risk.</p>
+                <br/>
+                <p>Aptly named <em>RACER</em>, this robot is fully automated. By placing the robot in a predefined location on the window, it will automatically sense the dimensions of the window and perform the cleaning without any human inputs. In addition, our robot aims to be faster than other available robotic window cleaners out in the commercial market.</p>
+            </div>
+            <!--/Section Title -->
         </div>
-        <!--/Section Title -->
-    </div>
     </section>
 
     <!--/System Requirements-->
@@ -259,32 +256,25 @@
                 </li>
             </ul>
 
-            <h4 class="title-divider">Design Trade Studies</h4>
+            <h4 class="title-divider">Design Trade Studies</h4>            <dl class="accordion">
+                <dt><span class="accordion-status"></span><span>Controller</span></dt>
+                <dd class="accordion-content">A microcontroller is required to interface with the motors, sensors and cleaning mechanism. Given analog inputs and outputs required by motors and sensors, we have selected two primary options – Arduino Mega and TI MSP430 LaunchPad. Some advantages of Arduino MEga include a massive online community support and libraries which would accelerate our robot’s development. Furthermore, the Arduino Mega has a lot more I/O pins as compared to TI MSP430 which can be helpful given the number of sensors and motors we are using.<br/><br/>However, the TI MSP430 is much cheaper and has more flexible PWM controls as it uses a 16 bit timer rather than ATMega328P’s 8 bit timer. Furthermore, the TI MSP430 has a low power draw features which allow us to consider the possibility of battery-supported operation.<br/><br/>Given the complexity of our prototyping and possibly high I/O pins requirement, we have selected Arduino Mega as our microcontroller.</dd>
 
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Controller</a></span>
-                <div class="toggle_container">A microcontroller is required to interface with the motors, sensors and cleaning mechanism. Given analog inputs and outputs required by motors and sensors, we have selected two primary options – Arduino Mega and TI MSP430 LaunchPad. Some advantages of Arduino MEga include a massive online community support and libraries which would accelerate our robot’s development. Furthermore, the Arduino Mega has a lot more I/O pins as compared to TI MSP430 which can be helpful given the number of sensors and motors we are using.<br/><br/>However, the TI MSP430 is much cheaper and has more flexible PWM controls as it uses a 16 bit timer rather than ATMega328P’s 8 bit timer. Furthermore, the TI MSP430 has a low power draw features which allow us to consider the possibility of battery-supported operation.<br/><br/>Given the complexity of our prototyping and possibly high I/O pins requirement, we have selected Arduino Mega as our microcontroller.</div>
-            </div>
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Boundary Detection</a></span>
-                <div class="toggle_container">There are primarily three types of sensors – tactile, proximity and visual – that fulfill the function of detecting a window edge. We evaluated these sensors based on three criteria: accuracy, range and ease of implementation. Accuracy refers to the sensor’s ability to detect the window boundary; a sensor’s range is evaluated based on its maximum and minimum operational range; the ease of implementation is dependent on the ease of processing the information a sensor returns.<br/><br/>By requiring direct physical contact with an object to trigger a tactile sensor’s response, a tactile sensor is deemed to be more accurate than a proximity sensor. The increased accuracy allows for more precise movement at the boundaries of the window. However, a proximity sensor has greater range than tactile sensor and provides additional information (such as the distance between the edge and the sensor). This helps us in fine-tuning movements near the boundaries<br/><br/>Visual sensors have the advantage of increased range as well as an additional capability of differentiating between a window edge and unexpected obstacles. However, the implementation of visual sensor is more complicated than tactile and proximity sensors, severely discounting its effectiveness and efficiency.<br/><br/>Based on the comparison, we chose to utilize tactile and proximity sensors for our robot.</div>
-            </div>
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Path-finding</a></span>
-                <div class="toggle_container">To meet the project’s requirement of cleaning the window completely, there are several methods the robot can utilize. Such methods include a more thorough method, as well as a “search-and-clean” path-finding algorithm.<br/><br/>For the first and more thorough method, the robot will run through the entire window, cleaning every point regardless of the current cleanliness. On the other hand, another algorithm the robot can employ would be searching the window for dirty spots before cleaning it. The primary criteria used to evaluate these options would be the time required for the robot to complete its task. As the project requires the robot to clean at least 10 ft2 per minute, we chose the first method. This ensures the robot is able to consistently cover the entire span of the window within a certain amount of time over several runs.<br/><br/>In comparison, the search-and-clean methods require the robot to detect dirty spots before cleaning up the window. To accomplish that, the robot will still have to run through the entire window at least once. Hence, the search-and-clean method is deemed to be slower as the robot have to take on the extra task of analyzing the window for dirt.</div>
-            </div>
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Grip</a></span>
-                <div class="toggle_container">Several methods of generating grip to the window were investigated and analyzed for their advantages and disadvantages with regard to the objective task. Possible adhesion sources include the use of gecko adhesive pads, suction cups, vacuum fan suction, and magnets.<br/><br/>Gecko adhesives pads are a biologically inspired synthetic adhesive that creates adhesion via van der Waals intermolecular forces. Gecko adhesives are advantageous because of their property of being directionally controllable. However, the disadvantages of gecko pads in terrestrial applications outweigh the advantages because the max shear, normal, and moment loads are an order of magnitude smaller than that of suction cups.<br/><br/>Suction cups are a more appealing alternative for gecko pads because they are also fairly easy to actuate and toggle between ON and OFF states whilst offering significantly more adhesive strength. However, suction cups can create a suction that requires significant pull-off force to disengage. This is highly undesirable for a climbing robot where a large pull-off force could destabilize the robot, causing the entire robot to fall off on the window.<br/><br/>An electric ducted vacuum fan (EDF) offers similar advantages to suction cups, such as high adhesive strength and ease of actuation.A vacuum fan offers the potential to be much faster than a robot that employs suction cups. A robot with EDF can use a much simpler wheeled locomotion strategy while the fan runs continuously to create a constant normal force into the window plane for ‘grip’. However, the EDF is unable to generate as much suction force as a static sealed suction cup can. Hence, a disadvantage of this method is that the robot will have to be very light weight.<br/><br/>The final option considered was the use of magnets to create adhesion to the climbing surface. There have been previous climbing robots that make use of electro magnets to climb. However, this constrains the robot’s climbing surfaces to strictly ferromagnetic materials (glass is not a ferromagnetic material). Alternative methods employing magnetic forces would require magnets on both sides of the window which would introduce further complexity and reduce real-world practicality of operation.<br/><br/>Thus, with all things considered, it was decided that the EDF vacuum fan would be used as the source of creating grip.</div>
-            </div>
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Movement</a></span>
-                <div class="toggle_container">There are two main options to enable the robot to move about the window – a wheeled chassis or by suction caps.<br/><br/>The chassis consists of 4 wheels each driven by independent small brushed DC gear motors. The 4 independent motors will enable torque vectoring to drive forward, backward, and turn in place. Alternatively, treads could be used to generate a larger contact area between the robot and the climbing surface for better steering control. The trade-off for treads would be increased weight in the drive mechanism. Thus, treads are not ideal for an application where weight is a critical factor.<br/><br/>If the suction cup grip method was chosen, then 4 suction cups could be used in a ‘+’ configuration where at least two suction cups will always be engaged to the wall surface at all times. The pairs of suction cups adhered to the wall will alternate and the pair of suction cups not adhered will be slid up, down, left, or right relative to the adhered pair using two rack and pinion mechanisms.<br/><br/>With the use of the EDF vacuum grip method, the locomotion method can be simplified to a basic wheeled chassis. A wheeled chassis complements the choice of EDF as the main adhesion method, and enables the robot to have better mobility around the window.</div>
-            </div>
-            <div class="toggle-wrap">
-                <span class="toggle-title"><a href="#">Cleaning</a></span>
-                <div class="toggle_container">There are two components to the cleaning subsystem. The cleaning subsystem requires a method to dispense cleaning solution onto the window. Without the cleaning solution, the robot might find it tough to remove certain stains and marks. On the other hand, there are also two different ways our robot can dispense the solution: continuous- or timed-release of solution. Our team decided to choose the latter method, as it allows the robot to minimize the usage of cleaning solution. Hence, this method reduce the amount of solution to be kept on the robot, and consequently reduces the weight as well.<br/><br/>Our team have also narrowed down the method of cleaning to three choices – bristle brushes, spiraling multi-brush, and a passive squeegee. A passive squeegee would be the easiest to install, but the resulting cleanliness leaves much to be desired. Hence, the squeegee is ranked the worst of the three methods. Between bristle brushes and spiraling multi-brushes, the level of cleanliness is deemed to be comparable. However, the spiraling multi-brushes are harder to actuate as compared to bristle brushes. Hence, our team decided that our robot will employ the bristle brush as the main cleaning method.</div>
-            </div>
+                <dt><span class="accordion-status"></span><span>Boundary Detection</span></dt>
+                <dd class="accordion-content">There are primarily three types of sensors – tactile, proximity and visual – that fulfill the function of detecting a window edge. We evaluated these sensors based on three criteria: accuracy, range and ease of implementation. Accuracy refers to the sensor’s ability to detect the window boundary; a sensor’s range is evaluated based on its maximum and minimum operational range; the ease of implementation is dependent on the ease of processing the information a sensor returns.<br/><br/>By requiring direct physical contact with an object to trigger a tactile sensor’s response, a tactile sensor is deemed to be more accurate than a proximity sensor. The increased accuracy allows for more precise movement at the boundaries of the window. However, a proximity sensor has greater range than tactile sensor and provides additional information (such as the distance between the edge and the sensor). This helps us in fine-tuning movements near the boundaries<br/><br/>Visual sensors have the advantage of increased range as well as an additional capability of differentiating between a window edge and unexpected obstacles. However, the implementation of visual sensor is more complicated than tactile and proximity sensors, severely discounting its effectiveness and efficiency.<br/><br/>Based on the comparison, we chose to utilize tactile and proximity sensors for our robot.</dd>
+
+                <dt><span class="accordion-status"></span><span>Path-finding</span></dt>
+                <dd class="accordion-content">To meet the project’s requirement of cleaning the window completely, there are several methods the robot can utilize. Such methods include a more thorough method, as well as a “search-and-clean” path-finding algorithm.<br/><br/>For the first and more thorough method, the robot will run through the entire window, cleaning every point regardless of the current cleanliness. On the other hand, another algorithm the robot can employ would be searching the window for dirty spots before cleaning it. The primary criteria used to evaluate these options would be the time required for the robot to complete its task. As the project requires the robot to clean at least 10 ft2 per minute, we chose the first method. This ensures the robot is able to consistently cover the entire span of the window within a certain amount of time over several runs.<br/><br/>In comparison, the search-and-clean methods require the robot to detect dirty spots before cleaning up the window. To accomplish that, the robot will still have to run through the entire window at least once. Hence, the search-and-clean method is deemed to be slower as the robot have to take on the extra task of analyzing the window for dirt.</dd>
+
+                <dt><span class="accordion-status"></span><span>Grip</span></dt>
+                <dd class="accordion-content">Several methods of generating grip to the window were investigated and analyzed for their advantages and disadvantages with regard to the objective task. Possible adhesion sources include the use of gecko adhesive pads, suction cups, vacuum fan suction, and magnets.<br/><br/>Gecko adhesives pads are a biologically inspired synthetic adhesive that creates adhesion via van der Waals intermolecular forces. Gecko adhesives are advantageous because of their property of being directionally controllable. However, the disadvantages of gecko pads in terrestrial applications outweigh the advantages because the max shear, normal, and moment loads are an order of magnitude smaller than that of suction cups.<br/><br/>Suction cups are a more appealing alternative for gecko pads because they are also fairly easy to actuate and toggle between ON and OFF states whilst offering significantly more adhesive strength. However, suction cups can create a suction that requires significant pull-off force to disengage. This is highly undesirable for a climbing robot where a large pull-off force could destabilize the robot, causing the entire robot to fall off on the window.<br/><br/>An electric ducted vacuum fan (EDF) offers similar advantages to suction cups, such as high adhesive strength and ease of actuation.A vacuum fan offers the potential to be much faster than a robot that employs suction cups. A robot with EDF can use a much simpler wheeled locomotion strategy while the fan runs continuously to create a constant normal force into the window plane for ‘grip’. However, the EDF is unable to generate as much suction force as a static sealed suction cup can. Hence, a disadvantage of this method is that the robot will have to be very light weight.<br/><br/>The final option considered was the use of magnets to create adhesion to the climbing surface. There have been previous climbing robots that make use of electro magnets to climb. However, this constrains the robot’s climbing surfaces to strictly ferromagnetic materials (glass is not a ferromagnetic material). Alternative methods employing magnetic forces would require magnets on both sides of the window which would introduce further complexity and reduce real-world practicality of operation.<br/><br/>Thus, with all things considered, it was decided that the EDF vacuum fan would be used as the source of creating grip.</dd>
+
+                <dt><span class="accordion-status"></span><span>Movement</span></dt>
+                <dd class="accordion-content">There are two main options to enable the robot to move about the window – a wheeled chassis or by suction caps.<br/><br/>The chassis consists of 4 wheels each driven by independent small brushed DC gear motors. The 4 independent motors will enable torque vectoring to drive forward, backward, and turn in place. Alternatively, treads could be used to generate a larger contact area between the robot and the climbing surface for better steering control. The trade-off for treads would be increased weight in the drive mechanism. Thus, treads are not ideal for an application where weight is a critical factor.<br/><br/>If the suction cup grip method was chosen, then 4 suction cups could be used in a ‘+’ configuration where at least two suction cups will always be engaged to the wall surface at all times. The pairs of suction cups adhered to the wall will alternate and the pair of suction cups not adhered will be slid up, down, left, or right relative to the adhered pair using two rack and pinion mechanisms.<br/><br/>With the use of the EDF vacuum grip method, the locomotion method can be simplified to a basic wheeled chassis. A wheeled chassis complements the choice of EDF as the main adhesion method, and enables the robot to have better mobility around the window.</dd>
+
+                <dt><span class="accordion-status"></span><span>Cleaning</span></dt>
+                <dd class="accordion-content">There are two components to the cleaning subsystem. The cleaning subsystem requires a method to dispense cleaning solution onto the window. Without the cleaning solution, the robot might find it tough to remove certain stains and marks. On the other hand, there are also two different ways our robot can dispense the solution: continuous- or timed-release of solution. Our team decided to choose the latter method, as it allows the robot to minimize the usage of cleaning solution. Hence, this method reduce the amount of solution to be kept on the robot, and consequently reduces the weight as well.<br/><br/>Our team have also narrowed down the method of cleaning to three choices – bristle brushes, spiraling multi-brush, and a passive squeegee. A passive squeegee would be the easiest to install, but the resulting cleanliness leaves much to be desired. Hence, the squeegee is ranked the worst of the three methods. Between bristle brushes and spiraling multi-brushes, the level of cleanliness is deemed to be comparable. However, the spiraling multi-brushes are harder to actuate as compared to bristle brushes. Hence, our team decided that our robot will employ the bristle brush as the main cleaning method.</dd>
+            </dl>
         </div>
         <!--/Container -->
     </section>
@@ -354,6 +344,7 @@
         </div>
     </section>
 
+    <!-- Schedule -->
     <section id="schedule">
         <div class="container">
             <div class="section-title">
@@ -568,7 +559,6 @@
         </div>
     </section>
 
-
     <!-- Picture -->
     <section id="picture-gal" class="content">
         <!-- Container -->
@@ -630,7 +620,6 @@
         </div>
         <!--/Project Page Holder-->
     </section>
-    <!--/Portfolio -->
 
     <!-- Our Team -->
     <section id="team-page">
@@ -713,7 +702,6 @@
         <!--/Container -->
 
 	</section>
-	<!--/Our Team -->
 
     <!-- Documents -->
     <section id="documents">
@@ -723,7 +711,7 @@
             <div class="section-title">
                 <h1>Documents</h1>
                 <span class="border"></span>
-                <p>Documents for easy reference in order to track project progress and examine project details. Viewing access are granted to CMU google accounts only.</p>
+                <p>Documents for easy reference in order to track project progress and examine project details. Viewing access are granted to authorized accounts only.</p>
             </div>
             <div class="tab-shortcode">
                 <ul class="clearfix tabs">
@@ -734,19 +722,19 @@
                     <li><a href="#tabs-5">Presentations</a></li>
                 </ul>
                 <div id="tabs-1" class="tab_container">
-                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfjRudFVsZjdCbmtRVTVpLWZkLUg4VFRKM3JPTE5ocENGam4wWm9VT29Vdkk&amp;authuser=1#list"></iframe>
+                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfjRudFVsZjdCbmtRVTVpLWZkLUg4VFRKM3JPTE5ocENGam4wWm9VT29Vdkk#list"></iframe>
                 </div>
                 <div id="tabs-2" class="tab_container">
-                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfm9GUXNOaUMxU1cyVEx2VWlsMGpKQ2NkQlh0SWRLbFNBWTdjaHRSbEZwb1E&amp;authuser=1#list"></iframe>
+                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfm9GUXNOaUMxU1cyVEx2VWlsMGpKQ2NkQlh0SWRLbFNBWTdjaHRSbEZwb1E#list"></iframe>
                 </div>
                 <div id="tabs-3" class="tab_container">
-                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfmVkbndIM0hjVHVFN1ZONW45djFzVUtPOHRVWGNLbGdMWUFNSFZuUEVZa2s&amp;authuser=1#list"></iframe>
+                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfmVkbndIM0hjVHVFN1ZONW45djFzVUtPOHRVWGNLbGdMWUFNSFZuUEVZa2s#list"></iframe>
                 </div>
                 <div id="tabs-4" class="tab_container">
-                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfkhvYUxTQVU2UEs4bXhUVUwyckJHRE1TVElwRFpMUXNDNktNV3k4MGtSa28&amp;authuser=1#list"></iframe>
+                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfkhvYUxTQVU2UEs4bXhUVUwyckJHRE1TVElwRFpMUXNDNktNV3k4MGtSa28#list"></iframe>
                 </div>
                 <div id="tabs-5" class="tab_container">
-                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfjNRaXBtS0dYWHJaWl9RS3ZFRGlQbWwtS1RGRWFEN2xla01pV3QzaE9KSWs&amp;authuser=1#list"></iframe>
+                    <iframe class="gfolder" src="https://drive.google.com/embeddedfolderview?id=0B8jIISEvYcqJfjNRaXBtS0dYWHJaWl9RS3ZFRGlQbWwtS1RGRWFEN2xla01pV3QzaE9KSWs#list"></iframe>
                 </div>
             </div>
             <!--/Section Title -->
