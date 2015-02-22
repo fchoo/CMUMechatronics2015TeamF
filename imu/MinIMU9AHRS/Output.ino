@@ -29,7 +29,7 @@ with MinIMU-9-Arduino-AHRS. If not, see <http://www.gnu.org/licenses/>.
 */
 
 void printdata(void)
-{    
+{
       Serial.print("!");
 
       #if PRINT_EULER == 1
@@ -39,14 +39,14 @@ void printdata(void)
       Serial.print(ToDeg(pitch));
       Serial.print(",");
       Serial.print(ToDeg(yaw));
-      #endif      
+      #endif
       #if PRINT_ANALOGS==1
       Serial.print(",AN:");
       Serial.print(AN[0]);  //(int)read_adc(0)
       Serial.print(",");
       Serial.print(AN[1]);
       Serial.print(",");
-      Serial.print(AN[2]);  
+      Serial.print(AN[2]);
       Serial.print(",");
       Serial.print(AN[3]);
       Serial.print (",");
@@ -80,8 +80,8 @@ void printdata(void)
       Serial.print (",");
       Serial.print(convert_to_dec(DCM_Matrix[2][2]));
       #endif*/
-      Serial.println();    
-      
+      Serial.println();
+
 }
 
 long convert_to_dec(float x)
