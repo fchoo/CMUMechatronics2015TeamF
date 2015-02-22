@@ -29,10 +29,11 @@ void setup()
 void loop() //Main Loop
 {
   Read_AHRS();
-  Serial.print("ANG:");
+  Serial.print("Roll: ");
   Serial.print(Get_Roll());
-  Serial.print(",");
+  Serial.print(", Pitch: ");
   Serial.print(Get_Pitch());
-  Serial.print(",");
-  Serial.print(Get_Yaw());
+  Serial.print(", Yaw: ");
+  Serial.println(Get_Yaw());
+  delay(500);
 }
