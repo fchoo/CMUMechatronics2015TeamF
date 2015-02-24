@@ -1,7 +1,12 @@
 /**
+* EDFControl.ino - Control EDF fan speed with IMU
+* Copyright (c) 2015 Foo Lai Choo.  All right reserved.
+*
 * This program controls the EDF fan speed based on the angle of inclination the
 * robot is experiencing. First, it calculates the suction force required to keep
-* the robot adhere to an inclined surface. It then adjust the EDF motor accordingly.
+* the robot adhere to an inclined surface. It then adjust the EDF motor
+* accordingly.
+*
 **/
 
 // Helper functions
