@@ -32,7 +32,7 @@ int delayDuration = 1000;
 void setup() {
   size(canvasW, canvasH, P2D);
   String portName = Serial.list()[0];
-  arduinoPort = new Serial(this, portName, 9600);
+  arduinoPort = new Serial(this, portName, 115200);
 }
   
 void draw() {
@@ -54,8 +54,8 @@ void draw() {
   
   // Update current orientation of robot
   updateOrientation();
-  
   if (started) {
+    
     // Update current location of robot
     updateLocation();
   }
@@ -67,21 +67,28 @@ void draw() {
 
 void updateOrientation() {
   
-  if (arduinoPort.available() > 0) 
+  if (arduinoPort.available() > 0) {
     nextDir = arduinoPort.readStringUntil('\n');
+    println(nextDir);
+  }
   else nextDir = null;
-   
   if (nextDir != null) {
     println(nextDir);
     nextDir = trim(nextDir);  
 
+    println(nextDir);
     // Case 0: Start the robot
     if (nextDir.equals("START")) {
       started = true;
     }
     
+    if (nextDir.equals("PAUSE")) {
+      pause = true;
+    }
+    
     // Case 1: Robot moving forward
     else if (nextDir.equals("FORWARD")) {
+      if (pause = true) pause = false;
       // next direction is forward == continue
     }  
    
@@ -96,6 +103,8 @@ void updateOrientation() {
       while (afterTime < (beforeTime + delayDuration)) {
         afterTime = millis();
       }
+      if (pause = true) pause = false;
+      
     }
     
     // Case 3: Robot moving right
@@ -109,14 +118,15 @@ void updateOrientation() {
       while (afterTime < (beforeTime + delayDuration)) {
         afterTime = millis();
       }
+      if (pause = true) pause = false;
+      
     }
    
     // Case 4: Robot moving backward -- No need for feature yet
     else if (nextDir.equals("BACK")) {
       curDir = curDir;
     }
-    
-    // Case 5: Robot stopped
+    // Case 5b: Robot stopped
     else if (nextDir.equals("STOP")) {
       curDir = "stop";
     }  
@@ -124,11 +134,14 @@ void updateOrientation() {
 }
 
 void updateLocation() {
-  if (curDir.equals("up")) curY -= 1;
-  else if (curDir.equals("down")) curY += 1;
-  else if (curDir.equals("left")) curX -= 1;
-  else if (curDir.equals("right")) curX += 1;
-  else if (curDir.equals("stop")) noLoop();
+  if (pause == false) {
+    if (curDir.equals("up")) curY -= 1;
+    else if (curDir.equals("down")) curY += 1;
+    else if (curDir.equals("left")) curX -= 10;
+    else if (curDir.equals("right")) curX += 10;
+    //else if (curDir.equals("pause")) curX = curX;
+    else if (curDir.equals("stop")) noLoop();
+  }
 }
 
 
