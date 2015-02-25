@@ -17,13 +17,14 @@
 #define F_WEIGHT (3*9.81) // robot weight 3kg
 // EDF Control
 #define PWM_MIN 191
-#define PWM_MAX 255
-#define PWM_DELAY 20 // 20ms
-#define PWM_STEPSIZE 5
+#define PWM_MAX 220
+#define PWM_DELAY 200 // 20ms
+#define PWM_STEPSIZE 1
 // Pin Definition
 #define PIN_LED 13
 #define PIN_EDF 3 // Digital PWM pin for EDF.
 
+// Variables
 float theta;
 float fs;
 float fs_old;
@@ -40,7 +41,6 @@ void setup()
   analogWrite(PIN_EDF, 0);
   delay(500);
   analogWrite(PIN_EDF, PWM_MIN);
-  delay(4000);
   AHRS_Init();
 
   digitalWrite(PIN_LED, HIGH); // ON - Initialization done
@@ -50,21 +50,23 @@ void loop() //Main Loop
 {
   Read_AHRS();
   calc_fs();
-  if (fs > fs_old)
-    step_PWM();
+  if ((fs > fs_old) && (fs>0))
+    step_PWM(1);
+  else if ((fs < fs_old) && (pwm_value>PWM_MIN))
+    step_PWM(-1);
 }
 
-void step_PWM()
+void step_PWM(int dir)
 {
   if((millis()-pwm_timer)>=PWM_DELAY)
   {
-    if (pwm_value < PWM_MAX)
-    {
+    if ((dir==1) && (pwm_value < PWM_MAX))
       pwm_value += PWM_STEPSIZE;
-      analogWrite(PIN_EDF, pwm_value);
-      pwm_timer = millis();
-      fs_old = fs; // Update fs
-    }
+    else if ((dir==-1) && (pwm_value > PWM_MIN))
+      pwm_value -= PWM_STEPSIZE;
+    analogWrite(PIN_EDF, pwm_value);
+    pwm_timer = millis();
+    fs_old = fs; // Update fs
   }
 }
 
@@ -79,5 +81,7 @@ void calc_fs()
   Serial.print("   fs: ");
   Serial.print(fs);
   Serial.print("|");
-  Serial.println(fs/9.81);
+  Serial.print(fs/9.81);
+  Serial.print(" PWM: ");
+  Serial.println(pwm_value);
 }
