@@ -215,11 +215,11 @@ void Read_AHRS()
     Read_Accel();     // Read I2C accelerometer
 
     if (counter > 5)  // Read compass data at 10Hz... (5 loop runs)
-      {
-      counter=0;
-      Read_Compass();    // Read I2C magnetometer
-      Compass_Heading(); // Calculate magnetic heading
-      }
+    {
+    counter=0;
+    Read_Compass();    // Read I2C magnetometer
+    Compass_Heading(); // Calculate magnetic heading
+    }
 
     // Calculations...
     Matrix_update();
