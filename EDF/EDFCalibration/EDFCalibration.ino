@@ -16,8 +16,7 @@
 
 // Variables
 int pwm_value = PWM_MIN;
-String cmd = "";
-char c;
+int cmd, man_value;
 long pwm_timer = 0; // pwm_timer for PWM stepping
 
 void setup()
@@ -36,19 +35,29 @@ void setup()
 
 void loop() //Main Loop
 {
-    while(Serial.available()) // Read cmd
-      c = Serial.read();
-    if (cmd == "s") // Only step pwm if last cmd is 's'
-      step_PWM();
+  if (Serial.available()>0) // Read cmd
+  {
+    cmd = getSerial();
+    if (cmd == 's')
+    {
+      man_value = getSerial();
+      while (pwm_value < man_value)
+        step_PWM(1);
+      while (pwm_value > man_value)
+        step_PWM(-1);
+    }
+  }
+  if (cmd == 'r') // Only step pwm if last cmd is 's'
+    step_PWM(1);
 }
 
-void step_PWM()
+void step_PWM(int dir)
 {
   if((millis()-pwm_timer)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
   {
     digitalWrite(PIN_LED, HIGH);
 
-    pwm_value += PWM_STEPSIZE;
+    pwm_value += dir*PWM_STEPSIZE;
     analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis(); // Update timer
 
@@ -56,4 +65,19 @@ void step_PWM()
     Serial.println(pwm_value);
     digitalWrite(PIN_LED, LOW);
   }
+}
+
+int getSerial()
+{
+  int serialData = 0;
+  int aChar = 0;
+  while (aChar != '/')
+  {
+    aChar = Serial.read();
+    if (aChar >= '0' && aChar <= '9')
+      serialData = serialData * 10 + aChar - '0';
+    else if (aChar >= 'a' && aChar <= 'z')
+      serialData = aChar;
+  }
+  return serialData;
 }
