@@ -46,7 +46,7 @@
 #define driveMotor3_2 31
 #define driveMotor4_1 36
 #define driveMotor4_2 37
-#define edfMotor 38
+#define PIN_EDF 3 // Digital PWM pin for EDF.
 
 // Assigned FSR input pins
 #define inputFSR1 12
@@ -73,6 +73,12 @@
 // Define power of motors
 #define power 255
 
+// EDF Control
+#define PWM_MIN 191
+// #define PWM_MAX 220
+#define PWM_DELAY 500 // .5s
+#define PWM_STEPSIZE 1
+
 // Define turn duration (used only before integration with encoders/IMU)
 //#define turnDuration 2000
 int turnDuration = 2000;
@@ -82,12 +88,19 @@ int fsrVal[4];
 int IMU[3];
 int fsrAvg, nextDir, edfMotorInput;
 unsigned long beforeTime, afterTime;
+int cmd;
 
 int irVal = 0;
 float irDist = 0;
 boolean turning = false;
 boolean leftTurnNext = false; 
-  
+
+// EDF Variables
+int pwm_value = PWM_MIN;
+int man_value;
+long pwm_timer = 0; // pwm_timer for PWM stepping
+
+
 void setup()
 {
   // Brushed DC Drivetrain motors
@@ -101,19 +114,17 @@ void setup()
   pinMode(driveMotor4_2, OUTPUT);
       
   // Brushless DC EDF Motor Callibration
-  pinMode(edfMotor, OUTPUT);
+  pinMode(PIN_EDF, OUTPUT);
   Serial.println("** Beginning EDF Motor Calibration **"); 
-  delay(200);
   
   // Initialize EDF Motor
-  analogWrite(edfMotor,0);
+  analogWrite(PIN_EDF, 0);
   Serial.println("Initialized EDF Motor to Zero..."); 
-  delay(500);
+  delay(PWM_DELAY);
 
   // Engage EDF Motor
-  analogWrite(edfMotor,191);
+  analogWrite(PIN_EDF, PWM_MIN);
   Serial.println("Engaging..."); 
-  delay(4000);
   Serial.println("** EDF Motor Calibration done **");
       
   // Assign Sensor pins to Arduino
@@ -148,31 +159,53 @@ void loop()
   readFSR();
   
   // Based on FSR/IMU readings, call EDF control code to modify EDF's input
-  edfControl();
-  analogWrite(edfMotor, edfMotorInput);
+  // edfControl();
+  // analogWrite(edfMotor, edfMotorInput);
   
   // read IR sensor readings and call pathfinding algorithm
   readIR();
   pathfind();
 
-  // TO DO: ramp EDF input to max suction force while turning (ramp slowly?)
-  switch (nextDir)
+  // Read serial command to turn
+  if (Serial.available()>0) // Read cmd
   {
-    case 1: // next direction == forward
-      drive(0);
-      break;
-    case 2: // next direction == left
-      edfMotorInput = 255;
+    cmd = getSerial();
+    if (cmd == 'a') // counter clockwise
       turn(-90);
-      break;
-    case 3: // next direction == right
-      edfMotorInput = 255;
+    else if (cmd == 'd') // clockwise
       turn(90);
-      break;
-    case 4:  // next direction == reverse/backward
+    else if (cmd == 'w') // forward
+      drive(0);
+    else if (cmd == 's') // backwards
       drive(1);
-      break;
+    else if (cmd == 'p') // Stepping to a certain value
+    {
+      man_value = getSerial();
+      while (pwm_value < man_value)
+        step_PWM(1);
+      while (pwm_value > man_value)
+        step_PWM(-1);
+    }
   }
+
+  // TO DO: ramp EDF input to max suction force while turning (ramp slowly?)
+  // switch (nextDir)
+  // {
+  //   case 1: // next direction == forward
+  //     drive(0);
+  //     break;
+  //   case 2: // next direction == left
+  //     edfMotorInput = 255;
+  //     turn(-90);
+  //     break;
+  //   case 3: // next direction == right
+  //     edfMotorInput = 255;
+  //     turn(90);
+  //     break;
+  //   case 4:  // next direction == reverse/backward
+  //     drive(1);
+  //     break;
+  // }
 }
   
 /******************************************************************************
@@ -358,6 +391,36 @@ void drive(int dir)
     analogWrite(driveMotor4_2, power);     
   }
 }
+
+int getSerial()
+{
+  int serialData = 0;
+  int aChar = 0;
+  while (aChar != '/')
+  {
+    aChar = Serial.read();
+    if (aChar >= '0' && aChar <= '9')
+      serialData = serialData * 10 + aChar - '0';
+    else if (aChar >= 'a' && aChar <= 'z')
+      serialData = aChar;
+  }
+  return serialData;
+}
+
+
+void step_PWM(int dir)
+{
+  if((millis()-pwm_timer)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
+  {
+    pwm_value += dir*PWM_STEPSIZE;
+    analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
+    pwm_timer = millis(); // Update timer
+
+    Serial.print("PWM_Value: ");
+    Serial.println(pwm_value);
+  }
+}
+
 
 /******************************************************************************
  *** End of code **************************************************************
