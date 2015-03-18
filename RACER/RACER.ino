@@ -62,7 +62,6 @@
 
 // Assigned input pins for IR sensor and IMU
 #define inputIR 0
-#define inputIMU 21
 
 // Define number of readings sensors take in
 #define loopCount 12
@@ -76,12 +75,14 @@
 // EDF Control
 #define PWM_MIN 191
 // #define PWM_MAX 220
-#define PWM_DELAY 500 // .5s
+#define PWM_DELAY 100 // .5s
 #define PWM_STEPSIZE 1
 
 // Define turn duration (used only before integration with encoders/IMU)
 //#define turnDuration 2000
-int turnDuration = 2000;
+int turnDuration = 1650;
+int turnLeftDur = 1975; // no edf - 1400
+int turnRightDur = 1975; // no edf - 1450
 
 // Initiliaze variables
 int fsrVal[4];
@@ -103,6 +104,8 @@ long pwm_timer = 0; // pwm_timer for PWM stepping
 
 void setup()
 {
+  Serial.begin(115200);
+
   // Brushed DC Drivetrain motors
   pinMode(driveMotor1_1, OUTPUT);
   pinMode(driveMotor1_2, OUTPUT);
@@ -115,17 +118,8 @@ void setup()
       
   // Brushless DC EDF Motor Callibration
   pinMode(PIN_EDF, OUTPUT);
-  Serial.println("** Beginning EDF Motor Calibration **"); 
-  
   // Initialize EDF Motor
-  analogWrite(PIN_EDF, 0);
-  Serial.println("Initialized EDF Motor to Zero..."); 
-  delay(PWM_DELAY);
-
-  // Engage EDF Motor
-  analogWrite(PIN_EDF, PWM_MIN);
-  Serial.println("Engaging..."); 
-  Serial.println("** EDF Motor Calibration done **");
+  EDF_Init();
       
   // Assign Sensor pins to Arduino
   pinMode(inputFSR1, INPUT_PULLUP);
@@ -136,16 +130,21 @@ void setup()
   pinMode(inputENC2, INPUT_PULLUP);
   pinMode(inputENC3, INPUT_PULLUP);
   pinMode(inputENC4, INPUT_PULLUP);
-  pinMode(inputIMU, INPUT);
   pinMode(inputIR, INPUT);
   
   // Initialize IMU
-  // TO DO: Add in IMU initialization code
-  // AHRS_Init();
-  
-  Serial.begin(115200);
+  AHRS_Init();
+
+  Serial.println("Initialization Completed.");
 }
   
+void EDF_Init()
+{
+    // Initialize EDF Motor
+  analogWrite(PIN_EDF, 0);
+  delay(PWM_DELAY);
+  analogWrite(PIN_EDF, PWM_MIN);  // Engage EDF Motor
+}
 /******************************************************************************
  *** Main control loop ********************************************************
  *****************************************************************************/
@@ -154,9 +153,9 @@ void loop()
 {
   
   // Get feedback from FSR array and IMU
-  // TO DO: add in code for IMU readings
-  // TO DO: use filter on FSR/IMU feedback (optional?)
+  Read_AHRS();
   readFSR();
+  // TO DO: use filter on FSR/IMU feedback (optional?)
   
   // Based on FSR/IMU readings, call EDF control code to modify EDF's input
   // edfControl();
@@ -166,7 +165,7 @@ void loop()
   readIR();
   pathfind();
 
-  // Read serial command to turn
+  // Serial comm to control robot
   if (Serial.available()>0) // Read cmd
   {
     cmd = getSerial();
@@ -178,6 +177,8 @@ void loop()
       drive(0);
     else if (cmd == 's') // backwards
       drive(1);
+    else if (cmd == 'q') // stop motor
+      stopMotors();
     else if (cmd == 'p') // Stepping to a certain value
     {
       man_value = getSerial();
@@ -186,7 +187,12 @@ void loop()
       while (pwm_value > man_value)
         step_PWM(-1);
     }
+    else if (cmd == 'm')
+      EDF_Init();
   }
+
+  // Print IMU readings
+  // printdata();
 
   // TO DO: ramp EDF input to max suction force while turning (ramp slowly?)
   // switch (nextDir)
@@ -299,7 +305,7 @@ void turn(int turnDegree)
   
   if (turnDegree < 0)  // left turn
   {
-    while (afterTime < (beforeTime + turnDuration)) 
+    while (afterTime < (beforeTime + turnLeftDur)) 
       {
         driveMotorsLeft();
         afterTime = millis();
@@ -308,7 +314,7 @@ void turn(int turnDegree)
 
   else if (turnDegree > 0) // right turn
   {
-    while (afterTime < (beforeTime + turnDuration)) 
+    while (afterTime < (beforeTime + turnRightDur)) 
       {
         driveMotorsRight();
         afterTime = millis();
