@@ -42,11 +42,12 @@
 #define PIN_MOTOR_2_1 6
 #define PIN_MOTOR_2_2 9
 #define PIN_EDF 10  // Digital PWM pin for EDF.
-#define PIN_POT 2
 #define PIN_KILL 4
-#define PIN_IR A5
-#define PIN_JOYX A0 // joystick X axis
-#define PIN_JOYY A1 // joystick Y axis
+#define PIN_IR A1
+#define PIN_JOYX A3 // joystick X axis
+#define PIN_JOYY A4 // joystick Y axis
+#define PIN_POT A5  // Pot to control edf
+#define PIN_LED 13
 
 // EDF Control
 #define PWM_MIN 120 //133 for actual serial
@@ -88,7 +89,7 @@ boolean isKilled;
 
 void setup() {
   Serial.begin(9600);
-
+  pinMode(PIN_LED, OUTPUT);
   //for motors
   pinMode(PIN_POT, INPUT);
   pinMode(PIN_MOTOR_1_1,OUTPUT); analogWrite(PIN_MOTOR_1_1,LOW);
@@ -109,10 +110,10 @@ void setup() {
 void loop() {
   checkKill(); // Check if kill switch is hit
   // Only execute program if not killed
-  if (!isKilled)
+  if (isKilled == false)
   {
     serialControl(); // Serial control
-    if (isJoyStick)
+    if (isJoyStick == true)
       joyStickControl(); // Joystick control
     }
 }
@@ -296,10 +297,12 @@ int readAxis(int thisAxis) {
 void POT2PWM()
 {
   potValue = analogRead(PIN_POT);
+  Serial.println(potValue);
   man_value = map(potValue, 0, 1023, PWM_MIN, PWM_MAX);
-  while (pwm_value < man_value)
+  Serial.println(man_value);
+  if (pwm_value < man_value)
     step_PWM(1);
-  while (pwm_value > man_value)
+  if (pwm_value > man_value)
     step_PWM(-1);
 }
 
@@ -311,9 +314,17 @@ void POT2PWM()
 void checkKill()
 {
   if (digitalRead(PIN_KILL) == HIGH) {
+    digitalWrite(PIN_LED, LOW);
     isKilled = true;
     analogWrite(PIN_EDF, 0); // kill edf
+    pwm_value = 0; // reset pwm values
     stop(); // kill all motors
+    cmd = ' '; // stop all cmd
+  }
+  else
+  {
+    digitalWrite(PIN_LED, HIGH);
+    isKilled = false;
   }
 }
 
