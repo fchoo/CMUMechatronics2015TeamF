@@ -222,7 +222,16 @@ void serialControl()
 {
   // Serial comm to control robot
   if (Serial.available()>0) // Read cmd
+  {
     cmd = getSerial();
+    if (cmd == 'j') // Switch between joystick and serial
+    {
+      isJoyStick = !isJoyStick;
+      Serial.print("MODE: ");
+      if (isJoyStick) Serial.println("JoyStick");
+      else Serial.println("Serial");
+    }
+  }
   if (cmd == 'a') // counter clockwise
     moveLeft();
   else if (cmd == 'd') // clockwise
@@ -233,8 +242,6 @@ void serialControl()
     moveBack();
   else if (cmd == 'q') // stop motor
     stop();
-  else if (cmd == 'j') // Switch between joystick and serial
-  isJoyStick = !isJoyStick;
 }
 
 /*========================================
@@ -290,7 +297,6 @@ void POT2PWM()
 {
   potValue = analogRead(PIN_POT);
   man_value = map(potValue, 0, 1023, PWM_MIN, PWM_MAX);
-  Serial.println(man_value);
   while (pwm_value < man_value)
     step_PWM(1);
   while (pwm_value > man_value)
