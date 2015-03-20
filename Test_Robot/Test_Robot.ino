@@ -81,10 +81,32 @@ long pwm_timer = 0; // pwm_timer for PWM stepping
 int irVal = 0;
 float irDist = 0;
 
+// Encoder variables
+float targetDist = 0;
+float curDist = 0;
+float n_tick = 0;
+
 int cmd; // for Serial
 
-boolean isJoyStick;
+
+int state = 10; 
+/*
+  1 - Move forward; left U-turn next
+  2 - Left turn
+  3 - Straight ahead
+  4 - Left turn
+  5 - Move forward; right U-turn next
+  6 - Right turn
+  7 - Straight ahead
+  8 - Right turn
+  9 - Move forward; last lap
+  10 - STOP
+ */
+
+boolean isJoyStick, isPathfind;
 boolean isKilled;
+boolean irFlag = false;
+boolean encoderFlag = false;
 
 void setup() {
   Serial.begin(9600);
@@ -104,23 +126,50 @@ void setup() {
   pinMode(PIN_KILL, INPUT);
   isJoyStick = true; // default to joystick
   isKilled = false;
+  attachInterrupt(0, updateTick, RISING);
 }
 
 void loop() {
   checkKill(); // Check if kill switch is hit
+  
   // Only execute program if not killed
   if (!isKilled)
   {
     serialControl(); // Serial control
     if (isJoyStick)
       joyStickControl(); // Joystick control
-    }
+    if (isPathfind) 
+      state = 1;
+      updateFlags();
+      updateState();
+  }
 }
 
 
 /*===============================
 =            SENSORS            =
 ===============================*/
+
+void updateFlags()
+{
+  switch (state) 
+  {
+    case 1:
+    case 5: 
+            readIR();
+            if (irDist < THRESHOLD_IR) irFlag = true;
+            break();
+    case 2:
+    case 3:
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+            checkEncoder();
+            if (targetDist < curDist) encoderFlag = true;
+            break;
+  }
+}
 
 void readIR()
 /* Function takes "loopCount" number of IR sensor readings and
@@ -134,6 +183,16 @@ void readIR()
 
   irVal /= AVGFILTER_NUM;
   irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
+}
+
+void checkEncoder()
+{
+  curDist = n_tick/5000*360/360*21.5; 
+}
+
+void updateTick()
+{
+  n_tick++;
 }
 
 /*==================================
@@ -198,6 +257,57 @@ void step_PWM(int dir)
   }
 }
 
+/*=======================================*
+ *           Pathfinding                 *
+ *=======================================*/
+
+void updateState()
+{
+  switch (state)
+  {
+    case 1: // move forward, left u-turn next
+            if (irFlag) state = 2; 
+            irFlag = false;
+            targetDist = 6; n_tick = 0; // reset thresholds
+            break;
+
+    case 2: // left turn
+            if (encoderFlag) state = 3; 
+            encoderFlag = false;
+            targetDist = 10; n_tick = 0; // reset thresholds
+            break;
+    case 3: // straight
+            if (encoderFlag) state = 4; 
+            encoderFlag = false;
+            targetDist = 6; n_tick = 0; // reset thresholds
+            break;
+    case 4: // left turn
+            if (encoderFlag) state = 5;
+            encoderFlag = false;
+            break;
+    case 5: // move forward, right u-turn next
+            if (irFlag) state = 6;
+            irFlag = false;
+            targetDist = 6; n_tick = 0; // reset thresholds            
+            break;
+    case 6: // right turn
+            if (encoderFlag) state = 7;
+            encoderFlag = false;
+            targetDist = 10; n_tick = 0; // reset thresholds
+            break;
+    case 7: // straight
+            if (encoderFlag) state = 8;
+            encoderFlag = false;
+            targetDist = 6; n_tick = 0; // reset thresholds
+            break;
+    case 8: // right turn
+            if (encoderFlag) state = 1;
+            encoderFlag = false;
+            break;
+    case 9: break;
+    case 10: break;
+  }
+}
 
 /*======================================
 =            Serial Control            =
@@ -231,6 +341,11 @@ void serialControl()
       if (isJoyStick) Serial.println("JoyStick");
       else Serial.println("Serial");
     }
+    if (cmd == 'z') // Activate pathfinding
+    {
+      isPathfind = !isPathFind;
+      Serial.println("Mode: Pathfinding Algo");
+    }
   }
   if (cmd == 'a') // counter clockwise
     moveLeft();
@@ -250,10 +365,10 @@ void serialControl()
 
 void joyStickControl()
 {
-  // // read and scale the two axes:
+  // read and scale the two axes:
   int xReading = readAxis(PIN_JOYX);
   int yReading = readAxis(PIN_JOYY);
-  //For RIGHT Joystick control
+  // For RIGHT Joystick control
   if(yReading>4)
     moveLeft();
   else if(yReading<-4)
@@ -270,10 +385,9 @@ void joyStickControl()
 }
 
 /*
-  reads an axis (0 or 1 for x or y) and scales the
- analog input range to a range from 0 to <range>
+  Reads an axis (0 or 1 for x or y) and scales the
+  analog input range to a range from 0 to <range>
  */
-
 int readAxis(int thisAxis) {
   // read the analog input:
   int reading = analogRead(thisAxis);
