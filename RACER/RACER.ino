@@ -10,7 +10,7 @@
  *
  * LAST REVISION: 03/11/2015
  *
- * This is the overall code used for the final design of RACER. It takes in 
+ * This is the overall code used for the final design of RACER. It takes in
  * sensor readings from the inertial measurement unit (IMU), force-senstiive
  * resistor (FSR), infrared (IR) sensor, and uses these readings to navigate
  * the RACER robot around the window to clean it.
@@ -22,7 +22,7 @@
 #include <Servo.h>
 #include <math.h>
 
-/* 
+/*
   Assigned motor numbers for RACER
               0
 
@@ -94,7 +94,7 @@ int cmd;
 int irVal = 0;
 float irDist = 0;
 boolean turning = false;
-boolean leftTurnNext = false; 
+boolean leftTurnNext = false;
 
 // EDF Variables
 int pwm_value = PWM_MIN;
@@ -115,12 +115,12 @@ void setup()
   pinMode(driveMotor3_2, OUTPUT);
   pinMode(driveMotor4_1, OUTPUT);
   pinMode(driveMotor4_2, OUTPUT);
-      
+
   // Brushless DC EDF Motor Callibration
   pinMode(PIN_EDF, OUTPUT);
   // Initialize EDF Motor
   EDF_Init();
-      
+
   // Assign Sensor pins to Arduino
   pinMode(inputFSR1, INPUT_PULLUP);
   pinMode(inputFSR2, INPUT_PULLUP);
@@ -131,13 +131,13 @@ void setup()
   pinMode(inputENC3, INPUT_PULLUP);
   pinMode(inputENC4, INPUT_PULLUP);
   pinMode(inputIR, INPUT);
-  
+
   // Initialize IMU
-  AHRS_Init();
+//  AHRS_Init();
 
   Serial.println("Initialization Completed.");
 }
-  
+
 void EDF_Init()
 {
     // Initialize EDF Motor
@@ -149,18 +149,18 @@ void EDF_Init()
  *** Main control loop ********************************************************
  *****************************************************************************/
 
-void loop() 
+void loop()
 {
-  
+
   // Get feedback from FSR array and IMU
-  Read_AHRS();
+//  Read_AHRS();
   readFSR();
   // TO DO: use filter on FSR/IMU feedback (optional?)
-  
+
   // Based on FSR/IMU readings, call EDF control code to modify EDF's input
   // edfControl();
   // analogWrite(edfMotor, edfMotorInput);
-  
+
   // read IR sensor readings and call pathfinding algorithm
   readIR();
   pathfind();
@@ -179,7 +179,7 @@ void loop()
       drive(1);
     else if (cmd == 'q') // stop motor
       stopMotors();
-    else if (cmd == 'p') // Stepping to a certain value
+    else if (cmd == 'p') // Stepping PWM to a certain value
     {
       man_value = getSerial();
       while (pwm_value < man_value)
@@ -187,7 +187,7 @@ void loop()
       while (pwm_value > man_value)
         step_PWM(-1);
     }
-    else if (cmd == 'm')
+    else if (cmd == 'm') // Initialize EDF motor
       EDF_Init();
   }
 
@@ -213,13 +213,13 @@ void loop()
   //     break;
   // }
 }
-  
+
 /******************************************************************************
  *** Helper functions *********************************************************
  *****************************************************************************/
 
-void readFSR() 
-/* Function takes "loopCount" number of FSR readings across the 4 FSRs and 
+void readFSR()
+/* Function takes "loopCount" number of FSR readings across the 4 FSRs and
  * stores the averaged value in int "fsrAvg"
  */
 {
@@ -228,8 +228,8 @@ void readFSR()
   fsrVal[1] = 0;
   fsrVal[2] = 0;
   fsrVal[3] = 0;
-  
-  for (int i = 0; i < loopCount; i++) 
+
+  for (int i = 0; i < loopCount; i++)
   {
     fsrVal[0] += analogRead(inputFSR1);
     fsrVal[1] += analogRead(inputFSR2);
@@ -243,8 +243,8 @@ void readFSR()
   fsrAvg = (fsrVal[0] + fsrVal[1] + fsrVal[2] + fsrVal[3]) / 4;
 }
 
-void readIR() 
-/* Function takes "loopCount" number of IR sensor readings and 
+void readIR()
+/* Function takes "loopCount" number of IR sensor readings and
  * stores the linearized value in float "irDist"
  */
 {
@@ -254,19 +254,19 @@ void readIR()
     irVal += analogRead(inputIR);
 
   irVal /= loopCount;
-  irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%      
+  irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
 }
 
 // TO DO: Add in U-Turn to code. Currently only turning when obstacle detected
-// TO DO: Change to flood-fill design to navigate around obstacles 
+// TO DO: Change to flood-fill design to navigate around obstacles
 void pathfind()
-/* Function utilizes IR sensor and detect if the robot should turn. 
+/* Function utilizes IR sensor and detect if the robot should turn.
  * Current implementation is of a lawnmower design.
  */
 {
   if (irDist < irThresh)
   {
-    if (leftTurnNext) 
+    if (leftTurnNext)
       {
         nextDir = 2; // next direction == left
         leftTurnNext = false; // next turn == right
@@ -275,13 +275,13 @@ void pathfind()
       {
         nextDir = 3; // next direction == right
         leftTurnNext = true; // next turn == left
-      } 
+      }
   }
 
-  else nextDir = 1; // next direction == straight ahead 
+  else nextDir = 1; // next direction == straight ahead
 }
 
-void edfControl() 
+void edfControl()
 /* Function stores an int value between 190 - 255 based on the FSR/IMU readings
  * in "edfMotorInput"
  */
@@ -296,16 +296,16 @@ void edfControl()
 // TO DO: integrate IMU or encoder values to stop turn. Currently using time.
 void turn(int turnDegree)
 /* Function takes in a number ranging from -179 to 180. This number represents
- * the amount RACER is supposed to turn (in degrees). 
+ * the amount RACER is supposed to turn (in degrees).
  */
 {
   beforeTime = millis(); // turning start time
   afterTime = 0;
   turning = true; // RACER is now turning
-  
+
   if (turnDegree < 0)  // left turn
   {
-    while (afterTime < (beforeTime + turnLeftDur)) 
+    while (afterTime < (beforeTime + turnLeftDur))
       {
         driveMotorsLeft();
         afterTime = millis();
@@ -314,14 +314,14 @@ void turn(int turnDegree)
 
   else if (turnDegree > 0) // right turn
   {
-    while (afterTime < (beforeTime + turnRightDur)) 
+    while (afterTime < (beforeTime + turnRightDur))
       {
         driveMotorsRight();
         afterTime = millis();
-      }  
+      }
   }
 
-  else 
+  else
   // SHOULD NEVER REACH HERE
   {
     while (true) {}
@@ -331,7 +331,7 @@ void turn(int turnDegree)
   turning = false; // RACER has finished turning
 }
 
-void stopMotors() 
+void stopMotors()
 {
   analogWrite(driveMotor1_1, LOW);
   analogWrite(driveMotor1_2, LOW);
@@ -340,7 +340,7 @@ void stopMotors()
   analogWrite(driveMotor3_1, LOW);
   analogWrite(driveMotor3_2, LOW);
   analogWrite(driveMotor4_1, LOW);
-  analogWrite(driveMotor4_2, LOW); 
+  analogWrite(driveMotor4_2, LOW);
 }
 
 void driveMotorsLeft()
@@ -353,8 +353,8 @@ void driveMotorsLeft()
   analogWrite(driveMotor3_1, LOW);
   analogWrite(driveMotor3_2, 200);
   analogWrite(driveMotor4_1, LOW);
-  analogWrite(driveMotor4_2, 250); 
-} 
+  analogWrite(driveMotor4_2, 250);
+}
 
 void driveMotorsRight()
 // Function writes values to the drive motors to turn right
@@ -366,9 +366,9 @@ void driveMotorsRight()
   analogWrite(driveMotor3_1, 255);
   analogWrite(driveMotor3_2, LOW);
   analogWrite(driveMotor4_1, 200);
-  analogWrite(driveMotor4_2, LOW); 
-} 
-  
+  analogWrite(driveMotor4_2, LOW);
+}
+
 void drive(int dir)
 /* Function takes in a number (0 or 1) to determine if RACER drives forward
  * or backwards.
@@ -383,7 +383,7 @@ void drive(int dir)
     analogWrite(driveMotor3_1, LOW);
     analogWrite(driveMotor3_2, power);
     analogWrite(driveMotor4_1, power);
-    analogWrite(driveMotor4_2, LOW);     
+    analogWrite(driveMotor4_2, LOW);
   }
   else if (dir == 1) // power all drive motors equally to drive backward
   {
@@ -394,7 +394,7 @@ void drive(int dir)
     analogWrite(driveMotor3_1, power);
     analogWrite(driveMotor3_2, LOW);
     analogWrite(driveMotor4_1, LOW);
-    analogWrite(driveMotor4_2, power);     
+    analogWrite(driveMotor4_2, power);
   }
 }
 
