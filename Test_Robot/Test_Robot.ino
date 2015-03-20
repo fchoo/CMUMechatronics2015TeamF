@@ -18,8 +18,6 @@
  *****************************************************************************/
 
 // Libraries used for RACER
-#include <Stepper.h>
-#include <Servo.h>
 #include <math.h>
 
 /*
@@ -46,7 +44,7 @@
 #define PIN_EDF 10  // Digital PWM pin for EDF.
 #define PIN_POT 2
 #define PIN_KILL 4
-// #define PIN_IR
+#define PIN_IR A5
 #define PIN_JOYX A0 // joystick X axis
 #define PIN_JOYY A1 // joystick Y axis
 
@@ -55,6 +53,12 @@
 #define PWM_MAX 240
 #define PWM_DELAY 50 // .05s
 #define PWM_STEPSIZE 1
+
+// Define number of readings sensors take in
+#define AVGFILTER_NUM 12
+
+// Define IR sensor distance threshold (in cm) before turning
+#define THRESHOLD_IR 15
 
 // Motor
 #define MOTOR_TORQ 200
@@ -72,6 +76,10 @@ int center = joy_range/2;         // resting position value
 int pwm_value = PWM_MIN;
 int man_value;
 long pwm_timer = 0; // pwm_timer for PWM stepping
+
+// IR variables
+int irVal = 0;
+float irDist = 0;
 
 int cmd; // for Serial
 
@@ -119,13 +127,13 @@ void readIR()
  * stores the linearized value in float "irDist"
  */
 {
-  // irVal = 0;
+  irVal = 0;
 
-  // for (int i = 0; i < loopCount; i++)
-  //   irVal += analogRead(inputIR);
+  for (int i = 0; i < AVGFILTER_NUM; i++)
+    irVal += analogRead(PIN_IR);
 
-  // irVal /= loopCount;
-  // irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
+  irVal /= AVGFILTER_NUM;
+  irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
 }
 
 /*==================================
