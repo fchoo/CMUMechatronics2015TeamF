@@ -18,7 +18,7 @@
 // EDF Control
 #define PWM_MIN 191
 #define PWM_MAX 220
-#define PWM_DELAY 200 // 20ms
+#define PWM_DELAY 200 // 200ms
 #define PWM_STEPSIZE 1
 // Pin Definition
 #define PIN_LED 13
@@ -58,13 +58,13 @@ void loop() //Main Loop
 
 void step_PWM(int dir)
 {
-  if((millis()-pwm_timer)>=PWM_DELAY)
+  if((millis()-pwm_timer)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
   {
-    if ((dir==1) && (pwm_value < PWM_MAX))
+    if ((dir==1) && (pwm_value < PWM_MAX)) // Increment, limited to max
       pwm_value += PWM_STEPSIZE;
-    else if ((dir==-1) && (pwm_value > PWM_MIN))
+    else if ((dir==-1) && (pwm_value > PWM_MIN)) // Decrement, limited to min
       pwm_value -= PWM_STEPSIZE;
-    analogWrite(PIN_EDF, pwm_value);
+    analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis();
     fs_old = fs; // Update fs
   }
