@@ -39,6 +39,7 @@ float irDist = 0;
 float targetDist = 0;
 float curDist = 0;
 float n_tick = 0;
+long leftWheelTicks, rightWheelTicks;
 
 // Variables for Motors
 int torq_straight_1 = TORQ_DEFAULT;
@@ -56,7 +57,8 @@ boolean isJoyStick;
 boolean isKilled;
 boolean isPathfind;
 
-void setup() {
+void setup() 
+{
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_POT, INPUT);
@@ -76,15 +78,24 @@ void setup() {
   // Interrupts initialization
   irFlag = false;
   encoderFlag = false;
-  attachInterrupt(0, updateTick, RISING);
+  attachInterrupt(0, updateRightTick, RISING);
+  attachInterrupt(1, updateLeftTick, RISING);
   state = LEFTU_NEXT;
 
   Serial.println("[INFO] Initialization Done.");
 }
 
-void loop() {
+void loop() 
+{
   checkKill(); // Check if kill switch is hit
-  if (isKilled) return; // do nothing once killed
+  if (isKilled) 
+  {
+    Serial.println("KILLED");
+    return; // do nothing once killed
+  }
+  
+  // Feedback controls for motor speed
+  motorFeedback();
 
   // Read Sensors
   read_IMU();
@@ -123,14 +134,29 @@ void checkEncoder()
   curDist = n_tick/5000*360/360*21.5;
 }
 
-void updateTick()
+void updateRightTick()
 {
   n_tick++;
+  rightWheelTicks++;
+}
+
+void updateLeftTick()
+{
+  leftWheelTicks++;
 }
 
 /*==================================
 =            Locomotion            =
 ==================================*/
+
+void motorFeedback()
+{
+  if ((state == LEFTU_NEXT) || (state == RIGHTU_NEXT))
+  {
+    torq_straight_1 = torq_straight_1;
+    torq_straight_2 = torq_straight_2;
+  }
+}
 
 void motor_init()
 {
@@ -149,6 +175,7 @@ void moveLeft()
   analogWrite(6,TORQ_TURN);
   analogWrite(9,0);
 }
+
 void moveRight()
 {
   if (DEBUG) Serial.println("[INFO] Moving right.");
@@ -157,6 +184,7 @@ void moveRight()
   analogWrite(6,0);
   analogWrite(9,TORQ_TURN);
 }
+
 void moveForward()
 {
   if (DEBUG) Serial.println("[INFO] Moving forward.");
@@ -165,6 +193,7 @@ void moveForward()
   analogWrite(6,torq_straight_2);
   analogWrite(9,0);
 }
+
 void moveBack()
 {
   if (DEBUG) Serial.println("[INFO] Moving back.");
@@ -173,6 +202,7 @@ void moveBack()
   analogWrite(6,0);
   analogWrite(9,torq_straight_2);
 }
+
 void stop()
 {
   if (DEBUG) Serial.println("[INFO] Stopping.");
@@ -208,6 +238,7 @@ void step_PWM(int dir)
 /*=======================================*
  *           Pathfinding                 *
  *=======================================*/
+ 
 void updateFlags()
 {
   // Serial.print("[INFO] State: ");
