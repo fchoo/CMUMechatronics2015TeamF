@@ -3,13 +3,37 @@
 =            Locomotion            =
 ==================================*/
 
+/**
+ * Use encoders to coordinate the motors. This will attempt to straighten
+ * the movement of the robot.
+ */
 void motorFeedback()
 {
+  // only in straight path states
   if ((state == LEFTU_NEXT) || (state == RIGHTU_NEXT))
   {
-    torq_straight_1 = torq_straight_1;
-    torq_straight_2 = torq_straight_2;
+    // right wheel spinning more than left wheel
+    if (rightWheelTicks > leftWheelTicks)
+    {
+      changeTorq(&torq_straight_1, 1);
+      changeTorq(&torq_straight_2, -1);
+    }
+    // left wheel spinning more than right wheel
+    else if (rightWheelTicks < leftWheelTicks)
+    {
+      changeTorq(&torq_straight_1, -1);
+      changeTorq(&torq_straight_2, 1);
+    }
   }
+}
+
+/**
+ * Change PWM within the boundaries of 0-254
+ */
+void changeTorq(int *torque, int dir)
+{
+  if (dir<0 && (*torque)>0) (*torque)--;
+  if (dir>0 && (*torque)<254) (*torque)++;
 }
 
 void motor_init()

@@ -22,6 +22,10 @@ void checkEncoder()
   curDist = n_tick/5000*360/360*21.5;
 }
 
+/**
+ * ISR routines for encoders
+ */
+
 void updateRightTick()
 {
   n_tick++;
