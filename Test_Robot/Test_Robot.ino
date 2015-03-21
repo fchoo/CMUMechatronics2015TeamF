@@ -8,7 +8,7 @@
  *          - KALOUCHE, SIMON
  *          - TAN, NICHOLAS
  *
- * LAST REVISION: 03/11/2015
+ * LAST REVISION: 03/20/2015
  *
  * This is the overall code used for the final design of RACER. It takes in
  * sensor readings from the inertial measurement unit (IMU), force-senstiive
@@ -19,59 +19,12 @@
 
 // Libraries used for RACER
 #include <math.h>
+#include <config.h>
 
-/*
-  Assigned motor numbers for RACER
-              0
-
-           (front)
-              |
-              |
-  -90  1 |---------| 2  90
-              |
-              |
-            (back)
-
-             180
-*/
-
-// Assigned pin numbers
-// For Motors
-#define PIN_MOTOR_1_1 3
-#define PIN_MOTOR_1_2 5
-#define PIN_MOTOR_2_1 6
-#define PIN_MOTOR_2_2 9
-#define PIN_EDF 10  // Digital PWM pin for EDF.
-#define PIN_KILL 4
-#define PIN_IR A1
-#define PIN_JOYX A3 // joystick X axis
-#define PIN_JOYY A4 // joystick Y axis
-#define PIN_POT A5  // Pot to control edf
-#define PIN_LED 13
-
-// EDF Control
-#define PWM_MIN 120 //133 for actual serial
-#define PWM_MAX 240
-#define PWM_DELAY 50 // .05s
-#define PWM_STEPSIZE 1
-
-// Define number of readings sensors take in
-#define AVGFILTER_NUM 12
-
-// Define IR sensor distance threshold (in cm) before turning
-#define THRESHOLD_IR 15
-
-// Motor
-#define MOTOR_TORQ 200
+#define DEBUG false
 
 // Variables for joysticks
 int potValue;                 // to control EDF
-
-// Parameters for joysticks
-int joy_range = 12;               // output range of X or Y movement
-int responseDelay = 5;        // response delay of the mouse, in ms
-int threshold = joy_range/4;      // resting threshold
-int center = joy_range/2;         // resting position value
 
 // Variables for EDF
 int pwm_value = PWM_MIN;
@@ -87,27 +40,33 @@ float targetDist = 0;
 float curDist = 0;
 float n_tick = 0;
 
-int cmd; // for Serial
+// Variables for Motors
+int torq_straight_1 = TORQ_DEFAULT;
+int torq_straight_2 = TORQ_DEFAULT;
 
+// Serial
+int cmd;
 
-int state = 10; 
-/*
-  1 - Move forward; left U-turn next
-  2 - Left turn
-  3 - Straight ahead
-  4 - Left turn
-  5 - Move forward; right U-turn next
-  6 - Right turn
-  7 - Straight ahead
-  8 - Right turn
-  9 - Move forward; last lap
-  10 - STOP
+// FSM
+int state;
+
+/**
+ * 1 - Move forward; left U-turn next
+ * 2 - Left turn
+ * 3 - Straight ahead
+ * 4 - Left turn
+ * 5 - Move forward; right U-turn next
+ * 6 - Right turn
+ * 7 - Straight ahead
+ * 8 - Right turn
+ * 9 - Move forward; last lap
+ * 10 - STOP
  */
 
-boolean isJoyStick, isPathfind;
+boolean isJoyStick;
 boolean isKilled;
-boolean irFlag = false;
-boolean encoderFlag = false;
+boolean isPathfind;
+boolean irFlag, encoderFlag;
 
 void setup() {
   Serial.begin(9600);
@@ -125,24 +84,33 @@ void setup() {
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
-  isJoyStick = true; // default to joystick
+  isJoyStick = false; // default to joystick
+  isPathfind = true;
   isKilled = false;
+
+  // Interrupts initialization
+  irFlag = false;
+  encoderFlag = false;
   attachInterrupt(0, updateTick, RISING);
+  state = 1;
+
+  Serial.println("[INFO] Initialization Done.");
 }
 
 void loop() {
   checkKill(); // Check if kill switch is hit
-  
+
   // Only execute program if not killed
   if (isKilled == false)
   {
     serialControl(); // Serial control
     if (isJoyStick == true)
       joyStickControl(); // Joystick control
-    if (isPathfind) 
-      state = 1;
+    if (isPathfind == true)
+    {
       updateFlags();
-      updateState();
+      pathfindingFSM();
+    }
   }
 }
 
@@ -151,27 +119,6 @@ void loop() {
 =            SENSORS            =
 ===============================*/
 
-void updateFlags()
-{
-  switch (state) 
-  {
-    case 1:
-    case 5: 
-            readIR();
-            if (irDist < THRESHOLD_IR) irFlag = true;
-            break();
-    case 2:
-    case 3:
-    case 4:
-    case 6:
-    case 7:
-    case 8:
-            checkEncoder();
-            if (targetDist < curDist) encoderFlag = true;
-            break;
-  }
-}
-
 void readIR()
 /* Function takes "loopCount" number of IR sensor readings and
  * stores the linearized value in float "irDist"
@@ -179,16 +126,16 @@ void readIR()
 {
   irVal = 0;
 
-  for (int i = 0; i < AVGFILTER_NUM; i++)
+  for (int i = 0; i < FILTER_AVG; i++)
     irVal += analogRead(PIN_IR);
 
-  irVal /= AVGFILTER_NUM;
+  irVal /= FILTER_AVG;
   irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
 }
 
 void checkEncoder()
 {
-  curDist = n_tick/5000*360/360*21.5; 
+  curDist = n_tick/5000*360/360*21.5;
 }
 
 void updateTick()
@@ -202,34 +149,39 @@ void updateTick()
 
 void moveLeft()
 {
-  analogWrite(3,MOTOR_TORQ);
+  if (DEBUG) Serial.println("[INFO] Moving left.");
+  analogWrite(3,TORQ_TURN);
   analogWrite(5,0);
-  analogWrite(6,MOTOR_TORQ);
+  analogWrite(6,TORQ_TURN);
   analogWrite(9,0);
 }
 void moveRight()
 {
+  if (DEBUG) Serial.println("[INFO] Moving right.");
   analogWrite(3,0);
-  analogWrite(5,MOTOR_TORQ);
+  analogWrite(5,TORQ_TURN);
   analogWrite(6,0);
-  analogWrite(9,MOTOR_TORQ);
+  analogWrite(9,TORQ_TURN);
 }
 void moveForward()
 {
+  if (DEBUG) Serial.println("[INFO] Moving forward.");
   analogWrite(3,0);
-  analogWrite(5,MOTOR_TORQ);
-  analogWrite(6,MOTOR_TORQ);
+  analogWrite(5,torq_straight_1);
+  analogWrite(6,torq_straight_2);
   analogWrite(9,0);
 }
 void moveBack()
 {
-  analogWrite(3,MOTOR_TORQ);
+  if (DEBUG) Serial.println("[INFO] Moving back.");
+  analogWrite(3,torq_straight_1);
   analogWrite(5,0);
   analogWrite(6,0);
-  analogWrite(9,MOTOR_TORQ);
+  analogWrite(9,torq_straight_2);
 }
 void stop()
 {
+  if (DEBUG) Serial.println("[INFO] Stopping.");
   analogWrite(3,0);
   analogWrite(5,0);
   analogWrite(6,0);
@@ -261,53 +213,120 @@ void step_PWM(int dir)
 /*=======================================*
  *           Pathfinding                 *
  *=======================================*/
+void updateFlags()
+{
+  // Serial.print("[INFO] State: ");
+  // Serial.println(state);
+  switch (state)
+  {
+    case 1:
+    case 5:
+      readIR();
+      if (irDist < THRESHOLD_IR) irFlag = true;
+      break;
+    case 2:
+    case 3:
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+      checkEncoder();
+      if (targetDist < curDist) encoderFlag = true;
+      break;
+  }
+}
 
-void updateState()
+void pathfindingFSM()
 {
   switch (state)
   {
     case 1: // move forward, left u-turn next
-            if (irFlag) state = 2; 
-            irFlag = false;
-            targetDist = 6; n_tick = 0; // reset thresholds
-            break;
-
+      moveForward();
+      if (irFlag)
+      {
+        state = 2;
+        irFlag = false;
+        setTargetDist(DIST_TURN90);
+        stop();
+      }
+      break;
     case 2: // left turn
-            if (encoderFlag) state = 3; 
-            encoderFlag = false;
-            targetDist = 10; n_tick = 0; // reset thresholds
-            break;
+      moveLeft();
+      if (encoderFlag)
+      {
+        state = 3;
+        encoderFlag = false;
+        setTargetDist(DIST_UFOR);
+        stop();
+      }
+      break;
     case 3: // straight
-            if (encoderFlag) state = 4; 
-            encoderFlag = false;
-            targetDist = 6; n_tick = 0; // reset thresholds
-            break;
+      moveForward();
+      if (encoderFlag)
+      {
+        state = 4;
+        encoderFlag = false;
+        setTargetDist(DIST_TURN90);
+        stop();
+      }
+      break;
     case 4: // left turn
-            if (encoderFlag) state = 5;
-            encoderFlag = false;
-            break;
+      moveLeft();
+      if (encoderFlag)
+      {
+        state = 5;
+        encoderFlag = false;
+        stop();
+      }
+      break;
     case 5: // move forward, right u-turn next
-            if (irFlag) state = 6;
-            irFlag = false;
-            targetDist = 6; n_tick = 0; // reset thresholds            
-            break;
+      moveForward();
+      if (irFlag)
+      {
+        state = 6;
+        irFlag = false;
+        setTargetDist(DIST_TURN90);
+        stop();
+      }
+      break;
     case 6: // right turn
-            if (encoderFlag) state = 7;
-            encoderFlag = false;
-            targetDist = 10; n_tick = 0; // reset thresholds
-            break;
+      moveRight();
+      if (encoderFlag)
+      {
+        state = 7;
+        encoderFlag = false;
+        setTargetDist(DIST_UFOR);
+        stop();
+      }
+      break;
     case 7: // straight
-            if (encoderFlag) state = 8;
-            encoderFlag = false;
-            targetDist = 6; n_tick = 0; // reset thresholds
-            break;
+      moveForward();
+      if (encoderFlag)
+      {
+        state = 8;
+        encoderFlag = false;
+        setTargetDist(DIST_TURN90);
+        stop();
+      }
+      break;
     case 8: // right turn
-            if (encoderFlag) state = 1;
-            encoderFlag = false;
-            break;
+      moveRight();
+      if (encoderFlag)
+      {
+        state = 1;
+        encoderFlag = false;
+        stop();
+      }
+      break;
     case 9: break;
     case 10: break;
   }
+}
+
+void setTargetDist(float dist)
+{
+  targetDist = dist;
+  n_tick = 0;
 }
 
 /*======================================
@@ -338,14 +357,26 @@ void serialControl()
     if (cmd == 'j') // Switch between joystick and serial
     {
       isJoyStick = !isJoyStick;
-      Serial.print("MODE: ");
+      if (isJoyStick) isPathfind = false;
+      Serial.print("[INFO] Mode: ");
       if (isJoyStick) Serial.println("JoyStick");
       else Serial.println("Serial");
     }
-    if (cmd == 'z') // Activate pathfinding
+    else if (cmd == 'z') // Activate pathfinding
     {
-      isPathfind = !isPathFind;
-      Serial.println("Mode: Pathfinding Algo");
+      isPathfind = !isPathfind;
+      if (isPathfind) isJoyStick = false;
+      Serial.print("[INFO] Mode: ");
+      if (isPathfind) Serial.println("Pathfinding");
+      else Serial.println("Serial");
+    }
+    else if (cmd == 'r')
+    {
+      state = 1;
+      encoderFlag = false;
+      irFlag = false;
+      targetDist = 0;
+      n_tick = 0;
     }
   }
   if (cmd == 'a') // counter clockwise
@@ -381,26 +412,27 @@ void joyStickControl()
   else
     stop();
 
-  delay(responseDelay);
+  delay(JOY_DELAY);
   POT2PWM();
 }
 
-/*
-  Reads an axis (0 or 1 for x or y) and scales the
-  analog input range to a range from 0 to <range>
+/**
+ * Reads an axis (0 or 1 for x or y) and scales the
+ * analog input range to a range from 0 to <range>
  */
 int readAxis(int thisAxis) {
   // read the analog input:
   int reading = analogRead(thisAxis);
 
-  // map the reading from the analog input range to the output range:
-  reading = map(reading, 0, 1023, 0, joy_range);
+  // map the reading from the analog input range to
+  // the output range
+  reading = map(reading, 0, 1023, 0, JOY_RANGE);
 
   // if the output reading is outside from the
   // rest position threshold,  use it:
-  int distance = reading - center;
+  int distance = reading - JOY_CENTER;
 
-  if (abs(distance) < threshold) {
+  if (abs(distance) < JOY_THRESHOLD) {
     distance = 0;
   }
 
@@ -408,12 +440,13 @@ int readAxis(int thisAxis) {
   return distance;
 }
 
+/**
+ * Use POT values to control EDF speed
+ */
 void POT2PWM()
 {
   potValue = analogRead(PIN_POT);
-  Serial.println(potValue);
   man_value = map(potValue, 0, 1023, PWM_MIN, PWM_MAX);
-  Serial.println(man_value);
   if (pwm_value < man_value)
     step_PWM(1);
   if (pwm_value > man_value)
@@ -424,7 +457,9 @@ void POT2PWM()
 =            Misc            =
 ============================*/
 
-
+/**
+ * Once kill switch is hit, switch off all motors and EDF.
+ */
 void checkKill()
 {
   if (digitalRead(PIN_KILL) == HIGH) {
