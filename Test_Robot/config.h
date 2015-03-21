@@ -66,3 +66,28 @@
 #define JOY_DELAY 5 // response delay of the mouse, in ms
 #define JOY_THRESHOLD JOY_RANGE/4      // resting threshold
 #define JOY_CENTER JOY_RANGE/2         // resting position value
+
+// FSM
+typedef enum State {
+    LEFTU_NEXT,
+    LEFTU_1,
+    LEFTU_2,
+    LEFTU_3,
+    RIGHTU_NEXT,
+    RIGHTU_1,
+    RIGHTU_2,
+    RIGHTU_3
+};
+
+/**
+ * 1 - Move forward; left U-turn next
+ * 2 - Left turn
+ * 3 - Straight ahead
+ * 4 - Left turn
+ * 5 - Move forward; right U-turn next
+ * 6 - Right turn
+ * 7 - Straight ahead
+ * 8 - Right turn
+ * 9 - Move forward; last lap
+ * 10 - STOP
+ */

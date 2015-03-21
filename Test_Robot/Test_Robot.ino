@@ -19,7 +19,7 @@
 
 // Libraries used for RACER
 #include <math.h>
-#include <config.h>
+#include "config.h"
 
 #define DEBUG false
 
@@ -48,69 +48,54 @@ int torq_straight_2 = TORQ_DEFAULT;
 int cmd;
 
 // FSM
-int state;
+State state;
+boolean irFlag, encoderFlag;
 
-/**
- * 1 - Move forward; left U-turn next
- * 2 - Left turn
- * 3 - Straight ahead
- * 4 - Left turn
- * 5 - Move forward; right U-turn next
- * 6 - Right turn
- * 7 - Straight ahead
- * 8 - Right turn
- * 9 - Move forward; last lap
- * 10 - STOP
- */
-
+// Mode
 boolean isJoyStick;
 boolean isKilled;
 boolean isPathfind;
-boolean irFlag, encoderFlag;
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
-  //for motors
   pinMode(PIN_POT, INPUT);
-  pinMode(PIN_MOTOR_1_1,OUTPUT); analogWrite(PIN_MOTOR_1_1,LOW);
-  pinMode(PIN_MOTOR_1_2,OUTPUT); analogWrite(PIN_MOTOR_1_2,LOW);
-  pinMode(PIN_MOTOR_2_1,OUTPUT); analogWrite(PIN_MOTOR_2_1,LOW);
-  pinMode(PIN_MOTOR_2_2,OUTPUT); analogWrite(PIN_MOTOR_2_2,LOW);
 
-  //for EDF
-  pinMode(PIN_EDF,OUTPUT);
-  EDF_Init();
+  motor_init();
+  EDF_init();
+  IMU_init();
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
-  isJoyStick = false; // default to joystick
-  isPathfind = true;
   isKilled = false;
+
+  // Default mode
+  isPathfind = true;
+  isJoyStick = false;
 
   // Interrupts initialization
   irFlag = false;
   encoderFlag = false;
   attachInterrupt(0, updateTick, RISING);
-  state = 1;
+  state = LEFTU_NEXT;
 
   Serial.println("[INFO] Initialization Done.");
 }
 
 void loop() {
   checkKill(); // Check if kill switch is hit
+  if (isKilled) return; // do nothing once killed
 
-  // Only execute program if not killed
-  if (isKilled == false)
+  // Read Sensors
+  read_IMU();
+
+  serialControl(); // Serial control
+  if (isJoyStick == true)  // Joystick control
+    joyStickControl();
+  if (isPathfind == true) // Pathfinding control
   {
-    serialControl(); // Serial control
-    if (isJoyStick == true)
-      joyStickControl(); // Joystick control
-    if (isPathfind == true)
-    {
-      updateFlags();
-      pathfindingFSM();
-    }
+    updateFlags();
+    pathfindingFSM();
   }
 }
 
@@ -146,6 +131,15 @@ void updateTick()
 /*==================================
 =            Locomotion            =
 ==================================*/
+
+void motor_init()
+{
+  //for motors
+  pinMode(PIN_MOTOR_1_1,OUTPUT); analogWrite(PIN_MOTOR_1_1,LOW);
+  pinMode(PIN_MOTOR_1_2,OUTPUT); analogWrite(PIN_MOTOR_1_2,LOW);
+  pinMode(PIN_MOTOR_2_1,OUTPUT); analogWrite(PIN_MOTOR_2_1,LOW);
+  pinMode(PIN_MOTOR_2_2,OUTPUT); analogWrite(PIN_MOTOR_2_2,LOW);
+}
 
 void moveLeft()
 {
@@ -192,9 +186,10 @@ void stop()
 =            EDF            =
 ===========================*/
 
-void EDF_Init()
+void EDF_init()
 {
-    // Initialize EDF Motor
+  pinMode(PIN_EDF,OUTPUT);
+  // Initialize EDF Motor
   analogWrite(PIN_EDF, 0);
   delay(PWM_DELAY);
   analogWrite(PIN_EDF, PWM_MIN);  // Engage EDF Motor
@@ -219,17 +214,19 @@ void updateFlags()
   // Serial.println(state);
   switch (state)
   {
-    case 1:
-    case 5:
+    // Waiting for U-turn
+    case LEFTU_NEXT:
+    case RIGHTU_NEXT:
       readIR();
       if (irDist < THRESHOLD_IR) irFlag = true;
       break;
-    case 2:
-    case 3:
-    case 4:
-    case 6:
-    case 7:
-    case 8:
+    // In U-turn
+    case LEFTU_1:
+    case LEFTU_2:
+    case LEFTU_3:
+    case RIGHTU_1:
+    case RIGHTU_2:
+    case RIGHTU_3:
       checkEncoder();
       if (targetDist < curDist) encoderFlag = true;
       break;
@@ -240,86 +237,84 @@ void pathfindingFSM()
 {
   switch (state)
   {
-    case 1: // move forward, left u-turn next
+    case LEFTU_NEXT: // move forward, left u-turn next
       moveForward();
       if (irFlag)
       {
-        state = 2;
+        state = LEFTU_1;
         irFlag = false;
         setTargetDist(DIST_TURN90);
         stop();
       }
       break;
-    case 2: // left turn
+    case LEFTU_1: // left turn
       moveLeft();
       if (encoderFlag)
       {
-        state = 3;
+        state = LEFTU_2;
         encoderFlag = false;
         setTargetDist(DIST_UFOR);
         stop();
       }
       break;
-    case 3: // straight
+    case LEFTU_2: // straight
       moveForward();
       if (encoderFlag)
       {
-        state = 4;
+        state = LEFTU_3;
         encoderFlag = false;
         setTargetDist(DIST_TURN90);
         stop();
       }
       break;
-    case 4: // left turn
+    case LEFTU_3: // left turn
       moveLeft();
       if (encoderFlag)
       {
-        state = 5;
+        state = RIGHTU_NEXT;
         encoderFlag = false;
         stop();
       }
       break;
-    case 5: // move forward, right u-turn next
+    case RIGHTU_NEXT: // move forward, right u-turn next
       moveForward();
       if (irFlag)
       {
-        state = 6;
+        state = RIGHTU_1;
         irFlag = false;
         setTargetDist(DIST_TURN90);
         stop();
       }
       break;
-    case 6: // right turn
+    case RIGHTU_1: // right turn
       moveRight();
       if (encoderFlag)
       {
-        state = 7;
+        state = RIGHTU_2;
         encoderFlag = false;
         setTargetDist(DIST_UFOR);
         stop();
       }
       break;
-    case 7: // straight
+    case RIGHTU_2: // straight
       moveForward();
       if (encoderFlag)
       {
-        state = 8;
+        state = RIGHTU_3;
         encoderFlag = false;
         setTargetDist(DIST_TURN90);
         stop();
       }
       break;
-    case 8: // right turn
+    case RIGHTU_3: // right turn
       moveRight();
       if (encoderFlag)
       {
-        state = 1;
+        state = LEFTU_NEXT;
         encoderFlag = false;
         stop();
       }
       break;
-    case 9: break;
-    case 10: break;
   }
 }
 
@@ -372,7 +367,7 @@ void serialControl()
     }
     else if (cmd == 'r')
     {
-      state = 1;
+      state = LEFTU_NEXT;
       encoderFlag = false;
       irFlag = false;
       targetDist = 0;
