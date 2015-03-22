@@ -4,7 +4,7 @@
 ==================================*/
 
 /**
- * Use encoders to coordinate the motors. This will attempt to straighten
+ * Use encoders/IMU to coordinate the motors. This will attempt to straighten
  * the movement of the robot.
  */
 void motorFeedback()
@@ -14,12 +14,14 @@ void motorFeedback()
   {
     // right wheel spinning more than left wheel
     if (rightWheelTicks > leftWheelTicks)
+    // if ((rightWheelTicks > leftWheelTicks) || (yaw < THR_YAW_LEFT))
     {
       changeTorq(&torq_straight_1, 1);
       changeTorq(&torq_straight_2, -1);
     }
     // left wheel spinning more than right wheel
     else if (rightWheelTicks < leftWheelTicks)
+    // else if ((rightWheelTicks < leftWheelTicks) || (yaw > THR_YAW_RIGHT))
     {
       changeTorq(&torq_straight_1, -1);
       changeTorq(&torq_straight_2, 1);

@@ -122,9 +122,9 @@ float Omega_I[3]= {0,0,0};//Omega Integrator
 float Omega[3]= {0,0,0};
 
 // Euler angles
-float roll;
-float pitch;
-float yaw;
+float ang_roll;
+float ang_pitch;
+float ang_yaw;
 
 float errorRollPitch[3]= {0,0,0};
 float errorYaw[3]= {0,0,0};
@@ -197,7 +197,7 @@ void IMU_init()
   counter=0;
 }
 
-void read_IMU()
+void readIMU()
 {
   if((millis()-timer)>=20)  // Main loop runs at 50Hz
   {
@@ -230,17 +230,17 @@ void read_IMU()
   }
 }
 
-int get_roll()
+int getRoll()
 {
-  return ToDeg(roll);
+  return ToDeg(ang_roll);
 }
-int get_pitch()
+int getPitch()
 {
-  return ToDeg(pitch);
+  return ToDeg(ang_pitch);
 }
-int get_yaw()
+int getYaw()
 {
-  return ToDeg(yaw);
+  return ToDeg(ang_yaw);
 }
 
 /*===============================
@@ -256,10 +256,10 @@ void Compass_Heading()
   float cos_pitch;
   float sin_pitch;
 
-  cos_roll = cos(roll);
-  sin_roll = sin(roll);
-  cos_pitch = cos(pitch);
-  sin_pitch = sin(pitch);
+  cos_roll = cos(ang_roll);
+  sin_roll = sin(ang_roll);
+  cos_pitch = cos(ang_pitch);
+  sin_pitch = sin(ang_pitch);
 
   // adjust for LSM303 compass axis offsets/sensitivity differences by scaling to +/-0.5 range
   c_magnetom_x = (float)(magnetom_x - SENSOR_SIGN[6]*M_X_MIN) / (M_X_MAX - M_X_MIN) - SENSOR_SIGN[6]*0.5;
@@ -407,9 +407,9 @@ void Matrix_update(void)
 
 void Euler_angles(void)
 {
-  pitch = -asin(DCM_Matrix[2][0]);
-  roll = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2]);
-  yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0]);
+  ang_pitch = -asin(DCM_Matrix[2][0]);
+  ang_roll = atan2(DCM_Matrix[2][1],DCM_Matrix[2][2]);
+  ang_yaw = atan2(DCM_Matrix[1][0],DCM_Matrix[0][0]);
 }
 
 /*===========================
@@ -563,11 +563,11 @@ void printdata(void)
 
       #if PRINT_EULER == 1
       Serial.print("ANG:");
-      Serial.print(ToDeg(roll));
+      Serial.print(ToDeg(ang_roll));
       Serial.print(",");
-      Serial.print(ToDeg(pitch));
+      Serial.print(ToDeg(ang_pitch));
       Serial.print(",");
-      Serial.print(ToDeg(yaw));
+      Serial.print(ToDeg(ang_yaw));
       #endif
       #if PRINT_ANALOGS==1
       Serial.print(",AN:");

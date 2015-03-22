@@ -36,6 +36,9 @@ long pwm_timer = 0; // pwm_timer for PWM stepping
 int irVal = 0;
 float irDist = 0;
 
+// IMU variable
+float yaw;
+
 // Encoder variables
 float targetDist = 0;
 float curDist = 0;
@@ -51,12 +54,13 @@ int cmd;
 
 // FSM
 State state;
-boolean irFlag, encoderFlag;
+boolean irFlag = false;
+boolean encoderFlag = false;
 
 // Mode
-boolean isJoyStick;
-boolean isKilled;
-boolean isPathfind;
+boolean isJoyStick = false;
+boolean isKilled = false;
+boolean isPathfind = true;
 
 void setup()
 {
@@ -70,15 +74,8 @@ void setup()
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
-  isKilled = false;
-
-  // Default mode
-  isPathfind = true;
-  isJoyStick = false;
 
   // Interrupts initialization
-  irFlag = false;
-  encoderFlag = false;
   attachInterrupt(0, updateRightTick, RISING);
   attachInterrupt(1, updateLeftTick, RISING);
   state = LEFTU_NEXT;
@@ -96,7 +93,8 @@ void loop()
   }
 
   // Read Sensors
-  read_IMU();
+  readIMU();
+  yaw = getYaw();
 
   // Read controls
   serialControl(); // Serial control

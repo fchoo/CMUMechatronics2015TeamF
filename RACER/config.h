@@ -24,7 +24,13 @@
 #define FILTER_AVG 12
 
 // define IR sensor distance threshold (in cm) before turning
-#define THRESHOLD_IR 10
+#define THR_IR 10
+
+// IMU yaw threshold
+#define THR_YAW_DEFAULT 90
+#define THR_YAW 5
+#define THR_YAW_LEFT (THR_YAW_DEFAULT-THR_YAW)
+#define THR_YAW_RIGHT (THR_YAW_DEFAULT+THR_YAW)
 
 // Motor
 #define TORQ_DEFAULT 200
