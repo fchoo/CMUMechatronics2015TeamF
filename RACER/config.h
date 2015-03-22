@@ -15,10 +15,9 @@
  *****************************************************************************/
 
 // EDF Control
-#define PWM_MIN 120 //133 for actual serial
+#define PWM_MIN 125 //133 for actual serial
 #define PWM_MAX 240
 #define PWM_DELAY 50 // .05s
-#define PWM_STEPSIZE 1
 
 // define number of readings sensors take in
 #define FILTER_AVG 12
@@ -27,10 +26,13 @@
 #define THR_IR 10
 
 // IMU yaw threshold
-#define THR_YAW_DEFAULT 90
-#define THR_YAW 5
-#define THR_YAW_LEFT (THR_YAW_DEFAULT-THR_YAW)
-#define THR_YAW_RIGHT (THR_YAW_DEFAULT+THR_YAW)
+#define THR_PITCH_DEFAULT 90
+#define THR_PITCH 5
+#define THR_PITCH_LEFT (THR_PITCH_DEFAULT-THR_PITCH)
+#define THR_PITCH_RIGHT (THR_PITCH_DEFAULT+THR_PITCH)
+#define THR_ROLL_VERT 30
+#define THR_PITCH_VERT 80
+#define THR_HORZ_DUR 25
 
 // Motor
 #define TORQ_DEFAULT 200

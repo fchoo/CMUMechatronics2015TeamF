@@ -14,14 +14,14 @@ void motorFeedback()
   {
     // right wheel spinning more than left wheel
     if (rightWheelTicks > leftWheelTicks)
-    // if ((rightWheelTicks > leftWheelTicks) || (yaw < THR_YAW_LEFT))
+    // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
     {
       changeTorq(&torq_straight_1, 1);
       changeTorq(&torq_straight_2, -1);
     }
     // left wheel spinning more than right wheel
     else if (rightWheelTicks < leftWheelTicks)
-    // else if ((rightWheelTicks < leftWheelTicks) || (yaw > THR_YAW_RIGHT))
+    // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
     {
       changeTorq(&torq_straight_1, -1);
       changeTorq(&torq_straight_2, 1);

@@ -2,6 +2,39 @@
 /*===============================
 =            SENSORS            =
 ===============================*/
+void updateAngles()
+{
+  roll = getRoll();
+  pitch = getPitch();
+}
+
+boolean isVeeringLeft()
+{
+  if (isVert && pitch < THR_PITCH_LEFT)
+    return true;
+  else
+    return false;
+}
+
+boolean isVeeringRight()
+{
+  if (isVert && pitch > THR_PITCH_RIGHT)
+    return true;
+  else
+    return false;
+}
+
+void checkVertical()
+{
+  if (abs(roll)<THR_ROLL_VERT && pitch < THR_PITCH_VERT)
+    // imu is horizontal
+    horzDur++;
+  else
+    // imu is vertical
+    horzDur = 0; // reset duration
+  // Update vertical flag
+  isVert = (horzDur > THR_HORZ_DUR) ? false : true;
+}
 
 void readIR()
 /* Function takes "loopCount" number of IR sensor readings and

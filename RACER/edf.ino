@@ -16,8 +16,20 @@ void step_PWM(int dir)
 {
   if((millis()-pwm_timer)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
   {
-    pwm_value += dir*PWM_STEPSIZE;
+    if (dir>0 && pwm_value<PWM_MAX) pwm_value++;
+    if (dir<0 && pwm_value>PWM_MIN) pwm_value--;
     analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis(); // Update timer
   }
+}
+
+/**
+ * Simple feedback where edf is activated once the robot is vertical
+ */
+void edfFeedback()
+{
+  if (isVert)
+    step_PWM(1);
+  else
+    step_PWM(-1);
 }

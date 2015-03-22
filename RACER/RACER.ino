@@ -22,7 +22,7 @@
 #include "config.h"
 #include "IOpins.h"
 
-#define DEBUG true
+#define DEBUG false
 
 // Variables for joysticks
 int potValue;                 // to control EDF
@@ -37,7 +37,9 @@ int irVal = 0;
 float irDist = 0;
 
 // IMU variable
-float yaw;
+float roll, pitch;
+int horzDur = 0;
+boolean isVert = false;
 
 // Encoder variables
 float targetDist = 0;
@@ -94,7 +96,8 @@ void loop()
 
   // Read Sensors
   readIMU();
-  yaw = getYaw();
+  updateAngles();
+  checkVertical();
 
   // Read controls
   serialControl(); // Serial control
@@ -108,6 +111,7 @@ void loop()
 
   // Feedback controls for motor speed
   motorFeedback();
+  edfFeedback();
 }
 
 /*============================
