@@ -62,7 +62,7 @@ boolean encoderFlag = false;
 // Mode
 boolean isJoyStick = false;
 boolean isKilled = false;
-boolean isPathfind = true;
+boolean isPathfind = false;
 
 void setup()
 {
@@ -72,7 +72,7 @@ void setup()
 
   motor_init();
   EDF_init();
-  IMU_init();
+  // IMU_init();
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
@@ -95,11 +95,11 @@ void loop()
   }
 
   // Read Sensors
-  readIMU();
-  updateAngles();
-  checkVertical();
+  // readIMU();
+  // updateAngles();
+  // checkVertical();
 
-  // Read controls
+  // Read controlsW
   serialControl(); // Serial control
   if (isJoyStick == true)  // Joystick control
     joyStickControl();
@@ -110,8 +110,12 @@ void loop()
   }
 
   // Feedback controls for motor speed
+  Serial.print("[INFO] Left tick: ");
+  Serial.print(leftWheelTicks);
+  Serial.print(" Right tick: ");
+  Serial.println(rightWheelTicks);
   motorFeedback();
-  edfFeedback();
+  // edfFeedback();
 }
 
 /*============================

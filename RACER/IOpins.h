@@ -16,26 +16,26 @@
 
 /*
   Assigned motor numbers for RACER
-              0
+              90
 
            (front)
               |
               |
-  -90  1 |---------| 2  90
+    0  1 |---------| 2  0
               |
               |
             (back)
 
-             180
+             -90
 */
 
 // Assigned pin numbers
 // For Motors
-#define PIN_MOTOR_1_1 7
-#define PIN_MOTOR_1_2 5
-#define PIN_MOTOR_2_1 6
-#define PIN_MOTOR_2_2 9
-#define PIN_EDF 10  // Digital PWM pin for EDF.
+#define PIN_MOTOR_1_1 5
+#define PIN_MOTOR_1_2 6
+#define PIN_MOTOR_2_1 9
+#define PIN_MOTOR_2_2 10
+#define PIN_EDF 11  // Digital PWM pin for EDF.
 #define PIN_KILL 4
 #define PIN_LED 13
 #define PIN_IR A1

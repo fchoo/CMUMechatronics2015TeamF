@@ -16,7 +16,7 @@
 
 // EDF Control
 #define PWM_MIN 125 //133 for actual serial
-#define PWM_MAX 240
+#define PWM_MAX 254
 #define PWM_DELAY 50 // .05s
 
 // define number of readings sensors take in
@@ -35,6 +35,7 @@
 #define THR_HORZ_DUR 25
 
 // Motor
+#define TORQ_MIN 100
 #define TORQ_DEFAULT 200
 #define TORQ_TURN 200   // Analog value for turning torq
 #define DIST_TURN90 2.5 // Dist for encoder to check 90

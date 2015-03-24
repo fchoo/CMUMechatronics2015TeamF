@@ -16,16 +16,22 @@ void motorFeedback()
     if (rightWheelTicks > leftWheelTicks)
     // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
     {
-      changeTorq(&torq_straight_1, 1);
-      changeTorq(&torq_straight_2, -1);
+      // Serial.println("Reduce Right");
+      changeTorq(&torq_straight_1, 5);
+      changeTorq(&torq_straight_2, -5);
     }
     // left wheel spinning more than right wheel
     else if (rightWheelTicks < leftWheelTicks)
     // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
     {
-      changeTorq(&torq_straight_1, -1);
-      changeTorq(&torq_straight_2, 1);
+      // Serial.println("Reduce Left");
+      changeTorq(&torq_straight_1, -5);
+      changeTorq(&torq_straight_2, 5);
     }
+    // Serial.print("[INFO] Left wheel PWM: ");
+    // Serial.print(torq_straight_1);
+    // Serial.print("Right wheel PWM: ");
+    // Serial.println(torq_straight_2);
   }
 }
 
@@ -34,8 +40,8 @@ void motorFeedback()
  */
 void changeTorq(int *torque, int dir)
 {
-  if (dir<0 && (*torque)>0) (*torque)--;
-  if (dir>0 && (*torque)<254) (*torque)++;
+  if (dir<0 && (*torque)>TORQ_MIN) (*torque)--;
+  if (dir>0 && (*torque)<255) (*torque)++;
 }
 
 void motor_init()
