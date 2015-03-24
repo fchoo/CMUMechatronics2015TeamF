@@ -38,6 +38,8 @@ void pathfindingFSM()
       {
         state = LEFTU_1;
         irFlag = false;
+        leftWheelTicks = 0;
+        rightWheelTicks = 0;
         setTargetDist(DIST_TURN90);
         stop();
       }
@@ -78,6 +80,8 @@ void pathfindingFSM()
         state = RIGHTU_1;
         irFlag = false;
         setTargetDist(DIST_TURN90);
+        leftWheelTicks = 0;
+        rightWheelTicks = 0;
         stop();
       }
       break;

@@ -99,7 +99,7 @@ void loop()
   // updateAngles();
   // checkVertical();
 
-  // Read controlsW
+  // Read controls
   serialControl(); // Serial control
   if (isJoyStick == true)  // Joystick control
     joyStickControl();
