@@ -51,13 +51,28 @@ void serialControl()
     }
   }
   if (cmd == 'a') // counter clockwise
+  {
+    // Serial.println("[INFO] Move left");
     moveLeft();
+  }
   else if (cmd == 'd') // clockwise
+  {
+    // Serial.println("[INFO] Move right");
     moveRight();
+  }
   else if (cmd == 'w') // forward
+  {
+    // Serial.println("[INFO] Move forward");
     moveForward();
+  }
   else if (cmd == 's') // backwards
+  {
+    // Serial.println("[INFO] Move back");
     moveBack();
+  }
   else if (cmd == 'q') // stop motor
+  {
+    // Serial.println("[INFO] Stop");
     stop();
+  }
 }

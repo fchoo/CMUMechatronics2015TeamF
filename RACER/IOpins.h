@@ -31,18 +31,18 @@
 
 // Assigned pin numbers
 // For Motors
-#define PIN_MOTOR_1_1 5
-#define PIN_MOTOR_1_2 6
-#define PIN_MOTOR_2_1 9
-#define PIN_MOTOR_2_2 10
-#define PIN_EDF 11  // Digital PWM pin for EDF.
-#define PIN_KILL 4
+#define PIN_MOTOR_1_1 10
+#define PIN_MOTOR_1_2 11
+#define PIN_MOTOR_2_1 8
+#define PIN_MOTOR_2_2 9
+#define PIN_EDF 4  // Digital PWM pin for EDF.
+#define PIN_KILL 7
 #define PIN_LED 13
 #define PIN_IR A1
-#define PIN_JOYX A3 // joystick X axis
-#define PIN_JOYY A4 // joystick Y axis
-#define PIN_POT A5  // Pot to control edf
+#define PIN_JOYX A2 // joystick X axis
+#define PIN_JOYY A3 // joystick Y axis
+#define PIN_POT A4  // Pot to control edf
 
 // Assigned pin numbers for motor encoders
-// PIN 3 --> WHEEL 1
-// PIN 2 --> WHEEL 2
+// PIN 2 --> WHEEL 1
+// PIN 3 --> WHEEL 2

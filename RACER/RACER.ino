@@ -52,7 +52,7 @@ int torq_straight_1 = TORQ_DEFAULT;
 int torq_straight_2 = TORQ_DEFAULT;
 
 // Serial
-int cmd;
+int cmd = 'q';
 
 // FSM
 State state;
@@ -60,7 +60,7 @@ boolean irFlag = false;
 boolean encoderFlag = false;
 
 // Mode
-boolean isJoyStick = false;
+boolean isJoyStick = true;
 boolean isKilled = false;
 boolean isPathfind = false;
 
@@ -78,8 +78,8 @@ void setup()
   pinMode(PIN_KILL, INPUT);
 
   // Interrupts initialization
-  attachInterrupt(0, updateRightTick, RISING);
-  attachInterrupt(1, updateLeftTick, RISING);
+  attachInterrupt(0, updateLeftTick, RISING);
+  attachInterrupt(1, updateRightTick, RISING);
   state = LEFTU_NEXT;
 
   Serial.println("[INFO] Initialization Done.");
@@ -113,8 +113,12 @@ void loop()
   Serial.print("[INFO] Left tick: ");
   Serial.print(leftWheelTicks);
   Serial.print(" Right tick: ");
-  Serial.println(rightWheelTicks);
-  motorFeedback();
+  Serial.print(rightWheelTicks);
+  Serial.print(" Left wheel PWM: ");
+  Serial.print(torq_straight_1);
+  Serial.print(" Right wheel PWM: ");
+  Serial.println(torq_straight_2);
+  // motorFeedback();
   // edfFeedback();
 }
 
