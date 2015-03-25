@@ -19,10 +19,13 @@ void updateFlags()
     case LEFTU_1:
     case LEFTU_2:
     case LEFTU_3:
+      checkEncoder(1);
+      if (targetDist < curDist) encoderFlag = true;
+      break;
     case RIGHTU_1:
     case RIGHTU_2:
     case RIGHTU_3:
-      checkEncoder();
+      checkEncoder(2);
       if (targetDist < curDist) encoderFlag = true;
       break;
   }
@@ -38,8 +41,6 @@ void pathfindingFSM()
       {
         state = LEFTU_1;
         irFlag = false;
-        leftWheelTicks = 0;
-        rightWheelTicks = 0;
         setTargetDist(DIST_TURN90);
         stop();
       }
@@ -80,8 +81,6 @@ void pathfindingFSM()
         state = RIGHTU_1;
         irFlag = false;
         setTargetDist(DIST_TURN90);
-        leftWheelTicks = 0;
-        rightWheelTicks = 0;
         stop();
       }
       break;
@@ -120,5 +119,6 @@ void pathfindingFSM()
 void setTargetDist(float dist)
 {
   targetDist = dist;
-  n_tick = 0;
+  leftWheelTicks = 0;
+  rightWheelTicks = 0;
 }

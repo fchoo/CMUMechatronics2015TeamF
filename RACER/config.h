@@ -24,7 +24,7 @@
 #define FILTER_AVG 12
 
 // define IR sensor distance threshold (in cm) before turning
-#define THR_IR 10
+#define THR_IR 15
 
 // IMU yaw threshold
 #define THR_PITCH_DEFAULT 90
@@ -39,8 +39,8 @@
 #define TORQ_MIN 100
 #define TORQ_DEFAULT 200
 #define TORQ_TURN 200   // Analog value for turning torq
-#define DIST_TURN90 2.5 // Dist for encoder to check 90
-#define DIST_UFOR 10 // Dist for encoder to move forward during uturn
+#define DIST_TURN90 2.0 // Dist for encoder to check 90
+#define DIST_UFOR 2.0 // Dist for encoder to move forward during uturn
 
 // Joystick parameters
 #define JOY_RANGE 12 // output range of X or Y movement

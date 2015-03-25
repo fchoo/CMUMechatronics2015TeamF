@@ -47,7 +47,6 @@ void serialControl()
       encoderFlag = false;
       irFlag = false;
       targetDist = 0;
-      n_tick = 0;
     }
     else if (cmd == 'p') // Stepping to a certain value
     {

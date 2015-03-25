@@ -50,9 +50,13 @@ void readIR()
   irDist = 12343.85 * pow(irVal, -1.15); // Linearizing eqn, accuracy +- 5%
 }
 
-void checkEncoder()
+void checkEncoder(int wheelNum)
 {
-  curDist = n_tick/5000*360/360*21.5;
+  Serial.println("[INFO] CHECKING ENCODER");
+  if (wheelNum == 1)
+    curDist = rightWheelTicks/5000*360/360*21.5;
+  else if (wheelNum == 2)
+    curDist = leftWheelTicks/5000*360/360*21.5;
 }
 
 /**
@@ -61,7 +65,6 @@ void checkEncoder()
 
 void updateRightTick()
 {
-  n_tick++;
   rightWheelTicks++;
 }
 

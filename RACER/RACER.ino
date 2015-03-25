@@ -44,8 +44,8 @@ boolean isVert = false;
 // Encoder variables
 float targetDist = 0;
 float curDist = 0;
-float n_tick = 0;
-long leftWheelTicks, rightWheelTicks;
+float leftWheelTicks = 0;
+float rightWheelTicks = 0;
 
 // Variables for Motors
 int torq_straight_1 = TORQ_DEFAULT;
@@ -113,10 +113,16 @@ void loop()
       pathfindingFSM();
     }
   }
-  Serial.print("[INFO] State: ");
-  Serial.print(state);
-  Serial.print(" Dist: ");
-  Serial.println(irVal);
+  // Serial.print("[INFO] State: ");
+  // Serial.print(state);
+  // Serial.print(" targdist ");
+  // Serial.print(targetDist);
+  // Serial.print(" curDist: ");
+  // Serial.print(curDist);
+  // Serial.print(" left: ");
+  // Serial.print(leftWheelTicks);
+  // Serial.print(" right: ");
+  // Serial.println(rightWheelTicks);
   // Feedback controls for motor speed
   // Serial.print("[INFO] Left tick: ");
   // Serial.print(leftWheelTicks);
@@ -141,12 +147,20 @@ void loop()
 void checkKill()
 {
   if (digitalRead(PIN_KILL) == HIGH) {
+    // Program State
     digitalWrite(PIN_LED, LOW);
     isKilled = true;
+    cmd = ' '; // stop all cmd
+    // EDF
     analogWrite(PIN_EDF, 0); // kill edf
+    // Locomotion
     pwm_value = PWM_MIN; // reset pwm values
     stop(); // kill all motors
-    cmd = ' '; // stop all cmd
+    // Pathfinding variables
+    state = LEFTU_NEXT;
+    // Encoder variables
+    leftWheelTicks = 0;
+    rightWheelTicks = 0;
   }
   else
   {
