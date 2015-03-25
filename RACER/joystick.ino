@@ -56,6 +56,8 @@ void POT2PWM()
 {
   potValue = analogRead(PIN_POT);
   man_value = map(potValue, 0, 1023, PWM_MIN, PWM_MAX);
+  Serial.print("[INFO] ");
+  Serial.println(pwm_value);
   if (pwm_value < man_value)
     step_PWM(1);
   if (pwm_value > man_value)

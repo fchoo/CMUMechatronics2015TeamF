@@ -15,8 +15,9 @@
  *****************************************************************************/
 
 // EDF Control
-#define PWM_MIN 125 //133 for actual serial
+#define PWM_MIN 132 //133 for actual serial
 #define PWM_MAX 254
+#define PWM_DEFAULT 220
 #define PWM_DELAY 50 // .05s
 
 // define number of readings sensors take in

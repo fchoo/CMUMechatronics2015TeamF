@@ -49,6 +49,20 @@ void serialControl()
       targetDist = 0;
       n_tick = 0;
     }
+    else if (cmd == 'p') // Stepping to a certain value
+    {
+      man_value = getSerial(); // Get user input for pwm
+      while (pwm_value < man_value){
+        step_PWM(1);
+        Serial.print("PWM_Value: ");
+        Serial.println(pwm_value);
+      }
+      while (pwm_value > man_value) {
+        step_PWM(-1);
+        Serial.print("PWM_Value: ");
+        Serial.println(pwm_value);
+      }
+    }
   }
   if (cmd == 'a') // counter clockwise
   {

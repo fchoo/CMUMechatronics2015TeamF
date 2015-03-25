@@ -1,4 +1,4 @@
-#define IR_APIN 0
+#define IR_APIN 7
 
 void setup()
 {
@@ -16,11 +16,11 @@ void loop()
   unsigned int startTag = 0xDEAD;  // Analog port maxes at 1023 so this is a safe termination value
   int loopCount;
 
-#ifdef CHECK_FPS  
+#ifdef CHECK_FPS
   unsigned long startTime, endTime;
   startTime = millis();
 #endif
-  
+
   // Can't do more than 64 loops or could overflow the 16 bit ints
   // This just averages together as many sensor reads as we can in
   // order to reduce sensor noise.  Might want to introduce add
@@ -37,8 +37,8 @@ void loop()
   Serial.print("Dist: ");
   Serial.println(distance);
   delay(10);
-  
-#ifdef CHECK_FPS  
+
+#ifdef CHECK_FPS
   endTime = millis();
   Serial.print(" - FPS: ");
   Serial.println(1.f / (endTime-startTime) * 1000);

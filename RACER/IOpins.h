@@ -35,10 +35,10 @@
 #define PIN_MOTOR_1_2 11
 #define PIN_MOTOR_2_1 8
 #define PIN_MOTOR_2_2 9
-#define PIN_EDF 4  // Digital PWM pin for EDF.
+#define PIN_EDF 5  // Digital PWM pin for EDF.
 #define PIN_KILL 7
 #define PIN_LED 13
-#define PIN_IR A1
+#define PIN_IR A7
 #define PIN_JOYX A2 // joystick X axis
 #define PIN_JOYY A3 // joystick Y axis
 #define PIN_POT A4  // Pot to control edf

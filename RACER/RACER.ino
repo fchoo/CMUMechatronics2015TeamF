@@ -60,9 +60,9 @@ boolean irFlag = false;
 boolean encoderFlag = false;
 
 // Mode
-boolean isJoyStick = true;
+boolean isJoyStick = false;
 boolean isKilled = false;
-boolean isPathfind = false;
+boolean isPathfind = true;
 
 void setup()
 {
@@ -105,20 +105,29 @@ void loop()
     joyStickControl();
   if (isPathfind == true) // Pathfinding control
   {
-    updateFlags();
-    pathfindingFSM();
+    if (pwm_value < PWM_DEFAULT)
+      step_PWM(1);
+    if (pwm_value == PWM_DEFAULT)
+    {
+      updateFlags();
+      pathfindingFSM();
+    }
   }
-
+  Serial.print("[INFO] State: ");
+  Serial.print(state);
+  Serial.print(" Dist: ");
+  Serial.println(irVal);
   // Feedback controls for motor speed
-  Serial.print("[INFO] Left tick: ");
-  Serial.print(leftWheelTicks);
-  Serial.print(" Right tick: ");
-  Serial.print(rightWheelTicks);
-  Serial.print(" Left wheel PWM: ");
-  Serial.print(torq_straight_1);
-  Serial.print(" Right wheel PWM: ");
-  Serial.println(torq_straight_2);
-  // motorFeedback();
+  // Serial.print("[INFO] Left tick: ");
+  // Serial.print(leftWheelTicks);
+  // Serial.print(" Right tick: ");
+  // Serial.print(rightWheelTicks);
+  // Serial.print(" Left wheel PWM: ");
+  // Serial.print(torq_straight_1);
+  // Serial.print(" Right wheel PWM: ");
+  // Serial.println(torq_straight_2);
+  update_PWM();
+  motorFeedback();
   // edfFeedback();
 }
 
@@ -135,7 +144,7 @@ void checkKill()
     digitalWrite(PIN_LED, LOW);
     isKilled = true;
     analogWrite(PIN_EDF, 0); // kill edf
-    pwm_value = 0; // reset pwm values
+    pwm_value = PWM_MIN; // reset pwm values
     stop(); // kill all motors
     cmd = ' '; // stop all cmd
   }

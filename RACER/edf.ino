@@ -23,6 +23,11 @@ void step_PWM(int dir)
   }
 }
 
+void update_PWM()
+{
+  analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
+}
+
 /**
  * Simple feedback where edf is activated once the robot is vertical
  */
