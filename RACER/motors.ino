@@ -17,16 +17,16 @@ void motorFeedback()
     // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
     {
       // Serial.println("Reduce Right");
-      changeTorq(&torq_straight_1, 2);
-      changeTorq(&torq_straight_2, -2);
+      changeTorq(&torq_straight_1, TORQ_FB);
+      changeTorq(&torq_straight_2, -TORQ_FB);
     }
     // left wheel spinning more than right wheel
     else if (rightWheelTicks < leftWheelTicks)
     // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
     {
       // Serial.println("Reduce Left");
-      changeTorq(&torq_straight_1, -2);
-      changeTorq(&torq_straight_2, 2);
+      changeTorq(&torq_straight_1, -TORQ_FB);
+      changeTorq(&torq_straight_2, TORQ_FB);
     }
   }
 }
@@ -37,7 +37,7 @@ void motorFeedback()
 void changeTorq(int *torque, int dir)
 {
   if (dir<0 && (*torque)>TORQ_MIN) (*torque)--;
-  if (dir>0 && (*torque)<254) (*torque)++;
+  if (dir>0 && (*torque)<TORQ_MAX) (*torque)++;
 }
 
 void motor_init()
@@ -92,4 +92,10 @@ void stop()
   analogWrite(PIN_MOTOR_1_2,0);
   analogWrite(PIN_MOTOR_2_1,0);
   analogWrite(PIN_MOTOR_2_2,0);
+  // Reset torq variables
+  torq_straight_1 = TORQ_DEFAULT;
+  torq_straight_2 = TORQ_DEFAULT;
+  // Reset encoder variables
+  leftWheelTicks = 0;
+  rightWheelTicks = 0;
 }

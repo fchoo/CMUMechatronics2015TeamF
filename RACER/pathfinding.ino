@@ -41,7 +41,7 @@ void pathfindingFSM()
       {
         state = LEFTU_1;
         irFlag = false;
-        setTargetDist(DIST_TURN90);
+        setTargetDist(DIST_TURN90_1);
         stop();
       }
       break;
@@ -61,7 +61,7 @@ void pathfindingFSM()
       {
         state = LEFTU_3;
         encoderFlag = false;
-        setTargetDist(DIST_TURN90);
+        setTargetDist(DIST_TURN90_2);
         stop();
       }
       break;
@@ -80,7 +80,7 @@ void pathfindingFSM()
       {
         state = RIGHTU_1;
         irFlag = false;
-        setTargetDist(DIST_TURN90);
+        setTargetDist(DIST_TURN90_3);
         stop();
       }
       break;
@@ -100,7 +100,7 @@ void pathfindingFSM()
       {
         state = RIGHTU_3;
         encoderFlag = false;
-        setTargetDist(DIST_TURN90);
+        setTargetDist(DIST_TURN90_4);
         stop();
       }
       break;
@@ -119,6 +119,4 @@ void pathfindingFSM()
 void setTargetDist(float dist)
 {
   targetDist = dist;
-  leftWheelTicks = 0;
-  rightWheelTicks = 0;
 }

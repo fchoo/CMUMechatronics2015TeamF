@@ -103,11 +103,12 @@ void loop()
   serialControl(); // Serial control
   if (isJoyStick == true)  // Joystick control
     joyStickControl();
+
   if (isPathfind == true) // Pathfinding control
   {
-    if (pwm_value < PWM_DEFAULT)
+    if (pwm_value < 150)
       step_PWM(1);
-    if (pwm_value == PWM_DEFAULT)
+    if (pwm_value == 150)
     {
       updateFlags();
       pathfindingFSM();

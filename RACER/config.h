@@ -24,7 +24,7 @@
 #define FILTER_AVG 12
 
 // define IR sensor distance threshold (in cm) before turning
-#define THR_IR 15
+#define THR_IR 10
 
 // IMU yaw threshold
 #define THR_PITCH_DEFAULT 90
@@ -37,16 +37,22 @@
 
 // Motor
 #define TORQ_MIN 100
-#define TORQ_DEFAULT 200
-#define TORQ_TURN 200   // Analog value for turning torq
-#define DIST_TURN90 2.0 // Dist for encoder to check 90
+#define TORQ_MAX 250
+#define TORQ_DEFAULT 160
+#define TORQ_TURN 50   // Analog value for turning torq
+#define DIST_TURN90_1 2.8 // Dist for encoder to check 90
+#define DIST_TURN90_2 2.9 // Dist for encoder to check 90
+#define DIST_TURN90_3 3.0 // Dist for encoder to check 90
+#define DIST_TURN90_4 3.0 // Dist for encoder to check 90
 #define DIST_UFOR 2.0 // Dist for encoder to move forward during uturn
+#define TORQ_FB 10
 
 // Joystick parameters
 #define JOY_RANGE 12 // output range of X or Y movement
 #define JOY_DELAY 5 // response delay of the mouse, in ms
 #define JOY_THRESHOLD JOY_RANGE/4      // resting threshold
 #define JOY_CENTER JOY_RANGE/2         // resting position value
+
 
 // FSM
 typedef enum State {
