@@ -16,7 +16,7 @@
 
 // EDF Control
 #define PWM_MIN 132 //133 for actual serial
-#define PWM_MAX 254
+#define PWM_MAX 150
 #define PWM_DEFAULT 220
 #define PWM_DELAY 50 // .05s
 
@@ -26,20 +26,30 @@
 // define IR sensor distance threshold (in cm) before turning
 #define THR_IR 10
 
-// IMU yaw threshold
-#define THR_PITCH_DEFAULT 90
-#define THR_PITCH 5
-#define THR_PITCH_LEFT (THR_PITCH_DEFAULT-THR_PITCH)
-#define THR_PITCH_RIGHT (THR_PITCH_DEFAULT+THR_PITCH)
-#define THR_ROLL_VERT 30
-#define THR_PITCH_VERT 80
-#define THR_HORZ_DUR 25
+// IMU vertical checking threshold
+#define THR_ROLL_VERT 20
+#define THR_PITCH_VERT 70
+#define THR_HORZ_DUR 10
+// IMU heading checking parameters
+#define ROLL_ERR 5
+#define PITCH_ERR 5
+#define PITCH_N (90-PITCH_ERR)
+#define PITCH_S -(90-PITCH_ERR)
+#define PITCH_EW (0+PITCH_ERR)
+#define ROLL_E (90-ROLL_ERR)
+#define ROLL_W -(90-ROLL_ERR)
+// Use pitch for steering
+
+// Up: -10, 86
+// Left: -88, 5
+// Right: 88, 5
+// Down: 155, -87
 
 // Motor
 #define TORQ_MIN 100
 #define TORQ_MAX 250
 #define TORQ_DEFAULT 160
-#define TORQ_TURN 50   // Analog value for turning torq
+#define TORQ_TURN 50   // 100 for wall, 50 for floor Analog value for turning torq
 #define DIST_TURN90_1 2.8 // Dist for encoder to check 90
 #define DIST_TURN90_2 2.9 // Dist for encoder to check 90
 #define DIST_TURN90_3 3.0 // Dist for encoder to check 90
@@ -53,7 +63,6 @@
 #define JOY_THRESHOLD JOY_RANGE/4      // resting threshold
 #define JOY_CENTER JOY_RANGE/2         // resting position value
 
-
 // FSM
 typedef enum State {
     LEFTU_NEXT,
@@ -64,6 +73,13 @@ typedef enum State {
     RIGHTU_1,
     RIGHTU_2,
     RIGHTU_3
+};
+
+typedef enum Heading {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
 };
 
 /**

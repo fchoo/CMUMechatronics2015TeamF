@@ -8,20 +8,18 @@ void updateAngles()
   pitch = getPitch();
 }
 
-boolean isVeeringLeft()
+void checkHeading()
 {
-  if (isVert && pitch < THR_PITCH_LEFT)
-    return true;
-  else
-    return false;
-}
-
-boolean isVeeringRight()
-{
-  if (isVert && pitch > THR_PITCH_RIGHT)
-    return true;
-  else
-    return false;
+  if (isVert) // Only set headings when robot is vertical
+  {
+    if (pitch >= PITCH_N) curDir = NORTH;
+    else if (pitch <= PITCH_S) curDir = SOUTH;
+    else if (pitch <= PITCH_EW)
+    {
+      if (roll >= ROLL_E) curDir = EAST;
+      else if (roll <= ROLL_W) curDir = WEST;
+    }
+  }
 }
 
 void checkVertical()

@@ -40,6 +40,7 @@ float irDist = 0;
 float roll, pitch;
 int horzDur = 0;
 boolean isVert = false;
+Heading curDir;
 
 // Encoder variables
 float targetDist = 0;
@@ -62,7 +63,7 @@ boolean encoderFlag = false;
 // Mode
 boolean isJoyStick = false;
 boolean isKilled = false;
-boolean isPathfind = true;
+boolean isPathfind = false;
 
 void setup()
 {
@@ -72,7 +73,7 @@ void setup()
 
   motor_init();
   EDF_init();
-  // IMU_init();
+  IMU_init();
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
@@ -95,10 +96,20 @@ void loop()
   }
 
   // Read Sensors
-  // readIMU();
-  // updateAngles();
-  // checkVertical();
+  readIMU();
+  // printdata();
+  updateAngles();
+  checkVertical();
+  checkHeading();
 
+  Serial.print("[INFO] Vertical: ");
+  Serial.print(isVert);
+  Serial.print(" Heading: ");
+  Serial.print(curDir);
+  Serial.print(" Roll: ");
+  Serial.print(roll);
+  Serial.print(" Pitch: ");
+  Serial.println(pitch);
   // Read controls
   serialControl(); // Serial control
   if (isJoyStick == true)  // Joystick control
@@ -135,7 +146,7 @@ void loop()
   // Serial.println(torq_straight_2);
   update_PWM();
   motorFeedback();
-  // edfFeedback();
+  edfFeedback();
 }
 
 /*============================

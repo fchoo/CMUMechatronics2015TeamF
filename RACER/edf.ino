@@ -20,8 +20,8 @@ void step_PWM(int dir)
     if (dir<0 && pwm_value>PWM_MIN) pwm_value--;
     analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis(); // Update timer
-    Serial.print("[INFO] PWM Value: ");
-    Serial.println(pwm_value);
+    // Serial.print("[INFO] PWM Value: ");
+    // Serial.println(pwm_value);
   }
 }
 
