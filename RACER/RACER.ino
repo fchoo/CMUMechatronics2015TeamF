@@ -97,7 +97,6 @@ void loop()
 
   // Read Sensors
   readIMU();
-  // printdata();
   updateAngles();
   checkVertical();
   checkHeading();
@@ -110,11 +109,11 @@ void loop()
   Serial.print(roll);
   Serial.print(" Pitch: ");
   Serial.println(pitch);
+
   // Read controls
   serialControl(); // Serial control
   if (isJoyStick == true)  // Joystick control
     joyStickControl();
-
   if (isPathfind == true) // Pathfinding control
   {
     if (pwm_value < 150)
@@ -144,9 +143,9 @@ void loop()
   // Serial.print(torq_straight_1);
   // Serial.print(" Right wheel PWM: ");
   // Serial.println(torq_straight_2);
-  update_PWM();
-  motorFeedback();
+
   edfFeedback();
+  motorFeedback();
 }
 
 /*============================

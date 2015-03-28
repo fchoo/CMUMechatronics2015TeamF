@@ -20,14 +20,7 @@ void step_PWM(int dir)
     if (dir<0 && pwm_value>PWM_MIN) pwm_value--;
     analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis(); // Update timer
-    // Serial.print("[INFO] PWM Value: ");
-    // Serial.println(pwm_value);
   }
-}
-
-void update_PWM()
-{
-  analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
 }
 
 /**
@@ -36,7 +29,12 @@ void update_PWM()
 void edfFeedback()
 {
   if (isVert)
-    step_PWM(1);
-  else
+  {
+    if (pwm_value<PWM_MAX) // step pwm to max
+      step_PWM(1);
+    else
+      analogWrite(PIN_EDF, pwm_value); // once max, continue sending pwm values
+  }
+  else // disengage edf
     step_PWM(-1);
 }
