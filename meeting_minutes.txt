@@ -1,0 +1,81 @@
+2/16/2015
+Wed Presentation
+1) IMU
+2) EDF
+3) Spray pump working
+4) Final design
+5) Path Finding
+
+Future Goals
+1) Pair IMU with EDF
+2) Pair Path finding with IMU
+3) Moving mounted chassis with EDF
+
+Notes/Recommendations
+1) Total Weight < 3kg
+2) PCB: Advanced circuit - 33 bucks + <20 shipping
+	Have their own software to design the circuit
+3) Obstacles: can place our own obstacles
+
+----------------------
+
+2/23/2015
+Progress Update:
+1) Better wheels surface
+	- careful of how the wheels surface will take on the dirt
+
+Wed Presentation
+1) Pathfinding + IMU
+2) IMU + EDF
+3) EDF Skirt Mounted
+4) PID
+
+Future Goal
+1) Robot moving on flat ground
+2) Robot moving on inclined surface
+3) Cleaning system design finalization
+4) Navigation integrated
+
+-----------------------------
+
+3/16/2015
+Progress Update:
+1) Faced some troubles with wheel controls
+2) Finalization of cleaning mechanism design
+
+Wed Presentation:
+1) Precise wheel controls
+2) Straight travel on vertical surface
+
+Future Goals:
+1) Pathfinding/Navex on the floor
+2) Cleaning mechanism mounted
+3) Start on circuit schematic
+4) Finalize CAD model with circuitries
+5) Turning on window
+6) Coverage on window if possible
+
+Idea
+1) Sensors to detect distance from floor
+
+-----------------------------------
+
+3/23/2015
+Progress Update:
+1) New chassis redesign
+2) Cleaning mechanism mounted
+
+Wed Presentation
+1) Pathfinding on floor
+2) Passive cleaning mechanism mounted
+3) Manual control movements on window
+4) Coverage on window corners
+
+Future Goals
+1) First iteration of pathfinding on window
+    - IMU integrated
+2) Actual chassis created
+3) Cleaning pump integrated
+
+Idea
+1) Control the speed via joystick
