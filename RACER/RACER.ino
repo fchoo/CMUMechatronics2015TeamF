@@ -18,7 +18,6 @@
  *****************************************************************************/
 
 // Libraries used for RACER
-#include <math.h>
 #include "config.h"
 #include "IOpins.h"
 

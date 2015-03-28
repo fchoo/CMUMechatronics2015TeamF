@@ -31,13 +31,15 @@
 #define THR_PITCH_VERT 70
 #define THR_HORZ_DUR 10
 // IMU heading checking parameters
+#define PITCH_NS_BASE 90
+#define PITCH_EW_BASE 0
 #define ROLL_ERR 5
 #define PITCH_ERR 5
-#define PITCH_N (90-PITCH_ERR)
-#define PITCH_S -(90-PITCH_ERR)
-#define PITCH_EW (0+PITCH_ERR)
-#define ROLL_E (90-ROLL_ERR)
-#define ROLL_W -(90-ROLL_ERR)
+#define PITCH_N (PITCH_NS_BASE-PITCH_ERR)
+#define PITCH_S -(PITCH_NS_BASE-PITCH_ERR)
+#define PITCH_EW (PITCH_EW_BASE+PITCH_ERR)
+#define ROLL_E (PITCH_NS_BASE-ROLL_ERR)
+#define ROLL_W -(PITCH_NS_BASE-ROLL_ERR)
 // Use pitch for steering
 
 // Up: -10, 86
@@ -79,7 +81,8 @@ typedef enum Heading {
     NORTH,
     SOUTH,
     EAST,
-    WEST
+    WEST,
+    TURNING
 };
 
 /**

@@ -1,3 +1,4 @@
+#define round(x) ((x>=0)?(int)(x+0.5):(int)(x-0.5))
 
 /*==================================
 =            Locomotion            =
@@ -7,28 +8,71 @@
  * Use encoders/IMU to coordinate the motors. This will attempt to straighten
  * the movement of the robot.
  */
+// void motorFeedback()
+// {
+//   // only in straight path states
+//   if ((state == LEFTU_NEXT) || (state == RIGHTU_NEXT))
+//   {
+//     // right wheel spinning more than left wheel
+//     if (rightWheelTicks > leftWheelTicks)
+//     // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
+//     {
+//       changeTorq(&torq_straight_1, TORQ_FB);
+//       changeTorq(&torq_straight_2, -TORQ_FB);
+//     }
+//     // left wheel spinning more than right wheel
+//     else if (rightWheelTicks < leftWheelTicks)
+//     // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
+//     {
+//       changeTorq(&torq_straight_1, -TORQ_FB);
+//       changeTorq(&torq_straight_2, TORQ_FB);
+//     }
+//   }
+// }
+
+/**
+ * Use IMU to coordinate the motors. This will attempt to straighten
+ * the movement of the robot.
+ */
 void motorFeedback()
 {
-  // only in straight path states
-  if ((state == LEFTU_NEXT) || (state == RIGHTU_NEXT))
+  if (curDir==EAST)
   {
-    // right wheel spinning more than left wheel
-    if (rightWheelTicks > leftWheelTicks)
-    // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
-    {
-      // Serial.println("Reduce Right");
-      changeTorq(&torq_straight_1, TORQ_FB);
-      changeTorq(&torq_straight_2, -TORQ_FB);
-    }
-    // left wheel spinning more than right wheel
-    else if (rightWheelTicks < leftWheelTicks)
-    // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
-    {
-      // Serial.println("Reduce Left");
-      changeTorq(&torq_straight_1, -TORQ_FB);
-      changeTorq(&torq_straight_2, TORQ_FB);
-    }
+    if (round(pitch)>PITCH_EW_BASE) // veering left
+      compensateToRight();
+    else if (round(pitch)<PITCH_EW_BASE) // veering right
+      compensateToLeft();
   }
+  else if (curDir==WEST)
+  {
+    if (round(pitch)>PITCH_EW_BASE) // veering right
+      compensateToLeft();
+    else if (round(pitch)<PITCH_EW_BASE) // veering left
+      compensateToRight();
+  }
+  // TODO: Compensate for north and south. Need to clarify how roll changes
+  // since we can't compensate based on pitch. May not need to compensate for
+  // such a short distance?
+}
+
+/**
+ * Correct veering to right. Decrease left wheel speed and increase right wheel
+ * speed.
+ */
+void compensateToLeft()
+{
+  changeTorq(&torq_straight_1, -TORQ_FB);
+  changeTorq(&torq_straight_2, TORQ_FB);
+}
+
+/**
+ * Correct veering to left. Decrease right wheel speed and increase left wheel
+ * speed.
+ */
+void compensateToRight()
+{
+  changeTorq(&torq_straight_1, TORQ_FB);
+  changeTorq(&torq_straight_2, -TORQ_FB);
 }
 
 /**
@@ -51,7 +95,6 @@ void motor_init()
 
 void moveLeft()
 {
-  if (DEBUG) Serial.println("[INFO] Moving left.");
   analogWrite(PIN_MOTOR_1_1,0);
   analogWrite(PIN_MOTOR_1_2,TORQ_TURN);
   analogWrite(PIN_MOTOR_2_1,0);
@@ -60,7 +103,6 @@ void moveLeft()
 
 void moveRight()
 {
-  if (DEBUG) Serial.println("[INFO] Moving right.");
   analogWrite(PIN_MOTOR_1_1,TORQ_TURN);
   analogWrite(PIN_MOTOR_1_2,0);
   analogWrite(PIN_MOTOR_2_1,TORQ_TURN);
@@ -69,7 +111,6 @@ void moveRight()
 
 void moveForward()
 {
-  if (DEBUG) Serial.println("[INFO] Moving forward.");
   analogWrite(PIN_MOTOR_1_1,torq_straight_1);
   analogWrite(PIN_MOTOR_1_2,0);
   analogWrite(PIN_MOTOR_2_1,0);
@@ -78,7 +119,6 @@ void moveForward()
 
 void moveBack()
 {
-  if (DEBUG) Serial.println("[INFO] Moving back.");
   analogWrite(PIN_MOTOR_1_1,0);
   analogWrite(PIN_MOTOR_1_2,torq_straight_1);
   analogWrite(PIN_MOTOR_2_1,torq_straight_2);
@@ -87,7 +127,6 @@ void moveBack()
 
 void stop()
 {
-  if (DEBUG) Serial.println("[INFO] Stopping.");
   analogWrite(PIN_MOTOR_1_1,0);
   analogWrite(PIN_MOTOR_1_2,0);
   analogWrite(PIN_MOTOR_2_1,0);

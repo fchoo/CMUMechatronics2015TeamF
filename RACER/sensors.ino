@@ -19,6 +19,8 @@ void checkHeading()
       if (roll >= ROLL_E) curDir = EAST;
       else if (roll <= ROLL_W) curDir = WEST;
     }
+    else
+      curDir = TURNING;
   }
 }
 
