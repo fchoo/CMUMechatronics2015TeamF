@@ -25,15 +25,7 @@ void serialControl()
   if (Serial.available()>0) // Read cmd
   {
     cmd = getSerial();
-    if (cmd == 'j') // Switch between joystick and serial
-    {
-      isJoyStick = !isJoyStick;
-      if (isJoyStick) isPathfind = false;
-      Serial.print("[INFO] Mode: ");
-      if (isJoyStick) Serial.println("JoyStick");
-      else Serial.println("Serial");
-    }
-    else if (cmd == 'z') // Activate pathfinding
+    if (cmd == 'z') // Activate pathfinding
     {
       isPathfind = !isPathfind;
       if (isPathfind) isJoyStick = false;
