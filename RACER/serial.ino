@@ -28,7 +28,6 @@ void serialControl()
     if (cmd == 'z') // Activate pathfinding
     {
       isPathfind = !isPathfind;
-      if (isPathfind) isJoyStick = false;
       Serial.print("[INFO] Mode: ");
       if (isPathfind) Serial.println("Pathfinding");
       else Serial.println("Serial");

@@ -34,7 +34,6 @@ long pwm_timer = 0; // pwm_timer for PWM stepping
 // IR variables
 float irVal = 0;
 float irDist = 0;
-char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
 
 // IMU variable
 float roll, pitch;
@@ -44,6 +43,7 @@ Heading curDir;
 
 // Encoder variables
 float targetDist = 0;
+int targetTime = 0;
 float curDist = 0;
 float leftWheelTicks = 0;
 float rightWheelTicks = 0;
@@ -61,16 +61,17 @@ boolean irFlag = false;
 boolean encoderFlag = false;
 
 // Mode
-boolean isJoyStick = false;
 boolean isKilled = false;
 boolean isPathfind = false;
 
+char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
+char* StateStrings[8] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
+                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3"};
 
 void setup()
 {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_POT, INPUT);
 
   // Initialize components
   motor_init();
@@ -90,7 +91,7 @@ void setup()
 
 void loop()
 {
-  checkKill(); // Check if kill switch is hit
+  checkKillSW(); // Check if kill switch is hit
   if (isKilled)
   {
     if (DEBUG) Serial.println("[INFO] Killed switch flipped.");
@@ -107,29 +108,38 @@ void loop()
   // Read controls
   serialControl(); // Serial control
   if (isPathfind == true) // Pathfinding control
-  {
-    updateFlags();
     pathfindingFSM();
-  }
 
   // Feedback controls
   edfFeedback();
   motorFeedback();
 
   // DEBUG PRINTS
-  Serial.print("[INFO] State: ");
-  Serial.print(state);
-  Serial.print(" dist ");
-  Serial.println(irDist);
+  // IR
+  // Serial.print("[INFO] State: ");
+  // Serial.print(state);
+  // Serial.print(" dist ");
+  // Serial.println(irDist);
 
-  // Serial.print("[INFO] Vertical: ");
-  // Serial.print(isVert);
-  // Serial.print(" Heading: ");
-  // Serial.print(HeadingStrings[curDir]);
-  // Serial.print(" Roll: ");
-  // Serial.print(roll);
-  // Serial.print(" Pitch: ");
-  // Serial.println(pitch);
+  // Encoders
+  // Serial.print("[INFO] Left tick: ");
+  // Serial.print(leftWheelTicks);
+  // Serial.print(" Right tick: ");
+  // Serial.println(rightWheelTicks);
+
+  // IMU
+  Serial.print("[INFO] State: ");
+  Serial.print(StateStrings[state]);
+  Serial.print(" Vertical: ");
+  Serial.print(isVert);
+  Serial.print(" Heading: ");
+  Serial.print(HeadingStrings[curDir]);
+  Serial.print(" Roll: ");
+  Serial.print(roll);
+  Serial.print(" Pitch: ");
+  Serial.print(pitch);
+  Serial.print(" IRdist ");
+  Serial.println(irDist);
 }
 
 /*============================
@@ -139,23 +149,18 @@ void loop()
 /**
  * Once kill switch is hit, switch off all motors and EDF.
  */
-void checkKill()
+void checkKillSW()
 {
-  if (digitalRead(PIN_KILL) == HIGH) {
+  if (digitalRead(PIN_KILL) == HIGH)
+  {
     // Program State
     digitalWrite(PIN_LED, LOW);
     isKilled = true;
     cmd = ' '; // stop all cmd
-    // EDF
-    analogWrite(PIN_EDF, 0); // kill edf
     // Locomotion
-    pwm_value = PWM_MIN; // reset pwm values
+    rstEDF();
+    rstPathfind();
     stop(); // kill all motors
-    // Pathfinding variables
-    state = LEFTU_NEXT;
-    // Encoder variables
-    leftWheelTicks = 0;
-    rightWheelTicks = 0;
   }
   else
   {
@@ -164,3 +169,32 @@ void checkKill()
   }
 }
 
+/**
+ * Once pathfind switch is hit, activate pathfinding mode
+ */
+void checkPathfindSW()
+{
+  if (digitalRead(PIN_PATHFIND) == HIGH)
+  {
+    // TODO: Switch off some indicator
+    rstPathfind();
+    stop();
+  }
+  else
+  {
+    // TODO: Switch on some indicator
+    isPathfind = true;
+  }
+}
+
+void rstEDF()
+{
+  analogWrite(PIN_EDF, 0);
+  pwm_value = PWM_MIN; // reset pwm values
+}
+
+void rstPathfind()
+{
+  isPathfind = false;
+  state = LEFTU_NEXT;
+}

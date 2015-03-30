@@ -35,8 +35,9 @@
 #define PIN_MOTOR_1_2 11
 #define PIN_MOTOR_2_1 8
 #define PIN_MOTOR_2_2 9
-#define PIN_EDF 5  // Digital PWM pin for EDF.
-#define PIN_KILL 7
+#define PIN_EDF 5       // Digital PWM pin for EDF.
+#define PIN_PATHFIND 6  // Activate pathfind
+#define PIN_KILL 7      // Kill switch
 #define PIN_LED 13
 #define PIN_IR A7
 #define PIN_JOYX A2 // joystick X axis
