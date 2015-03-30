@@ -1,8 +1,8 @@
-#define IR_APIN 7
+#define IR_APIN A7
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
 }
 
 // If this is defined it prints out the FPS that we can send a
