@@ -32,8 +32,9 @@ int man_value;
 long pwm_timer = 0; // pwm_timer for PWM stepping
 
 // IR variables
-int irVal = 0;
+float irVal = 0;
 float irDist = 0;
+char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
 
 // IMU variable
 float roll, pitch;
@@ -64,12 +65,14 @@ boolean isJoyStick = false;
 boolean isKilled = false;
 boolean isPathfind = false;
 
+
 void setup()
 {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
   pinMode(PIN_POT, INPUT);
 
+  // Initialize components
   motor_init();
   EDF_init();
   IMU_init();
@@ -99,15 +102,7 @@ void loop()
   updateAngles();
   checkVertical();
   checkHeading();
-
-  Serial.print("[INFO] Vertical: ");
-  Serial.print(isVert);
-  Serial.print(" Heading: ");
-  Serial.print(curDir);
-  Serial.print(" Roll: ");
-  Serial.print(roll);
-  Serial.print(" Pitch: ");
-  Serial.println(pitch);
+  readIR();
 
   // Read controls
   serialControl(); // Serial control
@@ -123,28 +118,25 @@ void loop()
       pathfindingFSM();
     }
   }
-  // Serial.print("[INFO] State: ");
-  // Serial.print(state);
-  // Serial.print(" targdist ");
-  // Serial.print(targetDist);
-  // Serial.print(" curDist: ");
-  // Serial.print(curDist);
-  // Serial.print(" left: ");
-  // Serial.print(leftWheelTicks);
-  // Serial.print(" right: ");
-  // Serial.println(rightWheelTicks);
-  // Feedback controls for motor speed
-  // Serial.print("[INFO] Left tick: ");
-  // Serial.print(leftWheelTicks);
-  // Serial.print(" Right tick: ");
-  // Serial.print(rightWheelTicks);
-  // Serial.print(" Left wheel PWM: ");
-  // Serial.print(torq_straight_1);
-  // Serial.print(" Right wheel PWM: ");
-  // Serial.println(torq_straight_2);
 
+  // Feedback controls
   edfFeedback();
   motorFeedback();
+
+  // DEBUG PRINTS
+  Serial.print("[INFO] State: ");
+  Serial.print(state);
+  Serial.print(" dist ");
+  Serial.println(irDist);
+
+  // Serial.print("[INFO] Vertical: ");
+  // Serial.print(isVert);
+  // Serial.print(" Heading: ");
+  // Serial.print(HeadingStrings[curDir]);
+  // Serial.print(" Roll: ");
+  // Serial.print(roll);
+  // Serial.print(" Pitch: ");
+  // Serial.println(pitch);
 }
 
 /*============================

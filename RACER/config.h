@@ -16,7 +16,7 @@
 
 // EDF Control
 #define PWM_MIN 132 //133 for actual serial
-#define PWM_MAX 150
+#define PWM_MAX 140
 #define PWM_DEFAULT 220
 #define PWM_DELAY 50 // .05s
 
@@ -51,7 +51,7 @@
 #define TORQ_MIN 100
 #define TORQ_MAX 250
 #define TORQ_DEFAULT 160
-#define TORQ_TURN 50   // 100 for wall, 50 for floor Analog value for turning torq
+#define TORQ_TURN 100   // 100 for wall, 50 for floor Analog value for turning torq
 #define DIST_TURN90_1 2.8 // Dist for encoder to check 90
 #define DIST_TURN90_2 2.9 // Dist for encoder to check 90
 #define DIST_TURN90_3 3.0 // Dist for encoder to check 90

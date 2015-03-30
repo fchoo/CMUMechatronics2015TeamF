@@ -14,7 +14,7 @@ void checkHeading()
   {
     if (pitch >= PITCH_N) curDir = NORTH;
     else if (pitch <= PITCH_S) curDir = SOUTH;
-    else if (pitch <= PITCH_EW)
+    else if (abs(pitch) <= PITCH_EW)
     {
       if (roll >= ROLL_E) curDir = EAST;
       else if (roll <= ROLL_W) curDir = WEST;

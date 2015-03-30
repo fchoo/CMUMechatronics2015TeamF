@@ -12,7 +12,6 @@ void updateFlags()
     // Waiting for U-turn
     case LEFTU_NEXT:
     case RIGHTU_NEXT:
-      readIR();
       if (irDist < THR_IR) irFlag = true;
       break;
     // In U-turn
