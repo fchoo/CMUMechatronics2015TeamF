@@ -79,3 +79,25 @@ Future Goals
 
 Idea
 1) Control the speed via joystick
+
+----------------------------------------
+
+3/30/2015
+Progress Update:
+1) EDF destroyed
+
+Wed Presentation
+1) Pump spraying in precise model
+2) CAD model of two EDF
+3) Risk Management plan: how to recover from EDF explosion
+
+Future Goals
+1) Pathfinding on window
+2) Slip detection correction
+3) New chassis with edf
+4) Cleaning pump integrated
+
+TODO:
+1) Website Update (Apr 3, midnight)
+2) Button to start the pathfinding
+2) Indication to show pathfinding is done
