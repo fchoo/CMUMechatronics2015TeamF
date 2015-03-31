@@ -52,13 +52,19 @@ float rightWheelTicks = 0;
 int torq_straight_1 = TORQ_DEFAULT;
 int torq_straight_2 = TORQ_DEFAULT;
 
+// Debounce button for rst imu
+int rstIMU_value_cur;
+int rstIMU_value_old;
+long rstIMU_timer;
+int rstIMU_state;
+
+
 // Serial
 int cmd = 'q';
 
 // FSM
 State state;
 boolean irFlag = false;
-boolean encoderFlag = false;
 
 // Mode
 boolean isKilled = false;
@@ -98,6 +104,9 @@ void loop()
     return; // do nothing once killed
   }
 
+  // checkPathfindSW();
+  // checkRstIMUBut();
+
   // Read Sensors
   readIMU();
   updateAngles();
@@ -128,18 +137,18 @@ void loop()
   // Serial.println(rightWheelTicks);
 
   // IMU
-  Serial.print("[INFO] State: ");
-  Serial.print(StateStrings[state]);
-  Serial.print(" Vertical: ");
-  Serial.print(isVert);
-  Serial.print(" Heading: ");
-  Serial.print(HeadingStrings[curDir]);
-  Serial.print(" Roll: ");
-  Serial.print(roll);
-  Serial.print(" Pitch: ");
-  Serial.print(pitch);
-  Serial.print(" IRdist ");
-  Serial.println(irDist);
+  // Serial.print("[INFO] State: ");
+  // Serial.print(StateStrings[state]);
+  // Serial.print(" Vertical: ");
+  // Serial.print(isVert);
+  // Serial.print(" Heading: ");
+  // Serial.print(HeadingStrings[curDir]);
+  // Serial.print(" Roll: ");
+  // Serial.print(roll);
+  // Serial.print(" Pitch: ");
+  // Serial.print(pitch);
+  // Serial.print(" IRdist ");
+  // Serial.println(irDist);
 }
 
 /*============================
@@ -185,6 +194,28 @@ void checkPathfindSW()
     // TODO: Switch on some indicator
     isPathfind = true;
   }
+}
+
+void checkRstIMUBut()
+{
+  // Debounce push button
+  rstIMU_value_cur = digitalRead(PIN_RSTIMU);
+  if (rstIMU_value_cur != rstIMU_value_old)
+    rstIMU_timer = millis();
+  if ((millis() - rstIMU_timer) > DEBOUNCE_DELAY) // filter out noise
+  {
+    // button is held long enough, recalibrate IMU if it has not been calibrated
+    if (rstIMU_value_cur == HIGH && rstIMU_state == LOW)
+    {
+        rstIMU_state = !rstIMU_state;
+        rstIMU();
+    }
+    // button has been released long enough, reset reset state
+    if (rstIMU_value_cur == LOW && rstIMU_state == HIGH)
+      rstIMU_state = !rstIMU_state;
+    // ignore case where button is pressed and imu has been reset before
+  }
+  rstIMU_value_old = rstIMU_value_cur; // Update old reading
 }
 
 void rstEDF()

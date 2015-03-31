@@ -35,9 +35,9 @@ void serialControl()
     else if (cmd == 'r')
     {
       state = LEFTU_NEXT;
-      encoderFlag = false;
       irFlag = false;
       targetDist = 0;
+      rstIMU();
     }
     else if (cmd == 'p') // Stepping to a certain value
     {

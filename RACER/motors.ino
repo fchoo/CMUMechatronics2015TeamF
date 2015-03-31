@@ -50,9 +50,14 @@ void motorFeedback()
     else if (round(pitch)<PITCH_EW_BASE) // veering left
       compensateToRight();
   }
-  // TODO: Compensate for north and south. Need to clarify how roll changes
-  // since we can't compensate based on pitch. May not need to compensate for
-  // such a short distance?
+  else if (curDir==NORTH)
+  {
+    // if (roll<ROLL_N) // veering left
+    //   compensateToRight();
+    // else if (roll>ROLL_N) // veering right
+    //   compensateToLeft();
+  }
+  // TODO: Compensation might be too high for north...
 }
 
 /**

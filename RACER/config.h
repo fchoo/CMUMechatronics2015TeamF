@@ -40,6 +40,7 @@
 #define PITCH_EW (PITCH_EW_BASE+PITCH_ERR)
 #define ROLL_E (PITCH_NS_BASE-ROLL_ERR)
 #define ROLL_W -(PITCH_NS_BASE-ROLL_ERR)
+#define ROLL_N 0
 // Use pitch for steering
 
 // Up: -10, 86
@@ -59,6 +60,9 @@
 #define DIST_UFOR 2.0 // Dist for encoder to move forward during uturn
 #define TORQ_FB 10
 #define TIME_UFOR 500
+
+// Debounce delay
+#define DEBOUNCE_DELAY 50
 
 // Joystick parameters
 #define JOY_RANGE 12 // output range of X or Y movement
