@@ -162,7 +162,7 @@
             <div class="one_half">
                 <div class="service-item text-right element_from_left">
                     <h4>Sensor</h4>
-                    <p>The sensors component exists to interpret information from the current environment as well as the orientation of the robot. In this subsystem, there are two main components - grip sensors and boundary detection sensors. The grip sensors consist of force-sensitive resistors at the wheels and an inertial measurement unit (IMU) to sense the displacement off the window surface and the direction that the robot is facing with respect to gravity. The controller will make use of this information to calculate the required gripping force. The boundary detection component serves as the "eyes" of the robot. The tactile and IR sensors will provide feedback on the immediate surroundings of the robot, such as the distance to the nearest window boundary or obstacle.</p>
+                    <p>The sensors component exists to interpret information from the current environment as well as the orientation of the robot. In this subsystem, there are two main components - grip sensors and boundary detection sensors. The grip sensors consist of an inertial measurement unit (IMU) to sense the direction that the robot is facing with respect to gravity. The controller will make use of this information to calculate the required gripping force. The boundary detection component serves as the "eyes" of the robot. The IR sensors will provide feedback on the immediate surroundings of the robot, such as the distance to the nearest window boundary or obstacle.</p>
                 </div>
             </div>
             <div class="one_half last">
@@ -248,8 +248,6 @@
                 <li class="element_fade_in">
                     <i class="fa fa-road"></i>
                     <h5>Boundary Detection Sensors</h5>
-                    <p>For boundary detection, we have chosen E-Switch TS0101F020P as a tactile sensor to detect the window frame upon contact.</p>
-                    <br/>
                     <p>To allow for more precise maneuver near the boundaries, we are also using Sharp GP2Y0D815Z0F Digital Distance Sensor 15cm with a range of 0.5-15cm. This proximity sensor provides us with distance measurement of the boundaries with good precision.</p>
                 </li>
 
@@ -257,8 +255,6 @@
                     <i class="fa fa-magnet"></i>
                     <h5>Grip Detection Sensors</h5>
                     <p>For the grip sub-system, we are using Popolu MinIMU-9 v3 to measure and calculate the orientation of the robot. With nine independent rotation, acceleration, we can use the provided Arduino library to calculate estimated roll, pitch, and yaw angles, and visualize orientation of the board with the 3D test program.</p>
-                    <br/>
-                    <p>To ensure the gripping force stay within the allowance range, we are using two 1.5 inch Force Sensing Resistors (FSR) to measure the pressure of the chassis on the axles of the wheels. The readings from the FSRs provide a good enough approximation to check the stability of the gripping force.</p>
                 </li>
             </ul>
             <div class="section-title">
