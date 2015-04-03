@@ -290,10 +290,12 @@
                     <li><a href="#tabs-si-5">Controller</a></li>
                 </ul>
                 <div id="tabs-si-1" class="tab-si_container">
-                    <p>Currently, the pathfinding algorithm has been integrated with the IR sensor, while the locomotion’s grip and movement components has also been integrated into one component. Figure 5 shows a screenshot of a visualization done for the pathfinding algorithm in conjunction with the IR sensor, while Figure 6 shows the second prototype chassis with the EDF and motors together on the same.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/1.png" alt=""/><br>Figure 5: Screenshot of Pathfinding Algorithm Enabled by IR Sensor</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/2.png" alt=""/><br>Figure 6: Integration EDF and 4 Wheeled DC Motor Chassis</p>
-
+                    <p>All the sub-systems have been successfully integrated together. There are three main aspects to the system integration.</p>
+                    <p>1) With the IMU's input, we are able to calculate the robot's orientation. Once the IMU senses that the robot is placed in the vertical position, the EDF will be activated to adhere the robot to the window.</p>
+                    <p>2) The path-finding involves making a U-turn at the window boundary. Each turn is controlled by a combination of IR sensor, IMU and encoders. Figure 5 shows the transition between turning states in path-finding algorithm.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure 5: Path-finding State Transition Logic with Sensors</p>
+                    <p>3) To compensate for the off-course error, the robot utilizes IMU for greater accuracy. The basic PID loop was altered to incorporate the pitch angle and self-correct its steering to counteract the random drift that occurs during movement. Note that since the robot is moving straight only in the east and west direction during path-finding, the motor feedback is isolated to these directions.
+                    <p class="imgtext"><br/><img src="images/system_implementation/IMU-Motor_feedback.jpg" alt=""/><br>Figure 6: Flow chart of RACER motor PID loop using IMU</p>
                 </div>
                 <div id="tabs-si-2" class="tab-si_container">
                     <h4 class="header-divider">Movement</h4>
