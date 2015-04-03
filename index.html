@@ -293,7 +293,7 @@
                     <p>All the sub-systems have been successfully integrated together. There are three main aspects to the system integration.</p>
                     <p>1) With the IMU's input, we are able to calculate the robot's orientation. Once the IMU senses that the robot is placed in the vertical position, the EDF will be activated to adhere the robot to the window.</p>
                     <p>2) The path-finding involves making a U-turn at the window boundary. Each turn is controlled by a combination of IR sensor, IMU and encoders. Figure 5 shows the transition between turning states in path-finding algorithm.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure 5: Path-finding State Transition Logic with Sensors</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure 5: Path-finding State Transition Logic with Sensors</p><br/>
                     <p>3) To compensate for the off-course error, the robot utilizes IMU for greater accuracy. The basic PID loop was altered to incorporate the pitch angle and self-correct its steering to counteract the random drift that occurs during movement. Note that since the robot is moving straight only in the east and west direction during path-finding, the motor feedback is isolated to these directions.
                     <p class="imgtext"><br/><img src="images/system_implementation/IMU-Motor_feedback.jpg" alt=""/><br>Figure 6: Flow chart of RACER motor PID loop using IMU</p>
                 </div>
@@ -309,7 +309,7 @@
                     </div>
                 </div>
                 <div id="tabs-si-3" class="tab-si_container">
-                    <h4 class="header-divider">Sensors</h4>
+                    <h4 class="header-divider">Localization</h4>
                     <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. Figure 8 below shows a possible position of the IMU (Figure 8, left), as well as a computer visualization of its position (Figure 8, right).</p>
                     <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure 8: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
                     <h4 class="header-divider">Boundary detection</h4>
@@ -353,7 +353,15 @@
                     <li><a href="#tabs-5">Controller</a></li>
                 </ul>
                 <div id="tabs-1" class="tab_container">
-                    <p>No overall comprehensive tests have been conducted yet.</p>
+                    <p>We have started an initial testing of the integration of all the sub-systems on the floor. The robot has successfully achieved all testing objectives as listed below:</p>
+                    <p> 1) Successful activation and coordination of all sub-systems </p>
+                    <p> 2) Precise detection of window boundaries </p>
+                    <p> 3) Controlled turning of the robot during U-Turns </p>
+                    <p> 4) Off-course compensation during straight paths <p>
+                    <p>The video below shows a successful trial run of the robot conducting path-finding on the floor.</p><br/><br/></p>
+                    <div class="para-video-container">
+                        <iframe src="https://drive.google.com/a/andrew.cmu.edu/file/d/0B8gHgXWoRr0lanh1anIwdnlmNEE/view?usp=sharing" width="640" height="480"></iframe>
+                    </div>
                 </div>
                 <div id="tabs-2" class="tab_container">
                     <p>Currently, the EDF is able to output a continuous thrust of approximately 6 kg. This is done by setting up a test rig consisting of wooden frames and a weighing scale. Figure 10 below shows the setup of the test rig while experimenting with various EDF fan speed.<br/><br/></p>
