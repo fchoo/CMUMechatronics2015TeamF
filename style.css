@@ -3129,11 +3129,10 @@
 
 	.vr-container {
 		position: relative;
-		padding-bottom: 50%;
+		padding-bottom: 60%;
 		padding-top: 10px;
-		height: 0;
+		height: 0px;
 		overflow: hidden;
-		margin-bottom:10px;
 	}
 
 	.vr-container iframe, .vr-container object, .vr-container embed {
