@@ -135,13 +135,12 @@
             <div class="section-title">
                 <h1>Functional Architecture</h1>
                 <span class="border"></span>
-                <p>From the design requirements, our team derived four main functions the robot must have – movement, suction, environment-sensing and cleaning. Figure X depicts the major functions and flows between the functions.</p>
+                <p>From the design requirements, our team derived four main functions the robot must have – movement, suction, environment-sensing and cleaning. Figure 20 depicts the major functions and flows between the functions.</p>
                 <br/>
-                <p class="imgtext"><br/><img src="images/func-arch.png" alt=""/>Figure X: Main systems and sub-systems</p>
+                <p class="imgtext"><br/><img src="images/func-arch.png" alt=""/>Figure 20: Main systems and sub-systems</p>
                 <br/>
-                <p>The sensors will be in-charged of providing the environmental information (such as cleanliness of window and position of the robot) to the controller. With the information, the controller then further instructs the locomotion subsystem. Figure X shows the logic flow of the robot's movement. In the meantime, the controller will separately instruct the cleaning component(s).</p><br/>
-                <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure X: Path-finding State Transition Logic</p><br/>
-                <!-- CHECKPOINT 1 -->
+                <p>The sensors will be in-charged of providing the environmental information (such as cleanliness of window and position of the robot) to the controller. With the information, the controller then further instructs the locomotion subsystem. Figure 21 shows the logic flow of the robot's movement. In the meantime, the controller will separately instruct the cleaning component(s).</p><br/>
+                <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure 21: Path-finding State Transition Logic</p><br/>
             </div>
         </div>
         <!--/Container -->
@@ -155,9 +154,9 @@
             <div class="section-title">
                 <h1>Cyberphysical Architecture</h1>
                 <span class="border"></span>
-                <p>The following architecture describes the flow of information between the different subsystems within our robot. As described previously, the following four main subsystems in the robot’s physical architecture (main controller, sensors, cleaning, and locomotion) are depicted in Figure X below. The supply of power will be distributed by the main controller (an Arduino Mega) to the other subsystems.</p>
+                <p>The following architecture describes the flow of information between the different subsystems within our robot. As described previously, the following four main subsystems in the robot’s physical architecture (main controller, sensors, cleaning, and locomotion) are depicted in Figure 22 below. The supply of power will be distributed by the main controller (an Arduino Mega) to the other subsystems.</p>
                 <br/>
-                <p class="imgtext"><br/><img src="images/cyberphysical-arch.png" alt=""/><br/>Figure X: Cyberphysical block diagram</p>
+                <p class="imgtext"><br/><img src="images/cyberphysical-arch.png" alt=""/><br/>Figure 22: Cyberphysical block diagram</p>
             </div>
             <div class="one_half">
                 <div class="service-item text-right element_from_left">
@@ -176,7 +175,7 @@
             <div class="one_half">
                 <div class="service-item text-right element_from_left">
                     <h4>Cleaning</h4>
-                    <p>The cleaning subsystem has two main mechanisms – scrubbing and solution dispensing. The bristle brushes will be continuously running as long as the robot is functioning. Hence, the scrubbing component will not require any form of input from the controller.</p>
+                    <p>The cleaning subsystem has two main mechanisms – cloth extension and solution dispensing. The cloth extension uses microcloth to wipe and clean the surface. Hence, the cloth extension component will not require any form of input from the controller.</p>
                     <br/>
                     <p>However, the solution dispenser will require a periodic signal from the controller every few seconds. When the controller signals the spray nozzle, a small amount of cleaning solution will be sprayed onto the window surface.</p>
                 </div>
@@ -192,9 +191,9 @@
             <div class="section-title">
                 <h1>&nbsp;</h1>
                 <span class="border"></span>
-                <p>Below is our physical architecture. The arrows illustrates input and output lines on the arduino. Numbers on the arrows indicate how many lines are going from the arduino to the device.</p>
+                <p>Figure 23 shows our physical architecture. The arrows illustrates input and output lines on the arduino. Numbers on the arrows indicate how many lines are going from the arduino to the device.</p>
                 <br/>
-                <p class="imgtext"><br/><img src="images/physical_arch.png" alt=""/><br/>Figure X: Physical Architecture</p>
+                <p class="imgtext"><br/><img src="images/physical_arch.png" alt=""/><br/>Figure 23: Physical Architecture</p>
             </div>
         </div>
         <!--/Container -->
@@ -210,11 +209,11 @@
                 <span class="border"></span>
                 <p>The system is modelled after a racecar, with a two-wheeled chassis and a suction fan mounted in the center. It utilizes a passive cleaning mechanism in which cleaning solution is sprayed in front of the robot and wiped by the cloth and squeegee.</p>
                 <br/>
-                <div class="vr-container">
-                    <!-- <iframe src="dual edf render_VR.106.html" width="400" height="225" frameborder="0"></iframe> -->
-                </div>
-                <p class="imgtext">Figure X: CAD model of RACER</p>
-                <!-- <p class="imgtext"><br/><img class="element_fade_in" src="images/racer.png" alt=""/><br/>Figure X: CAD model of RACER</p> -->
+<!--                 <div class="vr-container">
+                    <iframe src="dual edf render_VR.106.html" width="800" height="600" frameborder="0"></iframe>
+                </div> -->
+                <!-- <p class="imgtext">Figure 5: CAD model of RACER</p> -->
+                <p class="imgtext"><br/><img class="element_fade_in" src="images/racer.png" alt=""/><br/>Figure 5: CAD model of RACER</p>
             </div>
             <br/>
             <!--/Section Title -->
@@ -222,7 +221,7 @@
                 <li class="element_fade_in">
                     <i class="fa fa-truck"></i>
                     <h5>Chassis and Suction</h5>
-                    <p>The chassis is made of laser acrylic and wood and measures 15" by 15". The robot is held normal to the wall with the use of a 5" electric duct fan.</p>
+                    <p>The chassis is made of laser acrylic and measures 9.5" by 7.5". The robot is held normal to the wall with the use of a 3" electric duct fan.</p>
                 </li>
 
                 <li class="element_fade_in">
@@ -240,9 +239,7 @@
                 <li class="element_fade_in">
                     <i class="fa fa-eraser"></i>
                     <h5>Cleaning</h5>
-                    <p>The cleaning system on the robot uses 4 high speed cylindrically spiraled bristle brushes and buffers. Each high speed brush is coupled to a drive motor so that no additional actuators are necessary to power the brushes. This design reduces weight considerably and also offers a mechanical fix that automatically adjusts the speed of the rotating bristles proportionally to the speed of the robot.</p>
-                    <br/>
-                    <p>The robot will have a small onboard tank to carry the cleaning solution and will have 2 to 4 spray nozzles to disperse the cleaning solution on the window.</p>
+                    <p>RACER adopts passive cleaning system. This system consists of two cleaning extensions that extend below the robot and make contact with the window. These extensions are thin pieces of acrylic with industrial strength Velcro on the top side. The cleaning cloth is doubled up, and wrapped around the acrylic and attaches to the Velcro. The cleaning system also contains a pump to apply the cleaning solution to the window. The pump is timed to spray the fluid at intervals such that it minimizes the use of the cleaning fluid.</p>
                 </li>
 
                 <li class="element_fade_in">
@@ -260,9 +257,9 @@
             <div class="section-title">
             <h4 class="title-divider">Development</h4>
             <dl class="accordion">
-            <p>Figure X shows a snapshot of our development progress. We have iterated through 3 designs, improving on different sub-systems.</p>
+            <p>Figure 6 shows a snapshot of our development progress. We have iterated through 3 designs, improving on different sub-systems.</p>
                 <br/>
-                <p class="imgtext"><br/><img src="images/overall_system/prototype_transition.jpg" alt=""/><br/>Figure X: Snapshot of RACER development</p>
+                <p class="imgtext"><br/><img src="images/overall_system/prototype_transition.jpg" alt=""/><br/>Figure 6: Snapshot of RACER development</p>
             </div>
             <h4 class="title-divider">Design Trade Studies</h4>            <dl class="accordion">
                 <dt><span class="accordion-status"></span><span>Controller</span></dt>
@@ -308,47 +305,57 @@
                 <div id="tabs-si-1" class="tab-si_container">
                     <p>All the sub-systems have been successfully integrated together. There are three main aspects to the system integration.</p>
                     <p>1) With the IMU's input, we are able to calculate the robot's orientation. Once the IMU senses that the robot is placed in the vertical position, the EDF will be activated to adhere the robot to the window.</p>
-                    <p>2) The path-finding involves making a U-turn at the window boundary. Each turn is controlled by a combination of IR sensor, IMU and encoders. Figure X shows the transition between turning states in path-finding algorithm.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure X: Path-finding State Transition Logic with Sensors</p><br/>
+                    <p>2) The path-finding involves making a U-turn at the window boundary. Each turn is controlled by a combination of IR sensor, IMU and encoders. Figure 7 shows the transition between turning states in path-finding algorithm.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/STD_sensors.jpg" alt=""/><br>Figure 7: Path-finding State Transition Logic with Sensors</p><br/>
                     <p>3) To compensate for the off-course error, the robot utilizes IMU for greater accuracy. The basic PID loop was altered to incorporate the pitch angle and self-correct its steering to counteract the random drift that occurs during movement. Note that since the robot is moving straight only in the east and west direction during path-finding, the motor feedback is isolated to these directions.
-                    <p class="imgtext"><br/><img src="images/system_implementation/IMU-Motor_feedback.jpg" alt=""/><br>Figure X: Flow chart of RACER motor PID loop using IMU</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/IMU-Motor_feedback.jpg" alt=""/><br>Figure 8: Flow chart of RACER motor PID loop using IMU</p>
                 </div>
                 <!-- Locomotion -->
                 <div id="tabs-si-2" class="tab-si_container">
                     <h4 class="header-divider">Movement</h4>
-                    <p>The robot’s movement will be enabled by two independent DC motors and wheel system. The wheels have independent motion so as to allow the robot to turn in place. More specifically, the robot will have the capability to turn 90° right or left, depending on its current position. Figure X below shows a prototype of the window cleaning robot, with its two distinct wheel system.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/3.png" alt=""/><br>Figure X: Picture Displaying RACER’s Locomotion Mechanisms</p>
-                    <h4 class="header-divider">Grip</h4>
-                    <p>The robot will be held in place via the electric duct fan (EDF). The EDF will create a normal suction force toward the window, while the wheels will provide the friction for the robot to maintain its position. In Figure X above, the EDF is placed at the centre of the chassis, supported by a wooden frame. The wooden frame’s purpose is to evenly distribute the force generated by the EDF to the two different wheels.</p>
-                    <p><br/>The video below demonstrates how a prototype of our robot is able to cling onto a surface.<br/><br/></p>
+                    <!-- Wheels -->
+                    <p>The updated chassis concept uses two smaller EDF fans placed and centered at the front and back of the chassis. Two smaller EDFs are used because it was determined that a single smaller fan could not produce enough thrust to achieve reliable and robust grip throughout all driving maneuvers on the window.</p>
+                    <p><br/>The video below demonstrates how a prototype v2 of our robot with a single EDF is able to cling onto a surface.<br/><br/></p>
                     <div class="para-video-container">
                         <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0B8jIISEvYcqJbEdJZi1ES2VHLTA/preview" width="640" height="480"></iframe>
                     </div>
+                    <!-- Grip -->
+                    <h4 class="header-divider">Grip</h4>
+                    <p>The original 4-wheeled drive was reduced to a differential 2-wheel drive. Both wheels are centered on the chassis and the passive cleaning structure on the front and back of the robot serve to balance the robot from pitching about its central drive axle. The decision to use a centered two wheel differential drive versus the 4-wheel differential was based upon the initial test results with the 4-wheel system. During 4-wheel drive tests the robot had trouble with grip because the system was much larger and heavier. In addition, the main acrylic chassis base was slightly warping or deflecting under the load of the EDF thrust and wasn’t evenly distributed among the wheels leading to slip in some wheels. This slip introduced significant drifting problems and also posed challenges when attempting to turn accurately in place. Therefore, by reducing the the number of wheels from 4 to 2, the system was able to be reduced in mass significantly and turning became more robust and was able to be executed more rapidly and in a repeatable manner. Figure 9 below shows a prototype of the window cleaning robot, with its two distinct wheel system.</p>
+                    <p class="imgtext"><br/><img src="images/overall_system/prototype_3_labelled.jpg" alt=""/><br>Figure 9: Picture Displaying RACER’s Locomotion Mechanisms</p>
                 </div>
                 <!-- Sensors -->
                 <div id="tabs-si-3" class="tab-si_container">
                     <h4 class="header-divider">Localization</h4>
-                    <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. Figure X below shows a possible position of the IMU (Figure X, left), as well as a computer visualization of its position (Figure X, right).</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure X: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
+                    <p>The adhesive force acting on the window will primarily be controlled by a PID controller. The feedback signals will be provided by 2 main components: a force-sensitive resistor (FSR) and an inertial measurement unit (IMU).<br/><br/>The IMU provides extremely accurate readings of the sensor’s current position. For instance, the IMU generates readings such as its roll, pitch, and its bearings. With the different results, we will be able to figure out if the EDF is providing sufficient adhesive force. The figures below shows a possible position of the IMU (Figure 10, left), as well as a computer visualization of its position (Figure 10, right).</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/4.png" alt=""/><br>Figure 10: Real-life position of an IMU sensor (left); Computer Generated Position of the IMU sensor (right)</p>
+                    <p><br/>To finetune RACER’s movement, the robot also employed the use of Pololu’s optical encoders. By attaching the encoders onto wheels, the controller is now able to:<br/>1)Specify a certain amount of rotation to be done by the wheel(s)<br/>2) Detect the amount of rotation experienced by the wheel<br/>With both functionalities, the encoders then serve to complement the IMU in detecting its location, orientation, and distance travelled.
                     <h4 class="header-divider">Boundary detection</h4>
-                    <p>The boundary detection will be achieved using both an infrared sensor (IR sensor) as well as a tactile sensor. <br/></br>The IR sensor is used to detect the any obstacles in the direction facing the IR sensor. The sensor transmit the data to the microcontroller through variations of voltages, and the microcontroller will have to decipher the corresponding distance of the obstacle. Figure X below shows linearization equation used to calculate the real-life distance of the obstacle from a voltage reading.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/6.png" alt=""/><br>Figure X: Power Trend-line for IR Sensor’s Analog to Digital Conversion</p>
+                    <p>The boundary detection will be achieved using both an infrared sensor (IR sensor) as well as a tactile sensor. <br/></br>The IR sensor is used to detect the any obstacles in the direction facing the IR sensor. The sensor transmit the data to the microcontroller through variations of voltages, and the microcontroller will have to decipher the corresponding distance of the obstacle. Figure 11 below shows linearization equation used to calculate the real-life distance of the obstacle from a voltage reading.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/6.png" alt=""/><br>Figure 11: Power Trend-line for IR Sensor’s Analog to Digital Conversion</p>
                 </div>
                 <!-- Cleaning -->
                 <div id="tabs-si-4" class="tab-si_container">
-                    <p>The cleaning subsystem will consist of 2 main mechanisms – dispensing of cleaning solution and the scrubbing mechanism.<br/><br/>The robot will periodically dispense cleaning solution via a pump and nozzle onto the window. The cleaning solution was decided to be dispensed periodically to save on solution (and hence reduce the weight RACER is supposed to carry), as well as to ensure a relatively dry environment for RACER to work in. The video below shows the motor pump dispensing solution using a plastic tube. A microcontroller will be used to send a periodic signal to activate the pump (not shown in the video).<br/><br/></p>
-                    <div class="para-video-container">
-                        <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0BzhOFz6a2zTVbkdTYnBweUtGbzQ/preview" width="640" height="480"></iframe>
-                    </div>
-                    <p>In addition, RACER will have an inbuilt scrubbing mechanism (consisting of four bristle brushes attached to each of the four motors). Figure X below shows a CAD model of the scrubbing mechanism to be attached to the wheels.</p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/7.png" alt=""/><br>Figure X: Depiction of Scrubbing Mechanism (attached to wheels)</p>
+                    <p>The cleaning subsystem will consist of 2 main mechanisms – dispensing of cleaning solution and the cloth extension.<br/><br/>The robot will periodically dispense cleaning solution via a pump and nozzle onto the window. The cleaning solution was decided to be dispensed periodically to save on solution (and hence reduce the weight RACER is supposed to carry), as well as to ensure a relatively dry environment for RACER to work in. The video below shows the motor pump dispensing solution using a plastic tube. A microcontroller will be used to send a periodic signal to activate the pump (not shown in the video).<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/cleaning/pump_control_v2.png" alt=""/><br>Figure 12: Pump Control Mechanism</p>
+                    <p><br/>In addition, this system consists of two cleaning plates that extend below the robot and make contact with the window. These extensions are identical in design, with one at the front of the chassis and the other at the rear. The first extension will complete the majority of the cleaning, and spreading the cleaning solution across the width of the robot. The second extension mechanism will remove any excess fluid and dirt that the first leaves behind. These mechanisms are a thin piece of acrylic with industrial strength Velcro on the top side. The cleaning cloth is doubled up, and wrapped around the acrylic and attaches to the Velcro.</p>
+                    <p class="imgtext"><br/><img src="images/cleaning/microfiber_attachment_v2.png" alt=""/><br>Figure 13: Depiction of Cleaning Extensions</p>
                 </div>
                 <!-- Controller -->
                 <div id="tabs-si-5" class="tab-si_container">
-                    <p>RACER will be controller via one microcontroller – the Arduino Mega. Figure X below shows a picture of the Arduino Mega.<br/><br/></p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/8.jpg" alt=""/><br>Figure X: Picture of Arduino Mega</p>
-                    <p><br/>In addition, the microcontroller will implement a pathfinding algorithm to allow the robot to clean the entire window. Currently, the microcontroller is able to implement a naïve method of cleaning the window by controlling RACER to zig-zag across the window from a corner to another corner. Figure X below shows the route RACER will take with the above implementation of the pathfinding algorithm.<br/><br/></p>
-                    <p class="imgtext"><br/><img src="images/system_implementation/9.jpg" alt=""/><br>Figure X: Basic Implementation of a Pathfinding Algorithm</p>
+                    <p>RACER will be controller via one microcontroller – the Arduino Mega. Figure 14 below shows a picture of the Arduino Mega.</p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/8.jpg" alt=""/><br>Figure 14: Picture of Arduino Mega</p>
+                    <p><br/>The microcontroller will implement a pathfinding algorithm to allow the robot to clean the entire window. Currently, the microcontroller is able to implement a naïve method of cleaning the window by controlling RACER to zig-zag across the window from a corner to another corner. Figure 15 below shows the initial route RACER will take to clean the window, starting from the bottom left corner.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/old_pathfinding.jpg" alt=""/><br>Figure 15: Old Implementation of a Pathfinding Algorithm</p>
+                    <p><br/>However, after extensive testing, our team came to the conclusion that the above pathfinding algorithm is not ideal. This is due to the wheels slipping whilst climbing upwards, leading to inaccurate readings from the encoders. Hence, we decided to change the starting position of RACER, as well as change the direction it will move. However, as seen in Figure 16 below, the “lawnmower” motion of RACER is kept the same.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/new_pathfinding.jpg" alt=""/><br>Figure 16: New Implementation of a Pathfinding Algorithm</p>
+                    <p><br/>As discussed in the sensors section, we are utilizing encoders as a complement to the IMU to localize RACER. However, one drawback of using encoders will be the need to continuously poll the encoders for data. This could lead to RACER taking an infinite amount of time waiting on the encoders. To avoid this issue, we attached the encoders to Arduino’s in-built interrupt call. Hence, Arduino will raise an interrupt every instance when the encoders have information to convey to the controller.</p>
+                    <p><br/>To prevent errors due to wiring disconnections. we have created the circuit schematic and designed a PCB board. Regarding the circuit, the arduino and motor drivers are powered via an external power supply. The rest of the components are powered via the 5V output from the arduino. The motors and EDF are also required to be connected to the PWM pins. We have added in switches and push buttons to as external controls for the various functionalities of the robot. Figure 17 displays the circuit diagram for all the electrical components.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/RACER_circuit.png" alt=""/><br>Figure 17: RACER Circuit Diagram</p>
+                    <p><br/>Due to the space constraint from adding a second EDF to the chassis, there was insufficient space to put a breadboard or circuit board on the chassis. Hence, we came up with the idea to mount a circuit board on top of the Arduino, creating an additional layer on top of the Arduino while providing space for RACER’s circuitry. Figure 18 below displays the proposed method of mounting the solder-able circuit board on top of the Arduino.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/pcb_mounting.jpg" alt=""/><br>Figure 18: Proposed Method of Mounting Circuit Board on Arduino</p>
+                    <p><br/>As shown in Figure 18 above, we would solder extension pins onto the circuit board before attaching the entire board to the Arduino. RACER’s circuitry will then be soldered onto the circuit board. Hence, by mounting the circuit in such a way, we are able to save space on the chassis while ensuring the integrity and stability of the circuit. Figure 19 shows the pcb circuitry design.<br/><br/></p>
+                    <p class="imgtext"><br/><img src="images/system_implementation/pcb_design.jpg" alt=""/><br>Figure 19: PCB design for RACER</p>
                 </div>
             </div>
             <!--/Section Title -->
@@ -375,10 +382,10 @@
                 <!-- Overall System -->
                 <div id="tabs-1" class="tab_container">
                     <p>We have started an initial testing of the integration of all the sub-systems on the floor. RACER has successfully achieved all testing objectives as listed below:</p>
-                    <p> 1) Successful activation and coordination of all sub-systems </p>
-                    <p> 2) Precise detection of window boundaries </p>
-                    <p> 3) Controlled turning of the robot during U-Turns </p>
-                    <p> 4) Off-course compensation during straight paths <p><br/>
+                    <p>1) Successful activation and coordination of all sub-systems </p>
+                    <p>2) Precise detection of window boundaries </p>
+                    <p>3) Controlled turning of the robot during U-Turns </p>
+                    <p>4) Off-course compensation during straight paths <p><br/>
                     <p>The video below shows a successful trial run of the robot conducting path-finding on the floor.</p><br/><br/>
                     <div class="para-video-container">
                         <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0B8gHgXWoRr0lanh1anIwdnlmNEE/preview" width="640" height="480"></iframe>
@@ -386,22 +393,27 @@
                 </div>
                 <!-- Locomotion -->
                 <div id="tabs-2" class="tab_container">
-                    <p>EDF has successfully generated sufficient output thrust to keep RACER adhered to the window. With the EDF activated, RACER is capable of moving on the window without losing suction.</p><br/><br/>
+                    <p><b>Grip:</b> EDF has successfully generated sufficient output thrust to keep RACER adhered to the window. With the EDF activated, RACER is capable of moving on the window without losing suction.</p><br/><br/>
                     <div class="para-video-container">
                         <iframe src="https://docs.google.com/a/andrew.cmu.edu/file/d/0B8gHgXWoRr0lTzQ3aUczTk1NWU0/preview" width="640" height="480"></iframe>
                     </div>
+                    <p><br/><b>Movement:</b> During 4-wheel drive tests the robot had trouble with grip because the system was much larger and heavier. In addition, the main acrylic chassis base was slightly warping or deflecting under the load of the EDF thrust and wasn’t evenly distributed among the wheels leading to slip in some wheels. This slip introduced significant drifting problems and also posed challenges when attempting to turn accurately in place. Therefore, by reducing the the number of wheels from 4 to 2, the system was able to be reduced in mass significantly and turning became more robust and was able to be executed more rapidly and in a repeatable manner.</p>
                 </div>
                 <!-- Sensors -->
                 <div id="tabs-3" class="tab_container">
-                    <p>From tests in sensors lab, we managed to achieve accuracy in the IR sensor’s readings up to the centimeter. However, there is a great increase in noise signal when the closest obstacle or boundary is greater than 50cm. However, that does not affect our system as the maximum distance reading required is 30cm.<br/><br/>In addition, from another systems test, the inertial measurement unit (IMU) is able to calculate and transmit orientation and bearings up to 0.01° accuracy. This is far better than we expected, as we only require accuracy up to the degree.</p>
+                    <p><b>IR sensor:</b> From tests in sensors lab, we managed to achieve accuracy in the IR sensor’s readings up to the centimeter. However, there is a great increase in noise signal when the closest obstacle or boundary is greater than 50cm. However, that does not affect our system as the maximum distance reading required is 30cm.</p>
+                    <p><br/><b>IMU:</b> In addition, from another systems test, the inertial measurement unit (IMU) is able to calculate and transmit orientation and bearings up to 0.01° accuracy. This is far better than we expected, as we only require accuracy up to the degree.</p>
                 </div>
                 <!-- Cleaning -->
                 <div id="tabs-4" class="tab_container">
-                    <p>The current motor pump for the cleaning solution is able to dispense solution with varying speed based on the input voltages. With increasing voltages (minimum of 6V, capped at 20V), the motor is able to speed up the rate of pump. However, since we have decided to control the frequency of the pump via the microcontroller, the solution dispenser can also be powered via a battery instead of a varying voltage source.  </p>
+                    <p><b>Pump Control:</b> The current motor pump for the cleaning solution is able to dispense solution with varying speed based on the input voltages. With increasing voltages (minimum of 6V, capped at 20V), the motor is able to speed up the rate of pump. However, since we have decided to control the frequency of the pump via the microcontroller, the solution dispenser can also be powered via a battery instead of a varying voltage source.</p>
+                    <p><br/><b>Cleaning Efficiency:</b> Though initial testing of the MicroFiber Cloth on the chassis, without using the cleaning solution, the cloth was able to remove a majority of the dirt from the window. After applying Windex to the window, RACER was able to remove all the dirt in the area the Windex was applied. Testing with mixing isopropyl alcohol with the Windex showed that mixing the alcohol into the solution provided for a quicker evaporation of the solution from the window.</p>
                 </div>
                 <!-- Controller -->
                 <div id="tabs-5" class="tab_container">
-                    <p>The path-finding algorithm is capable of transiting between all states based on the sensors' input. RACER has also successfully detected the end state (reaching the top-right corner) and stopped.</p>
+                    <p><b>Path-finding:</b> The path-finding algorithm is capable of transiting between all states based on the sensors' input. RACER has also successfully detected the end state (reaching the top-right corner) and stopped.</p>
+                    <p><br/><b>Wheel Control:</b> By polling the number of interrupts raised by the Arduino, we managed to achieve a resolution of approximately 800 ticks per revolution done by the wheel and encoder combination. This translates to approximately 2.22 ticks per degree change. Hence, we are able to achieve control of 0.5 degree change for the wheels via the Arduino.</p>
+                    <p><br/><b>Interrupts:</b> To increase robustness, our wheel encoders utilizes interrupts rather than a continuous polling system call. By using interrupts, we ensure that the main control loop does not get stuck in the polling state, but is continuously running.</p>
                 </div>
             </div>
 
@@ -793,6 +805,19 @@
                                 <p class="project-categories">Pump and brush mechanism for window cleaning</p>
                             </div>
                         </div>
+                    <!-- All other images in the gallery -->
+                    <a title="3D Printed Pump Base Iteration 2" rel="prettyPhoto[cleaning]" href="images/cleaning/3d_pumpbase_v2.png"/>
+                    <a title="3D Printed Pump Base Iteration 1" rel="prettyPhoto[cleaning]" href="images/cleaning/3d_pumpbase_v1.png"/>
+                    <a title="Acrylic Laser Cut Pump Base 1" rel="prettyPhoto[cleaning]" href="images/cleaning/acrylic_pumpbase_v1.png"/>
+                    <a title="Acrylic Laser Cut Pump Base 2" rel="prettyPhoto[cleaning]" href="images/cleaning/acrylic_pumpbase_v2.png"/>
+                    <a title="Pump Control v1" rel="prettyPhoto[cleaning]" href="images/cleaning/pump_control_v1.png"/>
+                    <a title="Pump Control v2 With IR" rel="prettyPhoto[cleaning]" href="images/cleaning/pump_control_v2.png"/>
+                    <a title="Fluid Reservior v1" rel="prettyPhoto[cleaning]" href="images/cleaning/fluid_reservoir_v1.png"/>
+                    <a title="MicroFiber Attached to Chassis v1" rel="prettyPhoto[cleaning]" href="images/cleaning/microfiber_attachment_v1.png"/>
+                    <a title="MicroFiber Attached to Chassis v2" rel="prettyPhoto[cleaning]" href="images/cleaning/microfiber_attachment_v2.png"/>
+                    <a title="MicroFiber Concept" rel="prettyPhoto[cleaning]" href="images/cleaning/microfiber_concept.png"/>
+                    <a title="MicroFiber Cloth Fabrication" rel="prettyPhoto[cleaning]" href="images/cleaning/cloth_fab.png"/>
+                    <!-- /All other images -->
                     </a>
                 </div>
                 <!-- SENSORS  -->
