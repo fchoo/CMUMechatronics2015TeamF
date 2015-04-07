@@ -1,8 +1,18 @@
-
-
-/*======================================
-=            Serial Control            =
-======================================*/
+/******************************************************************************
+ * (18-578 / 16-778 / 24-778) MECHATRONIC DESIGN
+ * TEAM F: [RACER]
+ * MEMBERS:
+ *          - CHOO, FOO LAI
+ *          - EREBOR, TELSON
+ *          - FLAREAU, JOSHUA
+ *          - KALOUCHE, SIMON
+ *          - TAN, NICHOLAS
+ *
+ * LAST REVISION: 04/03/2015
+ *
+ * Serial Control. Include parsing of serial communication.
+ *
+ *****************************************************************************/
 
 int getSerial()
 {
@@ -41,42 +51,33 @@ void serialControl()
     }
     else if (cmd == 'p') // Stepping to a certain value
     {
-      man_value = getSerial(); // Get user input for pwm
-      while (pwm_value < man_value){
-        step_PWM(1);
-        Serial.print("PWM_Value: ");
-        Serial.println(pwm_value);
-      }
-      while (pwm_value > man_value) {
-        step_PWM(-1);
-        Serial.print("PWM_Value: ");
-        Serial.println(pwm_value);
-      }
+      pwm_id = getSerial(); // get id
+      // set pwm value
+      if (pwm_id == 1)
+        pwm_1_mval = getSerial();
+      else if (pwm_id == 2)
+        pwm_2_mval = getSerial();
+      // EDF 1
+      while (pwm_1_val < pwm_1_mval)
+        step_PWM(1,1);
+      while (pwm_1_val > pwm_1_mval)
+        step_PWM(1,-1);
+      // EDF 2
+      while (pwm_2_val < pwm_2_mval)
+        step_PWM(1,1);
+      while (pwm_2_val > pwm_2_mval)
+        step_PWM(1,-1);
     }
   }
+  // Motor commands
   if (cmd == 'a') // counter clockwise
-  {
-    // Serial.println("[INFO] Move left");
     moveLeft();
-  }
   else if (cmd == 'd') // clockwise
-  {
-    // Serial.println("[INFO] Move right");
     moveRight();
-  }
   else if (cmd == 'w') // forward
-  {
-    // Serial.println("[INFO] Move forward");
     moveForward();
-  }
   else if (cmd == 's') // backwards
-  {
-    // Serial.println("[INFO] Move back");
     moveBack();
-  }
   else if (cmd == 'q') // stop motor
-  {
-    // Serial.println("[INFO] Stop");
     stop();
-  }
 }

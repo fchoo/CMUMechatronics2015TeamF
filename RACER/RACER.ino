@@ -27,9 +27,12 @@
 int potValue;                 // to control EDF
 
 // Variables for EDF
-int pwm_value = PWM_MIN;
-int man_value;
-long pwm_timer = 0; // pwm_timer for PWM stepping
+int pwm_1_val = PWM_MIN;
+int pwm_2_val = PWM_MIN;
+int pwm_1_mval, pwm_2_mval;
+long pwm_1_utime = 0; // last update time for edf 1
+long pwm_2_utime = 0; // last update time for edf 2
+int pwm_id;
 
 // IR variables
 float irVal = 0;
@@ -57,7 +60,6 @@ int rstIMU_value_cur;
 int rstIMU_value_old;
 long rstIMU_timer;
 int rstIMU_state;
-
 
 // Serial
 int cmd = 'q';
@@ -99,10 +101,7 @@ void loop()
 {
   checkKillSW(); // Check if kill switch is hit
   if (isKilled)
-  {
-    if (DEBUG) Serial.println("[INFO] Killed switch flipped.");
     return; // do nothing once killed
-  }
 
   // checkPathfindSW();
   // checkRstIMUBut();
@@ -120,7 +119,7 @@ void loop()
     pathfindingFSM();
 
   // Feedback controls
-  edfFeedback();
+  // edfFeedback();
   motorFeedback();
 
   // DEBUG PRINTS
@@ -220,8 +219,10 @@ void checkRstIMUBut()
 
 void rstEDF()
 {
-  analogWrite(PIN_EDF, 0);
-  pwm_value = PWM_MIN; // reset pwm values
+  analogWrite(PIN_EDF_1, 0);
+  analogWrite(PIN_EDF_2, 0);
+  pwm_1_val = PWM_MIN;
+  pwm_2_val = PWM_MIN;
 }
 
 void rstPathfind()

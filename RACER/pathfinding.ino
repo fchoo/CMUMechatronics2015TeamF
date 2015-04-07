@@ -1,14 +1,18 @@
-
-/*=======================================*
- *           Pathfinding                 *
- *=======================================*/
-
-boolean hasTravelledUFOR()
-{
-  targetTime--;
-  if (targetTime <= 0) return true;
-  else return false;
-}
+/******************************************************************************
+ * (18-578 / 16-778 / 24-778) MECHATRONIC DESIGN
+ * TEAM F: [RACER]
+ * MEMBERS:
+ *          - CHOO, FOO LAI
+ *          - EREBOR, TELSON
+ *          - FLAREAU, JOSHUA
+ *          - KALOUCHE, SIMON
+ *          - TAN, NICHOLAS
+ *
+ * LAST REVISION: 04/03/2015
+ *
+ * Pathfinding. Include a finite state machine for pathfinding.
+ *
+ *****************************************************************************/
 
 void pathfindingFSM()
 {
@@ -81,6 +85,14 @@ void pathfindingFSM()
       }
       break;
   }
+}
+
+
+boolean hasTravelledUFOR()
+{
+  targetTime--;
+  if (targetTime <= 0) return true;
+  else return false;
 }
 
 void setTargetDist(float dist)

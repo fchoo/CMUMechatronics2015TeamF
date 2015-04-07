@@ -8,25 +8,25 @@
  *          - KALOUCHE, SIMON
  *          - TAN, NICHOLAS
  *
- * LAST REVISION: 03/20/2015
+ * LAST REVISION: 04/03/2015
  *
  * IO pins assignment
  *
  *****************************************************************************/
 
 /*
-  Assigned motor numbers for RACER
-              90
-
-           (front)
-              |
-              |
-    0  1 |---------| 2  0
-              |
-              |
-            (back)
-
-             -90
+  Assigned motor/edf numbers for RACER
+               90
+            (front)
+              EDF1
+               |
+               |
+    0  M1 |---------| M2  0
+               |
+               |
+              EDF2
+             (back)
+              -90
 */
 
 // Assigned pin numbers
@@ -35,7 +35,9 @@
 #define PIN_MOTOR_1_2 11
 #define PIN_MOTOR_2_1 8
 #define PIN_MOTOR_2_2 9
-#define PIN_EDF 5       // Digital PWM pin for EDF.
+// EDFs
+#define PIN_EDF_1 5      // Digital PWM pin for EDF.
+#define PIN_EDF_2 5       // Digital PWM pin for EDF.
 #define PIN_RSTIMU 4    // Recalibrate IMU
 #define PIN_PATHFIND 6  // Activate pathfind
 #define PIN_KILL 7      // Kill switch

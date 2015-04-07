@@ -1,7 +1,20 @@
+/******************************************************************************
+ * (18-578 / 16-778 / 24-778) MECHATRONIC DESIGN
+ * TEAM F: [RACER]
+ * MEMBERS:
+ *          - CHOO, FOO LAI
+ *          - EREBOR, TELSON
+ *          - FLAREAU, JOSHUA
+ *          - KALOUCHE, SIMON
+ *          - TAN, NICHOLAS
+ *
+ * LAST REVISION: 04/03/2015
+ *
+ * Sensors related functions. Includes initialization, reading and calculation
+ * functions for IR, IMU and encoders.
+ *
+ *****************************************************************************/
 
-/*===============================
-=            SENSORS            =
-===============================*/
 void updateAngles()
 {
   roll = getRoll();

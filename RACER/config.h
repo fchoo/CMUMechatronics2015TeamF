@@ -8,7 +8,7 @@
  *          - KALOUCHE, SIMON
  *          - TAN, NICHOLAS
  *
- * LAST REVISION: 03/20/2015
+ * LAST REVISION: 04/03/2015
  *
  * Configuration data for RACER.ino
  *
@@ -41,12 +41,6 @@
 #define ROLL_E (PITCH_NS_BASE-ROLL_ERR)
 #define ROLL_W -(PITCH_NS_BASE-ROLL_ERR)
 #define ROLL_N 0
-// Use pitch for steering
-
-// Up: -10, 86
-// Left: -88, 5
-// Right: 88, 5
-// Down: 155, -87
 
 // Motor
 #define TORQ_MIN 100

@@ -1,34 +1,20 @@
+/******************************************************************************
+ * (18-578 / 16-778 / 24-778) MECHATRONIC DESIGN
+ * TEAM F: [RACER]
+ * MEMBERS:
+ *          - CHOO, FOO LAI
+ *          - EREBOR, TELSON
+ *          - FLAREAU, JOSHUA
+ *          - KALOUCHE, SIMON
+ *          - TAN, NICHOLAS
+ *
+ * LAST REVISION: 04/03/2015
+ *
+ * Motor related functions. Includes moving, turning, feedback and compensation.
+ *
+ *****************************************************************************/
+
 #define round(x) ((x>=0)?(int)(x+0.5):(int)(x-0.5))
-
-/*==================================
-=            Locomotion            =
-==================================*/
-
-/**
- * Use encoders/IMU to coordinate the motors. This will attempt to straighten
- * the movement of the robot.
- */
-// void motorFeedback()
-// {
-//   // only in straight path states
-//   if ((state == LEFTU_NEXT) || (state == RIGHTU_NEXT))
-//   {
-//     // right wheel spinning more than left wheel
-//     if (rightWheelTicks > leftWheelTicks)
-//     // if ((rightWheelTicks > leftWheelTicks) || isVeeringLeft())
-//     {
-//       changeTorq(&torq_straight_1, TORQ_FB);
-//       changeTorq(&torq_straight_2, -TORQ_FB);
-//     }
-//     // left wheel spinning more than right wheel
-//     else if (rightWheelTicks < leftWheelTicks)
-//     // else if ((rightWheelTicks < leftWheelTicks) || isVeeringRight())
-//     {
-//       changeTorq(&torq_straight_1, -TORQ_FB);
-//       changeTorq(&torq_straight_2, TORQ_FB);
-//     }
-//   }
-// }
 
 /**
  * Use IMU to coordinate the motors. This will attempt to straighten
