@@ -15,10 +15,15 @@
  *****************************************************************************/
 
 // EDF Control
-#define PWM_MIN 132 //133 for actual serial
-#define PWM_MAX 140
-#define PWM_DEFAULT 220
-#define PWM_DELAY 50 // .05s
+#define EDF_MIN 132 //133 for actual serial
+#define EDF_MAX 140
+#define EDF_DEFAULT 220
+#define EDF_DELAY 50 // .05s
+
+// Pump control
+#define PUMP_VAL 100
+#define PUMP_UPTIME 1000
+#define PUMP_DOWNTIME 1000
 
 // define number of readings sensors take in
 #define FILTER_AVG 12

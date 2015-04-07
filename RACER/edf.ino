@@ -22,31 +22,31 @@ void EDF_init()
   // Initialize EDF Motor
   analogWrite(PIN_EDF_1, 0);
   analogWrite(PIN_EDF_2, 0);
-  delay(PWM_DELAY);
-  analogWrite(PIN_EDF_1, PWM_MIN);  // Engage EDF Motor
-  analogWrite(PIN_EDF_2, PWM_MIN);  // Engage EDF Motor
+  delay(EDF_DELAY);
+  analogWrite(PIN_EDF_1, EDF_MIN);  // Engage EDF Motor
+  analogWrite(PIN_EDF_2, EDF_MIN);  // Engage EDF Motor
 }
 
 void step_PWM(int edf_id, int dir)
 {
   if (edf_id == 1)
   {
-    if((millis()-pwm_1_utime)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
+    if((millis()-edf_1_utime)>=EDF_DELAY) // step at 1/EDF_DELAY Hz
     {
-      if (dir>0 && pwm_1_val<PWM_MAX) pwm_1_val++;
-      if (dir<0 && pwm_1_val>PWM_MIN) pwm_1_val--;
-      analogWrite(PIN_EDF_1, pwm_1_val); // Send PWM value to ESC
-      pwm_1_utime = millis(); // Update timer
+      if (dir>0 && edf_1_val<EDF_MAX) edf_1_val++;
+      if (dir<0 && edf_1_val>EDF_MIN) edf_1_val--;
+      analogWrite(PIN_EDF_1, edf_1_val); // Send PWM value to ESC
+      edf_1_utime = millis(); // Update timer
     }
   }
-  else
+  else if (edf_id == 2)
   {
-    if((millis()-pwm_2_utime)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
+    if((millis()-edf_2_utime)>=EDF_DELAY) // step at 1/EDF_DELAY Hz
     {
-      if (dir>0 && pwm_2_val<PWM_MAX) pwm_2_val++;
-      if (dir<0 && pwm_2_val>PWM_MIN) pwm_2_val--;
-      analogWrite(PIN_EDF_2, pwm_2_val); // Send PWM value to ESC
-      pwm_2_utime = millis(); // Update timer
+      if (dir>0 && edf_2_val<EDF_MAX) edf_2_val++;
+      if (dir<0 && edf_2_val>EDF_MIN) edf_2_val--;
+      analogWrite(PIN_EDF_2, edf_2_val); // Send PWM value to ESC
+      edf_2_utime = millis(); // Update timer
     }
   }
 }
@@ -59,15 +59,15 @@ void edfFeedback()
   if (isVert)
   {
     // Step EDF 1 to max
-    if (pwm_1_val<PWM_MAX)
+    if (edf_1_val<EDF_MAX)
       step_PWM(1,1);
     else
-      analogWrite(PIN_EDF_1, pwm_1_val); // once max, continue sending pwm values
+      analogWrite(PIN_EDF_1, edf_1_val); // once max, continue sending pwm values
     // Step EDF 2 to max
-    if (pwm_2_val<PWM_MAX)
+    if (edf_2_val<EDF_MAX)
       step_PWM(2,1);
     else
-      analogWrite(PIN_EDF_2, pwm_2_val); // once max, continue sending pwm values
+      analogWrite(PIN_EDF_2, edf_2_val); // once max, continue sending pwm values
   }
   else // disengage edf once horizontal
   {

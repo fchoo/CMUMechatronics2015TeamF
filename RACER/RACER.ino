@@ -27,12 +27,16 @@
 int potValue;                 // to control EDF
 
 // Variables for EDF
-int pwm_1_val = PWM_MIN;
-int pwm_2_val = PWM_MIN;
-int pwm_1_mval, pwm_2_mval;
-long pwm_1_utime = 0; // last update time for edf 1
-long pwm_2_utime = 0; // last update time for edf 2
-int pwm_id;
+int edf_1_val = EDF_MIN;
+int edf_2_val = EDF_MIN;
+int edf_1_mval, edf_2_mval;
+long edf_1_utime = 0; // last update time for edf 1
+long edf_2_utime = 0; // last update time for edf 2
+int edf_id;
+
+// Pump Variables
+long pump_utime;
+int pump_state;
 
 // IR variables
 float irVal = 0;
@@ -85,6 +89,7 @@ void setup()
   motor_init();
   EDF_init();
   IMU_init();
+  pump_init();
 
   // kill switch
   pinMode(PIN_KILL, INPUT);
@@ -221,8 +226,8 @@ void rstEDF()
 {
   analogWrite(PIN_EDF_1, 0);
   analogWrite(PIN_EDF_2, 0);
-  pwm_1_val = PWM_MIN;
-  pwm_2_val = PWM_MIN;
+  edf_1_val = EDF_MIN;
+  edf_2_val = EDF_MIN;
 }
 
 void rstPathfind()

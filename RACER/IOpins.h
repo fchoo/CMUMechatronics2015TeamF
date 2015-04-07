@@ -36,13 +36,19 @@
 #define PIN_MOTOR_2_1 8
 #define PIN_MOTOR_2_2 9
 // EDFs
-#define PIN_EDF_1 5      // Digital PWM pin for EDF.
+#define PIN_EDF_1 5
 #define PIN_EDF_2 5       // Digital PWM pin for EDF.
+// Pump
+#define PIN_PUMP 3
+// Switches
 #define PIN_RSTIMU 4    // Recalibrate IMU
 #define PIN_PATHFIND 6  // Activate pathfind
 #define PIN_KILL 7      // Kill switch
+// LED
 #define PIN_LED 13
+// Sensors
 #define PIN_IR A7
+// Joystick
 #define PIN_JOYX A2 // joystick X axis
 #define PIN_JOYY A3 // joystick Y axis
 #define PIN_POT A4  // Pot to control edf

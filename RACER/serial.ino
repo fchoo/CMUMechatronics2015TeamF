@@ -51,22 +51,22 @@ void serialControl()
     }
     else if (cmd == 'p') // Stepping to a certain value
     {
-      pwm_id = getSerial(); // get id
+      edf_id = getSerial(); // get id
       // set pwm value
-      if (pwm_id == 1)
-        pwm_1_mval = getSerial();
-      else if (pwm_id == 2)
-        pwm_2_mval = getSerial();
+      if (edf_id == 1)
+        edf_1_mval = getSerial();
+      else if (edf_id == 2)
+        edf_2_mval = getSerial();
       // EDF 1
-      while (pwm_1_val < pwm_1_mval)
+      while (edf_1_val < edf_1_mval)
         step_PWM(1,1);
-      while (pwm_1_val > pwm_1_mval)
+      while (edf_1_val > edf_1_mval)
         step_PWM(1,-1);
       // EDF 2
-      while (pwm_2_val < pwm_2_mval)
-        step_PWM(1,1);
-      while (pwm_2_val > pwm_2_mval)
-        step_PWM(1,-1);
+      while (edf_2_val < edf_2_mval)
+        step_PWM(2,1);
+      while (edf_2_val > edf_2_mval)
+        step_PWM(2,-1);
     }
   }
   // Motor commands

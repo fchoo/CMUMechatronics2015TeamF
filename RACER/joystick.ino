@@ -55,9 +55,9 @@ int readAxis(int thisAxis) {
 void POT2PWM()
 {
   potValue = analogRead(PIN_POT);
-  pwm_1_mval = map(potValue, 0, 1023, PWM_MIN, PWM_MAX);
-  if (pwm_1_val < pwm_1_mval)
+  edf_1_mval = map(potValue, 0, 1023, EDF_MIN, EDF_MAX);
+  if (edf_1_val < edf_1_mval)
     step_PWM(1, 1);
-  if (pwm_1_val > pwm_1_mval)
+  if (edf_1_val > edf_1_mval)
     step_PWM(1, -1);
 }
