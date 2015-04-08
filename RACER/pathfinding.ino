@@ -20,7 +20,7 @@ void pathfindingFSM()
   {
     case LEFTU_NEXT: // move forward, left u-turn next
       moveForward();
-      if (irDist < THR_IR)
+      if (irDist < THR_IR_TURN)
       {
         state = LEFTU_1;
         stop();
@@ -53,7 +53,7 @@ void pathfindingFSM()
       break;
     case RIGHTU_NEXT: // move forward, right u-turn next
       moveForward();
-      if (irDist < THR_IR)
+      if (irDist < THR_IR_TURN)
       {
         state = RIGHTU_1;
         stop();

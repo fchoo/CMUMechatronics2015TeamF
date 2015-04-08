@@ -29,7 +29,8 @@
 #define FILTER_AVG 12
 
 // define IR sensor distance threshold (in cm) before turning
-#define THR_IR 10
+#define THR_IR_TURN 10
+#define THR_IR_PUMP 20
 
 // IMU vertical checking threshold
 #define THR_ROLL_VERT 20

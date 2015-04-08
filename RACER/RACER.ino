@@ -84,20 +84,17 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
-
+  // kill switch
+  pinMode(PIN_KILL, INPUT);
+  // Interrupts initialization
+  attachInterrupt(0, updateLeftTick, RISING);
+  attachInterrupt(1, updateRightTick, RISING);
+  state = LEFTU_NEXT;
   // Initialize components
   motor_init();
   EDF_init();
   IMU_init();
   pump_init();
-
-  // kill switch
-  pinMode(PIN_KILL, INPUT);
-
-  // Interrupts initialization
-  attachInterrupt(0, updateLeftTick, RISING);
-  attachInterrupt(1, updateRightTick, RISING);
-  state = LEFTU_NEXT;
 
   Serial.println("[INFO] Initialization Done.");
 }
@@ -120,8 +117,11 @@ void loop()
 
   // Read controls
   serialControl(); // Serial control
-  if (isPathfind == true) // Pathfinding control
+  if (isPathfind == true)
+  {
     pathfindingFSM();
+    pump_control();
+  }
 
   // Feedback controls
   // edfFeedback();
