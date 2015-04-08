@@ -14,20 +14,44 @@
  *
  *****************************************************************************/
 
+
 int getSerial()
 {
+  boolean negative = false;
   int serialData = 0;
   int aChar = 0;
   while (aChar != '/')
   {
     aChar = Serial.read();
-    Serial.println(aChar);
-    if (aChar >= '0' && aChar <= '9')
+    if (aChar == '-') // Current read is negative
+      negative = true;
+    else if (aChar >= '0' && aChar <= '9')
       serialData = serialData * 10 + aChar - '0';
     else if (aChar >= 'a' && aChar <= 'z')
       serialData = aChar;
   }
+  if (negative)
+    serialData *= -1;
   return serialData;
+}
+
+void printSerialInst()
+{
+  Serial.println("****************************** Serial Mode ******************************");
+  Serial.println("Serial instruction format is \'*/\'. The commands are as followed:");
+  Serial.println("Mode(s)");
+  Serial.println("\tz: Pathfinding mode");
+  Serial.println("\tt: Diagnostic mode");
+  Serial.println("Sensor control(s)");
+  Serial.println("\tr: Reset IMU");
+  Serial.println("Motor Control(s)");
+  Serial.println("\tp: Step EDF to a value. Format: \'p/edf_id/edf_val/\' (edf_id <- [0:1], edf_val <- [0:255]");
+  Serial.println("\tw: Move forward");
+  Serial.println("\ta: Turn left");
+  Serial.println("\ts: Move backward");
+  Serial.println("\td: Turn right");
+  Serial.println("h: Print serial instructions");
+  Serial.println("-------------------------------------------------------------------------");
 }
 
 void serialControl()
@@ -69,6 +93,15 @@ void serialControl()
       while (edf_2_val > edf_2_mval)
         step_PWM(2,-1);
     }
+    else if (cmd == 't')
+    {
+      isKilled = true;
+      isDiagnostic = true;
+      printDiagInst();
+      test_id = 0;
+    }
+    else if (cmd == 'h')
+      printSerialInst();
   }
   // Motor commands
   if (cmd == 'a') // counter clockwise

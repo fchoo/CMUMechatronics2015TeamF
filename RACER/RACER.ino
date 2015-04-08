@@ -67,6 +67,7 @@ int rstIMU_state;
 
 // Serial
 int cmd = 'q';
+int test_id;
 
 // FSM
 State state;
@@ -75,6 +76,7 @@ boolean irFlag = false;
 // Mode
 boolean isKilled = false;
 boolean isPathfind = false;
+boolean isDiagnostic = false;
 
 char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
 char* StateStrings[8] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
@@ -84,16 +86,9 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
-  pinMode(PIN_RED1, OUTPUT);
-  pinMode(PIN_RED2, OUTPUT);
-  pinMode(PIN_BLUE, OUTPUT);
-  pinMode(PIN_GREEN1, OUTPUT);
-  pinMode(PIN_GREEN2, OUTPUT);
-  digitalWrite(PIN_RED1, LOW);
-  digitalWrite(PIN_RED2, LOW);
-  digitalWrite(PIN_BLUE, LOW);
-  digitalWrite(PIN_GREEN1, LOW);
-  digitalWrite(PIN_GREEN2, LOW);
+  LED_init();
+  digitalWrite(PIN_RED1, HIGH);
+  digitalWrite(PIN_RED2, HIGH);
   // kill switch
   pinMode(PIN_KILL, INPUT);
   // Interrupts initialization
@@ -106,13 +101,24 @@ void setup()
   IMU_init();
   pump_init();
 
-  Serial.println("[INFO] Initialization Done.");
+  digitalWrite(PIN_RED1, LOW);
+  digitalWrite(PIN_RED2, LOW);
+  printSerialInst();
 }
 
 void loop()
 {
-  checkKillSW(); // Check if kill switch is hit
-  LEDcontrol(); // Set indicators
+  if (isDiagnostic)
+  {
+    LED_rst();
+    digitalWrite(PIN_RED1, LOW);
+    digitalWrite(PIN_RED2, LOW);
+    diagnosticCheck();
+  }
+  else {
+    checkKillSW(); // Check if kill switch is hit
+    LEDcontrol(); // Set indicators
+  }
   if (isKilled)
     return; // do nothing once killed
 
@@ -173,11 +179,7 @@ void loop()
 void LEDcontrol()
 {
   // Reset all LEDS
-  digitalWrite(PIN_RED1, LOW);
-  digitalWrite(PIN_RED2, LOW);
-  digitalWrite(PIN_BLUE, LOW);
-  digitalWrite(PIN_GREEN1, LOW);
-  digitalWrite(PIN_GREEN2, LOW);
+  LED_rst();
   // GREEN LED
   // straight
   if (isPathfind == true)
@@ -290,4 +292,23 @@ void rstPathfind()
 {
   isPathfind = false;
   state = LEFTU_NEXT;
+}
+
+void LED_init()
+{
+  pinMode(PIN_RED1, OUTPUT);
+  pinMode(PIN_RED2, OUTPUT);
+  pinMode(PIN_BLUE, OUTPUT);
+  pinMode(PIN_GREEN1, OUTPUT);
+  pinMode(PIN_GREEN2, OUTPUT);
+  LED_rst();
+}
+
+void LED_rst()
+{
+  digitalWrite(PIN_RED1, LOW);
+  digitalWrite(PIN_RED2, LOW);
+  digitalWrite(PIN_BLUE, LOW);
+  digitalWrite(PIN_GREEN1, LOW);
+  digitalWrite(PIN_GREEN2, LOW);
 }
