@@ -84,11 +84,21 @@ void setup()
 {
   Serial.begin(115200);
   pinMode(PIN_LED, OUTPUT);
+  pinMode(PIN_RED1, OUTPUT);
+  pinMode(PIN_RED2, OUTPUT);
+  pinMode(PIN_BLUE, OUTPUT);
+  pinMode(PIN_GREEN1, OUTPUT);
+  pinMode(PIN_GREEN2, OUTPUT);
+  digitalWrite(PIN_RED1, LOW);
+  digitalWrite(PIN_RED2, LOW);
+  digitalWrite(PIN_BLUE, LOW);
+  digitalWrite(PIN_GREEN1, LOW);
+  digitalWrite(PIN_GREEN2, LOW);
   // kill switch
   pinMode(PIN_KILL, INPUT);
   // Interrupts initialization
-  attachInterrupt(0, updateLeftTick, RISING);
-  attachInterrupt(1, updateRightTick, RISING);
+  // attachInterrupt(0, updateLeftTick, RISING);
+  attachInterrupt(4, updateRightTick, RISING);
   state = LEFTU_NEXT;
   // Initialize components
   motor_init();
@@ -102,11 +112,12 @@ void setup()
 void loop()
 {
   checkKillSW(); // Check if kill switch is hit
+  LEDcontrol(); // Set indicators
   if (isKilled)
     return; // do nothing once killed
 
-  // checkPathfindSW();
-  // checkRstIMUBut();
+  checkPathfindSW();
+  checkRstIMUBut();
 
   // Read Sensors
   readIMU();
@@ -125,7 +136,7 @@ void loop()
 
   // Feedback controls
   // edfFeedback();
-  motorFeedback();
+  // motorFeedback();
 
   // DEBUG PRINTS
   // IR
@@ -159,6 +170,47 @@ void loop()
 =            Misc            =
 ============================*/
 
+void LEDcontrol()
+{
+  // Reset all LEDS
+  digitalWrite(PIN_RED1, LOW);
+  digitalWrite(PIN_RED2, LOW);
+  digitalWrite(PIN_BLUE, LOW);
+  digitalWrite(PIN_GREEN1, LOW);
+  digitalWrite(PIN_GREEN2, LOW);
+  // GREEN LED
+  // straight
+  if (isPathfind == true)
+  {
+    if (state == LEFTU_NEXT || state == RIGHTU_NEXT)
+    {
+      digitalWrite(PIN_GREEN1, HIGH);
+      digitalWrite(PIN_GREEN2, HIGH);
+    }
+    // left U turn
+    else if (state == LEFTU_1 ||
+             state == LEFTU_2 ||
+             state == LEFTU_3)
+    {
+      digitalWrite(PIN_GREEN1, HIGH);
+    }
+    // right U turn
+    else if (state == RIGHTU_1 ||
+             state == RIGHTU_2 ||
+             state == RIGHTU_3)
+    {
+      digitalWrite(PIN_GREEN2, HIGH);
+    }
+  }
+  // BLUE LED
+  if (isKilled)
+    digitalWrite(PIN_BLUE, LOW);
+  else
+    digitalWrite(PIN_BLUE, HIGH);
+  // RED LED
+  // TODO: set to stop state
+}
+
 /**
  * Once kill switch is hit, switch off all motors and EDF.
  */
@@ -169,7 +221,7 @@ void checkKillSW()
     // Program State
     digitalWrite(PIN_LED, LOW);
     isKilled = true;
-    cmd = ' '; // stop all cmd
+    cmd = 'q'; // stop all cmd
     // Locomotion
     rstEDF();
     rstPathfind();
@@ -187,15 +239,13 @@ void checkKillSW()
  */
 void checkPathfindSW()
 {
-  if (digitalRead(PIN_PATHFIND) == HIGH)
+  if (digitalRead(PIN_PATHFIND) == LOW)
   {
-    // TODO: Switch off some indicator
     rstPathfind();
     stop();
   }
   else
   {
-    // TODO: Switch on some indicator
     isPathfind = true;
   }
 }
@@ -211,8 +261,14 @@ void checkRstIMUBut()
     // button is held long enough, recalibrate IMU if it has not been calibrated
     if (rstIMU_value_cur == HIGH && rstIMU_state == LOW)
     {
+        // TODO: Remove leds
+        digitalWrite(PIN_RED1, HIGH);
+        digitalWrite(PIN_RED2, HIGH);
         rstIMU_state = !rstIMU_state;
         rstIMU();
+        digitalWrite(PIN_RED1, LOW);
+        digitalWrite(PIN_RED2, LOW);
+        Serial.println("[INFO] Resetting IMU");
     }
     // button has been released long enough, reset reset state
     if (rstIMU_value_cur == LOW && rstIMU_state == HIGH)

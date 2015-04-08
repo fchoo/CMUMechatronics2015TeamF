@@ -19,22 +19,22 @@ void loop()
   delay(3000);
   moveStop();
   delay(300);
-  
+
   moveBack();
   delay(3000);
   moveStop();
   delay(300);
-  
+
   moveLeft();
   delay(3000);
   moveStop();
   delay(300);
-  
+
   moveRight();
   delay(3000);
   moveStop();
   delay(300);
-  
+
 }
 
 void motor_init()

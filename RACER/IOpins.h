@@ -32,22 +32,29 @@
 // Assigned pin numbers
 // For Motors
 #define PIN_MOTOR_1_1 10
-#define PIN_MOTOR_1_2 11
-#define PIN_MOTOR_2_1 8
-#define PIN_MOTOR_2_2 9
+#define PIN_MOTOR_1_2 5
+#define PIN_MOTOR_2_1 2
+#define PIN_MOTOR_2_2 3
 // EDFs
-#define PIN_EDF_1 5
-#define PIN_EDF_2 5       // Digital PWM pin for EDF.
+#define PIN_EDF_1 1
+#define PIN_EDF_2 1       // Digital PWM pin for EDF.
 // Pump
-#define PIN_PUMP 3
+#define PIN_PUMP 1
 // Switches
-#define PIN_RSTIMU 4    // Recalibrate IMU
-#define PIN_PATHFIND 6  // Activate pathfind
-#define PIN_KILL 7      // Kill switch
+#define PIN_RSTIMU 40    // Recalibrate IMU
+#define PIN_PATHFIND 38  // Activate pathfind
+#define PIN_KILL 36      // Kill switch
 // LED
 #define PIN_LED 13
 // Sensors
 #define PIN_IR A7
+// LEDs
+#define PIN_RED2 53
+#define PIN_RED1 51
+#define PIN_BLUE 47
+#define PIN_GREEN2 49
+#define PIN_GREEN1 45
+
 // Joystick
 #define PIN_JOYX A2 // joystick X axis
 #define PIN_JOYY A3 // joystick Y axis

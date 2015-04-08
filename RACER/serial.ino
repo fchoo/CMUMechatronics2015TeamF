@@ -21,6 +21,7 @@ int getSerial()
   while (aChar != '/')
   {
     aChar = Serial.read();
+    Serial.println(aChar);
     if (aChar >= '0' && aChar <= '9')
       serialData = serialData * 10 + aChar - '0';
     else if (aChar >= 'a' && aChar <= 'z')
