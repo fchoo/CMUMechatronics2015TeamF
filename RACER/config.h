@@ -63,7 +63,7 @@
 #define DIST_TURN90_4 3.0 // Dist for encoder to check 90
 #define DIST_UFOR 2.0 // Dist for encoder to move forward during uturn
 #define TORQ_FB 10
-#define TIME_UFOR 200
+#define TIME_UFOR 500
 
 // Debounce delay
 #define DEBOUNCE_DELAY 50

@@ -45,7 +45,7 @@ void pathfindingFSM()
       }
       if (irDist < THR_IR_LAST)
       {
-        irFlag = true;
+        isLastLap = true;
         state = LEFTU_3;
         stop();
       }
@@ -54,7 +54,7 @@ void pathfindingFSM()
       moveLeft();
       if (curDir == WEST)
       {
-        state = (irFlag) ? RIGHTU_NEXT : LAST_LAP;
+        state = (isLastLap) ? LAST_LAP: RIGHTU_NEXT;
         stop();
       }
       break;
@@ -84,7 +84,7 @@ void pathfindingFSM()
       }
       if (irDist < THR_IR_LAST)
       {
-        irFlag = true;
+        isLastLap = true;
         state = RIGHTU_3;
         stop();
       }
@@ -93,7 +93,7 @@ void pathfindingFSM()
       moveRight();
       if (curDir == EAST)
       {
-        state = (irFlag) ? LEFTU_NEXT : LAST_LAP;
+        state = (isLastLap) ? LAST_LAP : LEFTU_NEXT;
         stop();
       }
       break;

@@ -73,7 +73,7 @@ int test_id;
 
 // FSM
 State state;
-boolean irFlag = false;
+boolean isLastLap = false;
 
 // Mode
 boolean isKilled = false;
@@ -82,7 +82,7 @@ boolean isDiagnostic = false;
 
 char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
 char* StateStrings[10] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
-                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3", 
+                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3",
                             "LAST_LAP", "STOP"};
 
 void setup()
@@ -146,7 +146,6 @@ void loop()
   // edfFeedback(); // TODO: find a way to disable edf when horizontal and pathfind is off
   // motorFeedback();
   }
-  testPump();
   // DEBUG PRINTS
   // IR
   // Serial.print("[INFO] State: ");
@@ -212,15 +211,14 @@ void LEDcontrol()
     else if (state == LAST_LAP)
     {
       digitalWrite(PIN_RED1, HIGH);
-      digitalWrite(PIN_RED2, HIGH);      
+      digitalWrite(PIN_RED2, HIGH);
       digitalWrite(PIN_GREEN1, HIGH);
       digitalWrite(PIN_GREEN2, HIGH);
     }
     // stop
     else if (state == STOP)
     {
-      digitalWrite(PIN_RED1, HIGH);
-      digitalWrite(PIN_RED2, HIGH);      
+      LED_flash();
     }
   }
   // BLUE LED
@@ -228,8 +226,6 @@ void LEDcontrol()
     digitalWrite(PIN_BLUE, LOW);
   else
     digitalWrite(PIN_BLUE, HIGH);
-  // RED LED
-  // TODO: set to stop state
 }
 
 /**
@@ -282,13 +278,12 @@ void checkRstIMUBut()
     // button is held long enough, recalibrate IMU if it has not been calibrated
     if (rstIMU_value_cur == HIGH && rstIMU_state == LOW)
     {
-        // TODO: Remove leds
+        LED_rst();
         digitalWrite(PIN_RED1, HIGH);
         digitalWrite(PIN_RED2, HIGH);
         rstIMU_state = !rstIMU_state;
         rstIMU();
-        digitalWrite(PIN_RED1, LOW);
-        digitalWrite(PIN_RED2, LOW);
+        LED_rst();
         Serial.println("[INFO] Resetting IMU");
     }
     // button has been released long enough, reset reset state
@@ -317,7 +312,7 @@ void rstPathfind()
 {
   isPathfind = false;
   state = LEFTU_NEXT;
-  irFlag = false;
+  isLastLap = false;
 }
 
 /*=====================================

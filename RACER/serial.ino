@@ -69,7 +69,7 @@ void serialControl()
     if (cmd == 'r') // Reset pathfinding state
     {
       state = LEFTU_NEXT;
-      irFlag = false;
+      isLastLap = false;
       targetDist = 0;
       rstIMU();
     }
