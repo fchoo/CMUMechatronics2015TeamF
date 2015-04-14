@@ -40,16 +40,22 @@ void printSerialInst()
   Serial.println("****************************** Serial Mode ******************************");
   Serial.println("Serial instruction format is \'*/\'. The commands are as followed:");
   Serial.println("Mode(s)");
-  Serial.println("\tz: Pathfinding mode");
+  Serial.println("i: Set RACER to idle");
   Serial.println("\tt: Diagnostic mode");
+  Serial.println("Pathfinding control(s)");
+  Serial.println("\tr: Reset pathfinding states");
   Serial.println("Sensor control(s)");
   Serial.println("\tr: Reset IMU");
   Serial.println("Motor Control(s)");
-  Serial.println("\tp: Step EDF to a value. Format: \'p/edf_id/edf_val/\' (edf_id <- [0:1], edf_val <- [0:255]");
+  Serial.println("\tp: Step EDF to a value.");
+  Serial.println("\t\tFormat: \'p/edf_id/edf_val/\'");
+  Serial.println("\t\t\tedf_id: 1) Front EDF, 2) Back EDF, 3) Both EDFs");
+  Serial.println("\t\t\tedf_val: 0-255");
   Serial.println("\tw: Move forward");
   Serial.println("\ta: Turn left");
   Serial.println("\ts: Move backward");
   Serial.println("\td: Turn right");
+  Serial.println("\tq: Stop\n");
   Serial.println("h: Print serial instructions");
   Serial.println("-------------------------------------------------------------------------");
 }
@@ -60,14 +66,7 @@ void serialControl()
   if (Serial.available()>0) // Read cmd
   {
     cmd = getSerial();
-    if (cmd == 'z') // Activate pathfinding
-    {
-      isPathfind = !isPathfind;
-      Serial.print("[INFO] Mode: ");
-      if (isPathfind) Serial.println("Pathfinding");
-      else Serial.println("Serial");
-    }
-    else if (cmd == 'r')
+    if (cmd == 'r') // Reset pathfinding state
     {
       state = LEFTU_NEXT;
       irFlag = false;
@@ -77,32 +76,42 @@ void serialControl()
     else if (cmd == 'p') // Stepping to a certain value
     {
       edf_id = getSerial(); // get id
+      edf_mval = getSerial(); // get value
+      edf_mval = (edf_mval < EDF_MIN) ? EDF_MIN : edf_mval; // set mval to min
       // set pwm value
       if (edf_id == 1)
-        edf_1_mval = getSerial();
+        edf_1_mval = edf_mval;
       else if (edf_id == 2)
-        edf_2_mval = getSerial();
-      // EDF 1
-      while (edf_1_val < edf_1_mval)
-        step_PWM(1,1);
-      while (edf_1_val > edf_1_mval)
-        step_PWM(1,-1);
-      // EDF 2
-      while (edf_2_val < edf_2_mval)
-        step_PWM(2,1);
-      while (edf_2_val > edf_2_mval)
-        step_PWM(2,-1);
+        edf_2_mval = edf_mval;
+      else if (edf_id == 3)
+      {
+        edf_1_mval = edf_mval;
+        edf_2_mval = edf_mval;
+      }
     }
-    else if (cmd == 't')
+    else if (cmd == 't') // Diagnostic mode
     {
       isKilled = true;
       isDiagnostic = true;
       printDiagInst();
       test_id = 0;
     }
-    else if (cmd == 'h')
+    else if (cmd == 'h') // print instruction
       printSerialInst();
   }
+
+  // Stepping EDF
+  // EDF 1
+  if (edf_1_val < edf_1_mval)
+    step_PWM(1,1);
+  if (edf_1_val > edf_1_mval)
+    step_PWM(1,-1);
+  // EDF 2
+  if (edf_2_val < edf_2_mval)
+    step_PWM(2,1);
+  if (edf_2_val > edf_2_mval)
+    step_PWM(2,-1);
+
   // Motor commands
   if (cmd == 'a') // counter clockwise
     moveLeft();

@@ -10,7 +10,7 @@
  *
  * LAST REVISION: 04/03/2015
  *
- * Pathfinding. Include a finite state machine for pathfinding.
+ * Pathfinding. Includes a finite state machine for pathfinding.
  *
  *****************************************************************************/
 
@@ -27,6 +27,7 @@ void pathfindingFSM()
       }
       break;
     case LEFTU_1: // left turn
+      Serial.println("Turning Left");
       moveLeft();
       if (curDir == NORTH)
       {

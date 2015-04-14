@@ -17,7 +17,7 @@
 void pump_init()
 {
   pinMode(PIN_PUMP,OUTPUT);
-  digitalWrite(PIN_PUMP,LOW);
+  analogWrite(PIN_PUMP,0);
 }
 
 void pump_control()

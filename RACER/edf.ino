@@ -37,6 +37,8 @@ void step_PWM(int edf_id, int dir)
       if (dir<0 && edf_1_val>EDF_MIN) edf_1_val--;
       analogWrite(PIN_EDF_1, edf_1_val); // Send PWM value to ESC
       edf_1_utime = millis(); // Update timer
+      Serial.print("[INFO] Stepping EDF 1 to ");
+      Serial.println(edf_1_val);
     }
   }
   else if (edf_id == 2)
@@ -47,6 +49,8 @@ void step_PWM(int edf_id, int dir)
       if (dir<0 && edf_2_val>EDF_MIN) edf_2_val--;
       analogWrite(PIN_EDF_2, edf_2_val); // Send PWM value to ESC
       edf_2_utime = millis(); // Update timer
+      Serial.print("[INFO] Stepping EDF 2 to ");
+      Serial.println(edf_2_val);
     }
   }
 }

@@ -29,7 +29,9 @@ int potValue;                 // to control EDF
 // Variables for EDF
 int edf_1_val = EDF_MIN;
 int edf_2_val = EDF_MIN;
-int edf_1_mval, edf_2_mval;
+int edf_mval = EDF_MIN;
+int edf_1_mval = EDF_MIN;
+int edf_2_mval = EDF_MIN;
 long edf_1_utime = 0; // last update time for edf 1
 long edf_2_utime = 0; // last update time for edf 2
 int edf_id;
@@ -66,7 +68,7 @@ long rstIMU_timer;
 int rstIMU_state;
 
 // Serial
-int cmd = 'q';
+int cmd = 'i';
 int test_id;
 
 // FSM
@@ -111,8 +113,8 @@ void loop()
   if (isDiagnostic)
   {
     LED_rst();
-    digitalWrite(PIN_RED1, LOW);
-    digitalWrite(PIN_RED2, LOW);
+    digitalWrite(PIN_RED1, HIGH);
+    digitalWrite(PIN_RED2, HIGH);
     diagnosticCheck();
   }
   else {
@@ -123,7 +125,8 @@ void loop()
     return; // do nothing once killed
 
   checkPathfindSW();
-  checkRstIMUBut();
+  if (!isVert)
+    checkRstIMUBut();
 
   // Read Sensors
   readIMU();
@@ -138,16 +141,15 @@ void loop()
   {
     pathfindingFSM();
     pump_control();
-  }
-
   // Feedback controls
-  // edfFeedback();
+  // edfFeedback(); // TODO: find a way to disable edf when horizontal and pathfind is off
   // motorFeedback();
-
+  }
+  testPump();
   // DEBUG PRINTS
   // IR
   // Serial.print("[INFO] State: ");
-  // Serial.print(state);
+  // Serial.print(StateStrings[state]);
   // Serial.print(" dist ");
   // Serial.println(irDist);
 
@@ -184,28 +186,30 @@ void LEDcontrol()
   // straight
   if (isPathfind == true)
   {
-    if (state == LEFTU_NEXT || state == RIGHTU_NEXT)
+    if (state == LEFTU_NEXT ||
+        state == RIGHTU_NEXT ||
+        state == LEFTU_2 ||
+        state == RIGHTU_2
+        )
     {
       digitalWrite(PIN_GREEN1, HIGH);
       digitalWrite(PIN_GREEN2, HIGH);
     }
     // left U turn
     else if (state == LEFTU_1 ||
-             state == LEFTU_2 ||
              state == LEFTU_3)
     {
       digitalWrite(PIN_GREEN1, HIGH);
     }
     // right U turn
     else if (state == RIGHTU_1 ||
-             state == RIGHTU_2 ||
              state == RIGHTU_3)
     {
       digitalWrite(PIN_GREEN2, HIGH);
     }
   }
   // BLUE LED
-  if (isKilled)
+  if (isKilled || isPathfind)
     digitalWrite(PIN_BLUE, LOW);
   else
     digitalWrite(PIN_BLUE, HIGH);
@@ -223,10 +227,11 @@ void checkKillSW()
     // Program State
     digitalWrite(PIN_LED, LOW);
     isKilled = true;
-    cmd = 'q'; // stop all cmd
+    cmd = 'i'; // stop all cmd
     // Locomotion
-    rstEDF();
     rstPathfind();
+    rstEDF();
+    rstPump();
     stop(); // kill all motors
   }
   else
@@ -244,12 +249,11 @@ void checkPathfindSW()
   if (digitalRead(PIN_PATHFIND) == LOW)
   {
     rstPathfind();
+    rstPump();
     stop();
   }
   else
-  {
     isPathfind = true;
-  }
 }
 
 void checkRstIMUBut()
@@ -282,10 +286,16 @@ void checkRstIMUBut()
 
 void rstEDF()
 {
-  analogWrite(PIN_EDF_1, 0);
-  analogWrite(PIN_EDF_2, 0);
   edf_1_val = EDF_MIN;
   edf_2_val = EDF_MIN;
+  analogWrite(PIN_EDF_1, edf_1_val);
+  analogWrite(PIN_EDF_2, edf_2_val);
+}
+
+void rstPump()
+{
+  pump_state = 0;
+  analogWrite(PIN_PUMP, 0);
 }
 
 void rstPathfind()
@@ -293,6 +303,10 @@ void rstPathfind()
   isPathfind = false;
   state = LEFTU_NEXT;
 }
+
+/*=====================================
+=            LED Functions            =
+=====================================*/
 
 void LED_init()
 {
@@ -311,4 +325,23 @@ void LED_rst()
   digitalWrite(PIN_BLUE, LOW);
   digitalWrite(PIN_GREEN1, LOW);
   digitalWrite(PIN_GREEN2, LOW);
+}
+
+void LED_flash()
+{
+  digitalWrite(PIN_GREEN1, HIGH);
+  delay(100);
+  digitalWrite(PIN_GREEN1, LOW);
+  digitalWrite(PIN_GREEN2, HIGH);
+  delay(100);
+  digitalWrite(PIN_GREEN2, LOW);
+  digitalWrite(PIN_BLUE, HIGH);
+  delay(100);
+  digitalWrite(PIN_BLUE, LOW);
+  digitalWrite(PIN_RED1, HIGH);
+  delay(100);
+  digitalWrite(PIN_RED1, LOW);
+  digitalWrite(PIN_RED2, HIGH);
+  delay(100);
+  digitalWrite(PIN_RED2, LOW);
 }

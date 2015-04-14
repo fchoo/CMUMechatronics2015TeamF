@@ -6,13 +6,13 @@
 *
 **/
 // EDF Control
-#define PWM_MIN 133
-// #define PWM_MAX 220
+#define PWM_MIN 125
+#define PWM_MAX 235
 #define PWM_DELAY 100 // .5s
 #define PWM_STEPSIZE 1
 // Pin Definition
 // #define PIN_LED 13
-#define PIN_EDF 10 // Digital PWM pin for EDF.
+#define PIN_EDF 11 // Digital PWM pin for EDF.
 
 // Variables
 int pwm_value = PWM_MIN;
@@ -21,7 +21,7 @@ long pwm_timer = 0; // pwm_timer for PWM stepping
 
 void setup()
 {
-  Serial.begin(9600);
+  Serial.begin(115200);
   // pinMode(PIN_LED, OUTPUT);  // Status LED
   pinMode(PIN_EDF, OUTPUT);
   // digitalWrite(PIN_LED, HIGH); // On - Initializing
@@ -63,8 +63,8 @@ void step_PWM(int dir)
   if((millis()-pwm_timer)>=PWM_DELAY) // step at 1/PWM_DELAY Hz
   {
     // digitalWrite(PIN_LED, HIGH);
-
-    pwm_value += dir*PWM_STEPSIZE;
+    if (dir>0 && pwm_value<PWM_MAX) pwm_value+= PWM_STEPSIZE;
+    if (dir<0 && pwm_value>PWM_MIN) pwm_value-= PWM_STEPSIZE;
     analogWrite(PIN_EDF, pwm_value); // Send PWM value to ESC
     pwm_timer = millis(); // Update timer
 

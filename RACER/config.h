@@ -15,13 +15,13 @@
  *****************************************************************************/
 
 // EDF Control
-#define EDF_MIN 132 //133 for actual serial
-#define EDF_MAX 140
+#define EDF_MIN 125 //133 for actual serial
+#define EDF_MAX 230
 #define EDF_DEFAULT 220
 #define EDF_DELAY 50 // .05s
 
 // Pump control
-#define PUMP_VAL 100
+#define PUMP_VAL 255
 #define PUMP_UPTIME 1000
 #define PUMP_DOWNTIME 1000
 
@@ -48,6 +48,9 @@
 #define ROLL_W -(PITCH_NS_BASE-ROLL_ERR)
 #define ROLL_N 0
 
+// PUMP
+#define PUMP_VAL 200
+
 // Motor
 #define TORQ_MIN 100
 #define TORQ_MAX 250
@@ -59,7 +62,7 @@
 #define DIST_TURN90_4 3.0 // Dist for encoder to check 90
 #define DIST_UFOR 2.0 // Dist for encoder to move forward during uturn
 #define TORQ_FB 10
-#define TIME_UFOR 500
+#define TIME_UFOR 200
 
 // Debounce delay
 #define DEBOUNCE_DELAY 50

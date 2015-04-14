@@ -21,7 +21,7 @@ void diagnosticCheck()
   {
     isKilled = false;
     isDiagnostic = false;
-    cmd = 'q';
+    cmd = 'i';
     test_id = 0;
     printSerialInst();
   }
@@ -31,6 +31,7 @@ void diagnosticCheck()
   else if (test_id == 4) testLED();
   else if (test_id == 5) testMotors();
   else if (test_id == 6) testSwitch();
+  else if (test_id == 7) testPump();
 }
 
 void printDiagInst()
@@ -43,6 +44,7 @@ void printDiagInst()
   Serial.println("4: LED Test");
   Serial.println("5: Motors Test");
   Serial.println("6: Switch Test");
+  Serial.println("7: Pump Test");
   Serial.println("0: Print Instruction");
   Serial.println("-1: Exit Diagnostic Mode");
   Serial.println("-------------------------------------------------------------------------");
@@ -127,4 +129,12 @@ void testMotors()
   delay(1000);
   stop();
   delay(50);
+}
+
+void testPump()
+{
+  analogWrite(PIN_PUMP, PUMP_VAL);
+  delay(3000);
+  analogWrite(PIN_PUMP, 0);
+  delay(3000);
 }

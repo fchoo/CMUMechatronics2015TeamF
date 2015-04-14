@@ -36,10 +36,10 @@
 #define PIN_MOTOR_2_1 2
 #define PIN_MOTOR_2_2 3
 // EDFs
-#define PIN_EDF_1 1
-#define PIN_EDF_2 1       // Digital PWM pin for EDF.
+#define PIN_EDF_1 11
+#define PIN_EDF_2 12
 // Pump
-#define PIN_PUMP 1
+#define PIN_PUMP 9
 // Switches
 #define PIN_RSTIMU 40    // Recalibrate IMU
 #define PIN_PATHFIND 38  // Activate pathfind
