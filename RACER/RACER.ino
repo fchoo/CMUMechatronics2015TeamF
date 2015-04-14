@@ -41,7 +41,6 @@ int pump_state;
 // IR variables
 float irVal = 0;
 float irDist = 0;
-float turnMinVal = 0;
 
 // IMU variable
 float roll, pitch;
@@ -205,6 +204,14 @@ void LEDcontrol()
     {
       digitalWrite(PIN_GREEN2, HIGH);
     }
+    // last lap
+    else if (state == LAST_LAP)
+    {
+      digitalWrite(PIN_RED1, HIGH);
+      digitalWrite(PIN_RED2, HIGH);      
+      digitalWrite(PIN_GREEN1, HIGH);
+      digitalWrite(PIN_GREEN2, HIGH);
+    }
     // stop
     else if (state == STOP)
     {
@@ -300,6 +307,7 @@ void rstPathfind()
 {
   isPathfind = false;
   state = LEFTU_NEXT;
+  irFlag = false;
 }
 
 void LED_init()
