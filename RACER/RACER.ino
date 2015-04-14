@@ -81,8 +81,9 @@ boolean isPathfind = false;
 boolean isDiagnostic = false;
 
 char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
-char* StateStrings[8] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
-                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3"};
+char* StateStrings[10] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
+                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3", 
+                            "LAST_LAP", "STOP"};
 
 void setup()
 {
@@ -207,6 +208,20 @@ void LEDcontrol()
     {
       digitalWrite(PIN_GREEN2, HIGH);
     }
+    // last lap
+    else if (state == LAST_LAP)
+    {
+      digitalWrite(PIN_RED1, HIGH);
+      digitalWrite(PIN_RED2, HIGH);      
+      digitalWrite(PIN_GREEN1, HIGH);
+      digitalWrite(PIN_GREEN2, HIGH);
+    }
+    // stop
+    else if (state == STOP)
+    {
+      digitalWrite(PIN_RED1, HIGH);
+      digitalWrite(PIN_RED2, HIGH);      
+    }
   }
   // BLUE LED
   if (isKilled || isPathfind)
@@ -302,6 +317,7 @@ void rstPathfind()
 {
   isPathfind = false;
   state = LEFTU_NEXT;
+  irFlag = false;
 }
 
 /*=====================================

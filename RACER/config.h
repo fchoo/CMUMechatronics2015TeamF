@@ -30,6 +30,7 @@
 
 // define IR sensor distance threshold (in cm) before turning
 #define THR_IR_TURN 10
+#define THR_IR_LAST 10
 #define THR_IR_PUMP 20
 
 // IMU vertical checking threshold
@@ -82,7 +83,9 @@ typedef enum State {
     RIGHTU_NEXT,
     RIGHTU_1,
     RIGHTU_2,
-    RIGHTU_3
+    RIGHTU_3,
+    LAST_LAP,
+    STOP
 };
 
 typedef enum Heading {

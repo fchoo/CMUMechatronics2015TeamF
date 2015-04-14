@@ -43,12 +43,18 @@ void pathfindingFSM()
         state = LEFTU_3;
         stop();
       }
+      if (irDist < THR_IR_LAST)
+      {
+        irFlag = true;
+        state = LEFTU_3;
+        stop();
+      }
       break;
     case LEFTU_3: // left turn
       moveLeft();
       if (curDir == WEST)
       {
-        state = RIGHTU_NEXT;
+        state = (irFlag) ? RIGHTU_NEXT : LAST_LAP;
         stop();
       }
       break;
@@ -76,14 +82,31 @@ void pathfindingFSM()
         state = RIGHTU_3;
         stop();
       }
+      if (irDist < THR_IR_LAST)
+      {
+        irFlag = true;
+        state = RIGHTU_3;
+        stop();
+      }
       break;
     case RIGHTU_3: // right turn
       moveRight();
       if (curDir == EAST)
       {
-        state = LEFTU_NEXT;
+        state = (irFlag) ? LEFTU_NEXT : LAST_LAP;
         stop();
       }
+      break;
+    case LAST_LAP: // last lap forward, stop after
+      moveForward();
+      if (irDist < THR_IR_TURN)
+      {
+        state = STOP;
+        stop();
+      }
+      break;
+    case STOP:
+      stop();
       break;
   }
 }
