@@ -41,6 +41,7 @@ int pump_state;
 // IR variables
 float irVal = 0;
 float irDist = 0;
+float turnMinVal = 0;
 
 // IMU variable
 float roll, pitch;
@@ -79,8 +80,9 @@ boolean isPathfind = false;
 boolean isDiagnostic = false;
 
 char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
-char* StateStrings[8] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
-                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3"};
+char* StateStrings[10] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
+                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3", 
+                            "LAST_LAP", "STOP"};
 
 void setup()
 {
@@ -202,6 +204,12 @@ void LEDcontrol()
              state == RIGHTU_3)
     {
       digitalWrite(PIN_GREEN2, HIGH);
+    }
+    // stop
+    else if (state == STOP)
+    {
+      digitalWrite(PIN_RED1, HIGH);
+      digitalWrite(PIN_RED2, HIGH);      
     }
   }
   // BLUE LED
