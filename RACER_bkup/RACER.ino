@@ -21,12 +21,24 @@
 #include "config.h"
 #include "IOpins.h"
 
+#define DEBUG 2
+
+// Variables for joysticks
+int potValue; // to control EDF
+
 // Variables for EDF
 int edf_1_val = EDF_MIN;
 int edf_2_val = EDF_MIN;
+int edf_mval = EDF_MIN;
+int edf_1_mval = EDF_MIN;
+int edf_2_mval = EDF_MIN;
 long edf_1_utime = 0; // last update time for edf 1
 long edf_2_utime = 0; // last update time for edf 2
 int edf_id;
+
+// Pump Variables
+long pump_utime;
+int pump_state;
 
 // IR variables
 float irDist = 0;
@@ -35,6 +47,8 @@ float irRawData, irSmoothData;  // variables for sensor1 data
 
 // IMU variable
 float roll, pitch;
+int horzDur = 0;
+boolean isVert = false;
 Heading curDir, pastDir;
 
 // Turning variables
@@ -50,51 +64,94 @@ int rstIMU_value_old = LOW;
 long rstIMU_timer;
 int rstIMU_state;
 
+// Serial
+int cmd = 'i';
+int test_id;
+
 // FSM
-State state = LEFTU_NEXT;
+State state;
 boolean isLastLap = false;
 
 // Mode
 boolean isPathfind = false;
+boolean isDiagnostic = false;
+
+char* HeadingStrings[5] = { "North", "South", "East", "West", "Turning" };
+char* StateStrings[10] = { "LEFTU_NEXT", "LEFTU_1", "LEFTU_2", "LEFTU_3",
+                            "RIGHTU_NEXT", "RIGHTU_1", "RIGHTU_2", "RIGHTU_3",
+                            "LAST_LAP", "STOP"};
 
 void setup()
 {
   Serial.begin(115200);
+  pinMode(PIN_LED, OUTPUT);
   LED_init();
-  // Activate indicators
   digitalWrite(PIN_RED1, HIGH);
   digitalWrite(PIN_RED2, HIGH);
-  // Switches
-  pinMode(PIN_IMUSW, INPUT);
-  pinMode(PIN_PATHFINDSW, INPUT);
+  // EDF SW
   pinMode(PIN_EDFSW, INPUT);
+  state = LEFTU_NEXT;
   // Initialize components
   motor_init();
   EDF_init();
   IMU_init();
-  // Deactivate indicators
+  pump_init();
+
   digitalWrite(PIN_RED1, LOW);
   digitalWrite(PIN_RED2, LOW);
+  printSerialInst();
 }
 
 void loop()
 {
-  // Check all switches
+  // if (isDiagnostic)
+  // {
+  //   LED_rst();
+  //   digitalWrite(PIN_RED1, HIGH);
+  //   digitalWrite(PIN_RED2, HIGH);
+  //   diagnosticCheck();
+  // }
+  // else {
+    LEDcontrol(); // Set indicators
+  // }
+
   checkEDFSW();
   checkPathfindSW();
-  checkRstIMUBut();
-  // Indicators
-  LEDcontrol();
+  if (!isVert)
+    checkRstIMUBut();
+
   // Read Sensors
   readIMU();
   updateAngles();
+  checkVertical();
+  checkHeading();
   readIR();
-  // Pathfinding
-  if (isPathfind)
+
+  // serialControl(); // Serial control
+  if (isPathfind == true)
   {
     pathfindingFSM();
+    // pump_control();
     motorFeedback();
   }
+
+  // DEBUG PRINTS
+  // if (DEBUG == 0)
+  // {
+  //   Serial.print("[INFO] State: ");
+  //   Serial.print(StateStrings[state]);
+  //   Serial.print(" Vertical: ");
+  //   Serial.print(isVert);
+  //   Serial.print(" Cur_Heading: ");
+  //   Serial.print(HeadingStrings[curDir]);
+  //   Serial.print(" Past_Heading: ");
+  //   Serial.print(HeadingStrings[pastDir]);
+  //   Serial.print(" IRdist ");
+  //   Serial.println(irDist);
+  // }
+  // else if (DEBUG == 2) {
+  //   printdata();
+  // }
 }
 
 /*============================
@@ -103,9 +160,11 @@ void loop()
 
 void LEDcontrol()
 {
-  LED_rst(); // Reset all LEDS
-
-  if (isPathfind) // Pathfinding mode
+  // Reset all LEDS
+  LED_rst();
+  // GREEN LED
+  // straight
+  if (isPathfind)
   {
     if (state == LEFTU_NEXT ||
         state == RIGHTU_NEXT||
@@ -141,13 +200,12 @@ void LEDcontrol()
       LED_flash();
     }
   }
-  else // Idle state
-  {
+  // Idle
+  if (!isPathfind)
     digitalWrite(PIN_BLUE, HIGH);
-    // EDF at max
-    if (edf_1_val == EDF_MAX && edf_2_val == EDF_MAX)
-      digitalWrite(PIN_RED1, HIGH);
-  }
+  // EDF at max
+  if (edf_1_val == EDF_MAX && edf_2_val == EDF_MAX)
+    digitalWrite(PIN_RED1, HIGH);
 }
 
 /**
@@ -157,16 +215,24 @@ void checkEDFSW()
 {
   // Debounce push button
   if (digitalRead(PIN_EDFSW) == LOW)
-    EDF_rst();
+  {
+    edf_1_val = EDF_MIN;
+    edf_2_val = EDF_MIN;
+  }
   else
   {
-    if (edf_1_val<EDF_MAX) // Step EDF 1 to max
-      step_PWM(1,1);
-    if (edf_2_val<EDF_MAX) // Step EDF 2 to max
-      step_PWM(2,1);
-    analogWrite(PIN_EDF_1, edf_1_val);
-    analogWrite(PIN_EDF_2, edf_2_val);
+    // if (isVert)
+    // {
+      // Step EDF 1 to max
+      if (edf_1_val<EDF_MAX)
+        step_PWM(1,1);
+      // Step EDF 2 to max
+      if (edf_2_val<EDF_MAX)
+          step_PWM(2,1);
+    // }
   }
+  analogWrite(PIN_EDF_1, edf_1_val);
+  analogWrite(PIN_EDF_2, edf_2_val);
 }
 
 /**
@@ -174,9 +240,10 @@ void checkEDFSW()
  */
 void checkPathfindSW()
 {
-  if (digitalRead(PIN_PATHFINDSW) == LOW)
+  if (digitalRead(PIN_PATHFIND) == LOW)
   {
     rstPathfind();
+    // rstPump();
     stop();
   }
   else
@@ -186,7 +253,7 @@ void checkPathfindSW()
 void checkRstIMUBut()
 {
   // Debounce push button
-  rstIMU_value_cur = digitalRead(PIN_IMUSW);
+  rstIMU_value_cur = digitalRead(PIN_RSTIMU);
   if (rstIMU_value_cur != rstIMU_value_old)
     rstIMU_timer = millis();
   if ((millis() - rstIMU_timer) > DEBOUNCE_DELAY) // filter out noise
@@ -196,12 +263,14 @@ void checkRstIMUBut()
     {
         // Clear all indicator
         LED_rst();
-        // Reset IMU
+        // Reset EDF
         digitalWrite(PIN_RED1, HIGH);
+        EDF_rst();
+        digitalWrite(PIN_RED1, LOW);
+        // Reset IMU
         digitalWrite(PIN_RED2, HIGH);
         rstIMU_state = !rstIMU_state;
         rstIMU();
-        digitalWrite(PIN_RED1, LOW);
         digitalWrite(PIN_RED2, LOW);
     }
     // button has been released long enough, reset reset state
@@ -212,6 +281,28 @@ void checkRstIMUBut()
   rstIMU_value_old = rstIMU_value_cur; // Update old reading
 }
 
+void rstEDF()
+{
+  edf_1_val = EDF_MIN;
+  edf_2_val = EDF_MIN;
+  // edf_1_mval = EDF_MIN;
+  // edf_2_mval = EDF_MIN;
+  analogWrite(PIN_EDF_1, edf_1_val);
+  analogWrite(PIN_EDF_2, edf_2_val);
+}
+
+void rstPump()
+{
+  pump_state = 0;
+  analogWrite(PIN_PUMP, 0);
+}
+
+void rstPathfind()
+{
+  isPathfind = false;
+  state = LEFTU_NEXT;
+  isLastLap = false;
+}
 
 /*=====================================
 =            LED Functions            =

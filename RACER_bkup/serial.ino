@@ -70,7 +70,6 @@ void serialControl()
     {
       state = LEFTU_NEXT;
       isLastLap = false;
-      targetDist = 0;
       rstIMU();
     }
     else if (cmd == 'p') // Stepping to a certain value
@@ -91,7 +90,6 @@ void serialControl()
     }
     else if (cmd == 't') // Diagnostic mode
     {
-      isKilled = true;
       isDiagnostic = true;
       printDiagInst();
       test_id = 0;

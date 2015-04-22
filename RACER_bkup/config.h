@@ -20,12 +20,18 @@
 #define EDF_DEFAULT 220
 #define EDF_DELAY 50 // .05s
 
+// Pump control
+#define PUMP_VAL 180
+#define PUMP_UPTIME 50
+#define PUMP_DOWNTIME 50
+
 // define number of readings sensors take in
 #define FILTER_SAMPLE 13
 
 // define IR sensor distance threshold (in cm) before turning
 #define THR_IR_TURN 20
 #define THR_IR_LAST 15
+#define THR_IR_PUMP 20
 
 // IMU vertical checking threshold
 #define THR_ROLL_VERT 10
@@ -57,6 +63,12 @@
 // Debounce delay
 #define DEBOUNCE_DELAY 25
 
+// Joystick parameters
+#define JOY_RANGE 12 // output range of X or Y movement
+#define JOY_DELAY 5 // response delay of the mouse, in ms
+#define JOY_THRESHOLD JOY_RANGE/4      // resting threshold
+#define JOY_CENTER JOY_RANGE/2         // resting position value
+
 // FSM
 typedef enum State {
     LEFTU_NEXT,
@@ -78,3 +90,16 @@ typedef enum Heading {
     WEST,
     TURNING
 };
+
+/**
+ * 1 - Move forward; left U-turn next
+ * 2 - Left turn
+ * 3 - Straight ahead
+ * 4 - Left turn
+ * 5 - Move forward; right U-turn next
+ * 6 - Right turn
+ * 7 - Straight ahead
+ * 8 - Right turn
+ * 9 - Move forward; last lap
+ * 10 - STOP
+ */

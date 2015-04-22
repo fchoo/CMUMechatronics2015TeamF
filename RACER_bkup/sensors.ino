@@ -11,16 +11,18 @@
  * LAST REVISION: 04/03/2015
  *
  * Sensors related functions. Includes initialization, reading and calculation
- * functions for IR, IMU.
+ * functions for IR, IMU and encoders.
  *
  *****************************************************************************/
 
 void updateAngles()
 {
-  // Update angles
   roll = getRoll();
   pitch = getPitch();
-  // Get heading
+}
+
+void checkHeading()
+{
   if (pitch >= PITCH_N) curDir = NORTH;
   else if (pitch <= PITCH_S) curDir = SOUTH;
   else if (abs(pitch) <= PITCH_EW)
@@ -34,24 +36,34 @@ void updateAngles()
     pastDir = curDir;
 }
 
-/**
- * Applies a median and averaging filter to the IR readings. It then linearizes
- * the reading to get the distance.
- */
+void checkVertical()
+{
+  if (abs(roll)<THR_ROLL_VERT && pitch < THR_PITCH_VERT)
+    // imu is horizontal
+    horzDur++;
+  else
+    // imu is vertical
+    horzDur = 0; // reset duration
+  // Update vertical flag
+  isVert = (horzDur > THR_HORZ_DUR) ? false : true;
+}
+
 void readIR()
+/* Function takes "loopCount" number of IR sensor readings and
+ * stores the linearized value in float "irDist"
+ */
 {
   irRawData = analogRead(PIN_IR);                        // read sensor 1
   irSmoothData = digitalSmooth(irRawData, irArray);  // every sensor you use with digitalSmooth needs its own array
   irDist = 12343.85 * pow(irSmoothData, -1.15); // Linearizing eqn, accuracy +- 5%
 }
 
-/**
- * A digital smoothing filter for smoothing sensor jitter.
- * This filter accepts one new piece of data each time through a loop, which the
- * filter inputs into a rolling array, replacing the oldest data with the latest
- * reading. The array is then transferred to another array, and that array is
- * sorted from low to high. Then the highest and lowest %15 of samples are
- * thrown out. The remaining data is averaged and the result is returned.
+/** A digital smoothing filter for smoothing sensor jitter
+ This filter accepts one new piece of data each time through a loop, which the
+ filter inputs into a rolling array, replacing the oldest data with the latest reading.
+ The array is then transferred to another array, and that array is sorted from low to high.
+ Then the highest and lowest %15 of samples are thrown out. The remaining data is averaged
+ and the result is returned.
  */
 float digitalSmooth(float rawIn, float *sensSmoothArray)
 {
@@ -96,3 +108,26 @@ float digitalSmooth(float rawIn, float *sensSmoothArray)
 
   return total / k;    // divide by number of samples
 }
+
+// void checkEncoder(int wheelNum)
+// {
+//   Serial.println("[INFO] CHECKING ENCODER");
+//   if (wheelNum == 1)
+//     curDist = rightWheelTicks/5000*360/360*21.5;
+//   else if (wheelNum == 2)
+//     curDist = leftWheelTicks/5000*360/360*21.5;
+// }
+
+// /**
+//  * ISR routines for encoders
+//  */
+
+// void updateRightTick()
+// {
+//   rightWheelTicks++;
+// }
+
+// void updateLeftTick()
+// {
+//   leftWheelTicks++;
+// }

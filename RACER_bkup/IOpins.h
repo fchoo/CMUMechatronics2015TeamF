@@ -38,10 +38,14 @@
 // EDFs
 #define PIN_EDF_1 11
 #define PIN_EDF_2 12
+// Pump
+#define PIN_PUMP 9
 // Switches
-#define PIN_IMUSW 40    // Recalibrate IMU
-#define PIN_PATHFINDSW 38  // Activate pathfind
+#define PIN_RSTIMU 40    // Recalibrate IMU
+#define PIN_PATHFIND 38  // Activate pathfind
 #define PIN_EDFSW 36      // Kill switch
+// LED
+#define PIN_LED 13
 // Sensors
 #define PIN_IR A7
 // LEDs
@@ -50,3 +54,12 @@
 #define PIN_BLUE 47
 #define PIN_GREEN2 49
 #define PIN_GREEN1 45
+
+// Joystick
+#define PIN_JOYX A2 // joystick X axis
+#define PIN_JOYY A3 // joystick Y axis
+#define PIN_POT A4  // Pot to control edf
+
+// Assigned pin numbers for motor encoders
+// PIN 2 --> WHEEL 1
+// PIN 3 --> WHEEL 2

@@ -14,21 +14,6 @@
  *
  *****************************************************************************/
 
-
-void rstPathfind()
-{
-  isPathfind = false;
-  state = LEFTU_NEXT;
-  isLastLap = false;
-}
-
-boolean hasTravelledUFOR()
-{
-  targetTime--;
-  if (targetTime <= 0) return true;
-  else return false;
-}
-
 void pathfindingFSM()
 {
   switch (state)
@@ -127,3 +112,9 @@ void pathfindingFSM()
   }
 }
 
+boolean hasTravelledUFOR()
+{
+  targetTime--;
+  if (targetTime <= 0) return true;
+  else return false;
+}

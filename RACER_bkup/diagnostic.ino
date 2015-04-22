@@ -9,24 +9,18 @@ void diagnosticCheck()
   {
     test_id = getSerial();
     if (test_id == 0) printDiagInst();
-    else if (test_id == 1)
-    {
-      leftWheelTicks = 0;
-      rightWheelTicks = 0;
-    }
     else if (test_id == 4)
       Serial.println("Blinking LEDs in series.");
   }
   if (test_id == -1)
   {
-    isKilled = false;
     isDiagnostic = false;
     cmd = 'i';
     test_id = 0;
     printSerialInst();
   }
-  if (test_id == 1) testEncoder();
-  else if (test_id == 2) testIMU();
+  // if (test_id == 1) testEncoder();
+  if (test_id == 2) testIMU();
   else if (test_id == 3) testIR();
   else if (test_id == 4) testLED();
   else if (test_id == 5) testMotors();
@@ -53,7 +47,7 @@ void printDiagInst()
 void testSwitch()
 {
   Serial.print("Kill Switch: ");
-  Serial.print(digitalRead(PIN_KILL));
+  Serial.print(digitalRead(PIN_EDFSW));
   Serial.print(" Pathfinding Button: ");
   Serial.print(digitalRead(PIN_PATHFIND));
   Serial.print(" IMU Button: ");
@@ -61,11 +55,11 @@ void testSwitch()
 }
 
 // Encoders
-void testEncoder()
-{
-  Serial.print("Encoder Ticks: ");
-  Serial.println(rightWheelTicks);
-}
+// void testEncoder()
+// {
+//   Serial.print("Encoder Ticks: ");
+//   Serial.println(rightWheelTicks);
+// }
 
 void testIMU()
 {
@@ -85,6 +79,8 @@ void testIR()
 
 void testLED()
 {
+  LED_rst();
+  delay(500);
   // put your main code here, to run repeatedly:
   digitalWrite(PIN_GREEN1, HIGH);
   delay(500);
@@ -95,12 +91,6 @@ void testLED()
   digitalWrite(PIN_RED1, HIGH);
   delay(500);
   digitalWrite(PIN_RED2, HIGH);
-  delay(500);
-  digitalWrite(PIN_RED1, LOW);
-  digitalWrite(PIN_RED2, LOW);
-  digitalWrite(PIN_BLUE, LOW);
-  digitalWrite(PIN_GREEN1, LOW);
-  digitalWrite(PIN_GREEN2, LOW);
   delay(500);
 }
 
@@ -134,7 +124,7 @@ void testMotors()
 void testPump()
 {
   analogWrite(PIN_PUMP, PUMP_VAL);
-  delay(3000);
+  delay(PUMP_UPTIME);
   analogWrite(PIN_PUMP, 0);
-  delay(3000);
+  delay(PUMP_DOWNTIME);
 }
