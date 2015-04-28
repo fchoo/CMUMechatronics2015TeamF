@@ -73,7 +73,8 @@ void loop() {
   {
     if (moveState) // Time to move!
     {
-      drive();
+      motorPID();
+      moveUp();
       if ((millis()-delay_timer)>=MOVE_DELAY)
       {
         moveState = false;
