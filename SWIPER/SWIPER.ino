@@ -11,145 +11,197 @@
  * LAST REVISION: 04/23/2015
  *
  *****************************************************************************/
+#define round(x) ((x>=0)?(int)(x+0.5):(int)(x-0.5))
 
-// Analog and Digital I/O Pin Assignment
-#define rightDriveMotor1   1
-#define rightDriveMotor2   2
-#define leftDriveMotor1    3
-#define leftDriveMotor2    4
-#define rightLinAct1       5
-#define rightLinAct2       6
-#define leftLinAct1        7
-#define leftLinAct2        8
-#define rightWindowSwitch  9
-#define leftWindowSwitch   10
-#define frameSwitch        11
-#define startSwitch        12
-#define IMU                13
+// Header files
+#include "config.h"
+#include "IOpins.h"
 
-// Constants
-#define linActPWM 255
+// DEBUG variables
+#define DEBUG 1
+#define MOVE_DELAY 2000
+#define STOP_DELAY 500
+boolean moveState = false;
+int delay_timer = 0;
 
-// Obstacles ?
-boolean obstacle = true;
-
-// initialize some variables
-int rightWindowSwitchVal, leftWindowSwitchVal, frameSwitchVal, startSwitchVal; 
-float roll, pitch;
+// Switches variables
+int rightWinSWVal, leftWinSWVal, frameSWVal, startSWVal;
+// IMU variable
+float roll;
+// Variables for Motors
+int torq_left = D_TORQ_DEFAULT;
+int torq_right = D_TORQ_DEFAULT;
 
 void setup() {
-  
   // declare output pins
-  pinMode(rightDriveMotor1, OUTPUT);
-  pinMode(rightDriveMotor2, OUTPUT);
-  pinMode(leftDriveMotor1, OUTPUT);
-  pinMode(leftDriveMotor2, OUTPUT);
-  pinMode(rightLinAct1, OUTPUT);
-  pinMode(rightLinAct2, OUTPUT);
-  pinMode(leftLinAct1, OUTPUT);
-  pinMode(leftLinAct2, OUTPUT);
- 
+  pinMode(PIN_RIGHTMOTOR_1, OUTPUT);
+  pinMode(PIN_RIGHTMOTOR_2, OUTPUT);
+  pinMode(PIN_LEFTMOTOR_1, OUTPUT);
+  pinMode(PIN_LEFTMOTOR_2, OUTPUT);
+  pinMode(PIN_RIGHTLACT_1, OUTPUT);
+  pinMode(PIN_RIGHTLACT_2, OUTPUT);
+  pinMode(PIN_LEFTLACT_1, OUTPUT);
+  pinMode(PIN_LEFTLACT_2, OUTPUT);
+
   // declare input pins
-  pinMode(rightWindowSwitch, INPUT_PULLUP);
-  pinMode(leftWindowSwitch, INPUT_PULLUP);
-  pinMode(frameSwitch, INPUT_PULLUP);
-  pinMode(startSwitch, INPUT_PULLUP);
-  
+  pinMode(PIN_RIGHTWIN_SW, INPUT_PULLUP);
+  pinMode(PIN_LEFTWIN_SW, INPUT_PULLUP);
+  pinMode(PIN_FRAME_SW, INPUT_PULLUP);
+  pinMode(PIN_START_SW, INPUT_PULLUP);
+
+  // Init IMU
+  IMU_init();
   // start Serial connection process
   Serial.begin(115200);
 }
 
 void loop() {
-  
+
   // Read & Update sensor values
-  updateSensors();
-    
+  readSensors();
   // Check (or wait) if start switch to trigger, then begin the operating sequence
-  if ( startSwitchVal == 1 )
+  if ( startSWVal == 1 )
   {
     // Check if the cleaning pad is in contact with the window --> extend linear Actuators if not
-    checkWindowContact(rightWindowSwitchVal, leftWindowSwitchVal); 
-    
+    checkWindowContact(rightWinSWVal, leftWinSWVal);
     // Drive up the window and stop when it reaches the top
-    Drive(rightWindowSwitchVal, leftWindowSwitchVal);
+    drive();
   }
-
-}
-
-
-int updateSensors()
-{
-  // re-initialize sensor variables
-  rightWindowSwitchVal = 0; leftWindowSwitchVal = 0; frameSwitchVal = 0; startSwitchVal = 0; 
-  
-  // update values
-  rightWindowSwitchVal = digitalRead(rightWindowSwitch);
-  leftWindowSwitchVal = digitalRead(leftWindowSwitch);
-  frameSwitchVal = digitalRead(frameSwitch);
-  startSwitchVal = digitalRead(startSwitch);
-  
-  return rightWindowSwitchVal, leftWindowSwitchVal, frameSwitchVal, startSwitchVal; 
-}
-
-void checkWindowContact( int rightWindowSwitchVal, int leftWindowSwitchVal)
-{
-    // ----------------------------------------------------------------------------
-    // ----------- CHECK IF PAD IS TOUCHING WINDOW --------------------------------
-    // ----------------------------------------------------------------------------
-    if ( rightWindowSwitchVal == 0 ) // check right switch
-    {
-      // extend linear actuator arm until switch is triggered (until pad is touching window)
-      analogWrite(rightLinAct1, linActPWM);
-      analogWrite(rightLinAct2, 0);
-    }  
-    else
-    {
-      // hold linear actuator position
-      analogWrite(rightLinAct1, 0);
-      analogWrite(rightLinAct2, 0); 
-    }
-    
-    if ( leftWindowSwitchVal == 0 ) // check left switch
-    {
-      // extend linear actuator arm until switch is triggered (until pad is touching window)
-      analogWrite(leftLinAct1, linActPWM);
-      analogWrite(leftLinAct2, 0);
-    }  
-    else
-    {
-      // hold linear actuator position
-      analogWrite(leftLinAct1, 0);
-      analogWrite(leftLinAct2, 0); 
-    }
-  
-}
-
-void Drive( int rightWindowSwitchVal, int leftWindowSwitchVal )
-{
-  // check if cleaning pad is making contact on both sides of the window
-  if ( rightWindowSwitchVal == 1 && leftWindowSwitchVal == 1 && frameSwitch == 0 )
+  // DEBUG MODE
+  if (DEBUG)
   {
-    // add IMU stuff in to account for roll (one wheel higher than the other) by adjusting
-    // motor speed of each side to level out the bar
-    int rightMotorPWM = 255;
-    int leftMotorPWM = 255;
-    
-    // right side
-    analogWrite(rightDriveMotor1, rightMotorPWM);
-    analogWrite(rightDriveMotor2, 0);  
-    // left side
-    analogWrite(rightDriveMotor1, rightMotorPWM);
-    analogWrite(rightDriveMotor2, 0);
+    if (moveState) // Time to move!
+    {
+      drive();
+      if ((millis()-delay_timer)>=MOVE_DELAY)
+      {
+        moveState = false;
+        delay_timer = millis();
+      }
+    }
+    else // Time to stop!
+    {
+      stop();
+      if ((millis()-delay_timer)>=STOP_DELAY)
+      {
+        moveState = true;
+        delay_timer = millis();
+      }
+    }
+  }
+}
+
+
+void readSensors()
+{
+  // Read switches
+  rightWinSWVal = digitalRead(PIN_RIGHTWIN_SW);
+  leftWinSWVal = digitalRead(PIN_LEFTWIN_SW);
+  frameSWVal = digitalRead(PIN_FRAME_SW);
+  startSWVal = digitalRead(PIN_START_SW);
+  // Read IMU
+  readIMU();
+  roll = getRoll();
+}
+
+/**
+ * Check if robot is in contact with the window
+ */
+void checkWindowContact( int rightWinSWVal, int leftWinSWVal)
+{
+  if ( rightWinSWVal == 0 ) // check right switch
+  {
+    // extend linear actuator arm until switch is triggered (until pad is touching window)
+    analogWrite(PIN_RIGHTLACT_1, LACT_TORQ_PWM);
+    analogWrite(PIN_RIGHTLACT_2, 0);
   }
   else
   {
+    // hold linear actuator position
+    analogWrite(PIN_RIGHTLACT_1, 0);
+    analogWrite(PIN_RIGHTLACT_2, 0);
+  }
+
+  if ( leftWinSWVal == 0 ) // check left switch
+  {
+    // extend linear actuator arm until switch is triggered (until pad is touching window)
+    analogWrite(PIN_LEFTLACT_1, LACT_TORQ_PWM);
+    analogWrite(PIN_LEFTLACT_2, 0);
+  }
+  else
+  {
+    // hold linear actuator position
+    analogWrite(PIN_LEFTLACT_1, 0);
+    analogWrite(PIN_LEFTLACT_2, 0);
+  }
+}
+
+void drive()
+{
+  // check if cleaning pad is making contact on both sides of the window
+  if (rightWinSWVal == 1 && leftWinSWVal == 1 && PIN_FRAME_SW == 0 )
+  {
+    // Adjust motor speed of each side to level out the bar
+    motorPID();
+    moveUp();
+  }
+  else
+    stop();
+}
+
+void motorPID()
+{
+  if (round(roll)>ROLL_FLAT)
+    compensateRight();
+  else if (round(roll)<ROLL_FLAT)
+    compensateLeft();
+}
+
+void moveUp()
+{
     // right side
-    analogWrite(rightDriveMotor1, 0);
-    analogWrite(rightDriveMotor2, 0);  
+    analogWrite(PIN_RIGHTMOTOR_1, torq_right);
+    analogWrite(PIN_RIGHTMOTOR_2, 0);
     // left side
-    analogWrite(rightDriveMotor1, 0);
-    analogWrite(rightDriveMotor2, 0); 
-  } 
-  
-  
+    analogWrite(PIN_LEFTMOTOR_1, torq_left);
+    analogWrite(PIN_LEFTMOTOR_2, 0);
+}
+
+void stop()
+{
+  analogWrite(PIN_RIGHTMOTOR_1,0);
+  analogWrite(PIN_RIGHTMOTOR_2,0);
+  analogWrite(PIN_LEFTMOTOR_1,0);
+  analogWrite(PIN_LEFTMOTOR_2,0);
+  // Reset torq variables
+  torq_left = D_TORQ_DEFAULT;
+  torq_right = D_TORQ_DEFAULT;
+}
+/**
+ * Correct veering to right. Decrease left wheel speed and increase right wheel
+ * speed.
+ */
+void compensateRight()
+{
+  changeTorq(&torq_left, -TORQ_STEP);
+  changeTorq(&torq_right, TORQ_STEP);
+}
+
+/**
+ * Correct veering to left. Decrease right wheel speed and increase left wheel
+ * speed.
+ */
+void compensateLeft()
+{
+  changeTorq(&torq_left, TORQ_STEP);
+  changeTorq(&torq_right, -TORQ_STEP);
+}
+
+/**
+ * Change PWM within the boundaries of 0-254
+ */
+void changeTorq(int *torque, int step)
+{
+  if ((step<0 && (*torque)>D_TORQ_MIN) || (step>0 && (*torque)<D_TORQ_MAX))
+    (*torque)+=step;
 }
