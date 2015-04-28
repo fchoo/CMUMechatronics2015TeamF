@@ -23,7 +23,7 @@
 #define MOVE_DELAY 2000
 #define STOP_DELAY 500
 boolean moveState = false;
-int delay_timer = 0;
+long delay_timer = 0;
 
 // Switches variables
 int rightWinSWVal, leftWinSWVal, frameSWVal, startSWVal;
