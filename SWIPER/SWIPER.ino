@@ -11,11 +11,12 @@
  * LAST REVISION: 04/23/2015
  *
  *****************************************************************************/
-#define round(x) ((x>=0)?(int)(x+0.5):(int)(x-0.5))
-
 // Header files
 #include "config.h"
 #include "IOpins.h"
+
+// Shorthand functions
+#define round(x) ((x>=0)?(int)(x+0.5):(int)(x-0.5))
 
 // DEBUG variables
 #define DEBUG 1
