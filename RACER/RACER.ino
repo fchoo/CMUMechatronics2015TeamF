@@ -79,6 +79,7 @@ void setup()
 
 void loop()
 {
+  // printdata();
   // Check all switches
   checkEDFSW();
   checkPathfindSW();

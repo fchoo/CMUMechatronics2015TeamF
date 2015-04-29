@@ -22,19 +22,29 @@
  */
 void motorFeedback()
 {
-  if (state == LEFTU_NEXT)
+  if ((state == LEFTU_NEXT) ||
+      ((state == LAST_LAP) && (pastDir == EAST)))
   {
     if (round(pitch)>PITCH_EW_BASE) // veering left
       compensateToRight();
     else if (round(pitch)<PITCH_EW_BASE) // veering right
       compensateToLeft();
   }
-  else if (state == RIGHTU_NEXT)
+  else if ((state == RIGHTU_NEXT) ||
+      ((state == LAST_LAP) && (pastDir == WEST)))
   {
     if (round(pitch)>PITCH_EW_BASE) // veering right
       compensateToLeft();
     else if (round(pitch)<PITCH_EW_BASE) // veering left
       compensateToRight();
+  }
+  else if ((state == LEFTU_2) ||
+           (state == RIGHTU_2))
+  {
+    if (round((roll-ROLL_N)/SCALE_FACTOR)<ROLL_N)
+      compensateToRight();
+    else if (round((roll-ROLL_N)/SCALE_FACTOR)>ROLL_N)
+      compensateToLeft();
   }
 }
 

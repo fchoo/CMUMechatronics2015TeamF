@@ -15,16 +15,16 @@
  *****************************************************************************/
 
 // EDF Control
-#define EDF_MIN 124 //133 for actual serial
+#define EDF_MIN 124
 #define EDF_MAX 254
-#define EDF_DEFAULT 220
 #define EDF_DELAY 50 // .05s
 
 // define number of readings sensors take in
 #define FILTER_SAMPLE 13
 
 // define IR sensor distance threshold (in cm) before turning
-#define THR_IR_TURN 20
+#define THR_IR_WEST 15
+#define THR_IR_EAST 20
 #define THR_IR_LAST 15
 
 // IMU vertical checking threshold
@@ -45,15 +45,19 @@
 #define ROLL_W -(PITCH_NS_BASE-ROLL_ERR)
 #define ROLL_N 0
 
+#define SCALE_FACTOR 5
+
 // Motor
-#define TORQ_MIN 80
-#define TORQ_MAX 200
-#define TORQ_DEFAULT 120
-#define TORQ_UP 255
-#define TORQ_TURN_LE 50
-#define TORQ_TURN_GE 50
+#define TORQ_MIN 140// 80
+#define TORQ_MAX 240// 170
+#define TORQ_DEFAULT 170
+#define TORQ_UP 250
+#define TORQ_TURN_LE 120
+#define TORQ_TURN_GE 120
 #define TORQ_FB 10          // For compensation
-#define TIME_UFOR 600       // Time for travel straight
+
+#define TIME_UFOR 1200       // Time for travel straight
+#define TIME_TURN 250       // Time for travel straight
 // Debounce delay
 #define DEBOUNCE_DELAY 25
 
