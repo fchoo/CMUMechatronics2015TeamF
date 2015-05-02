@@ -21,4 +21,9 @@
 #define PIN_LEFTMOTOR_2  5
 
 // Switches
-#define PIN_SW   13
+#define PIN_SW   12
+
+ // EDFs
+#define PIN_EDF 3
+
+#define PIN_LED 13

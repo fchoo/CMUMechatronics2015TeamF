@@ -21,9 +21,15 @@
 #define D_TORQ_MAX 255
 #define D_TORQ_DEFAULT 230
 
+// EDF Control
+#define EDF_MIN 124
+#define EDF_MAX 254
+#define EDF_DELAY 50 // .05s
+
 // FSM
 typedef enum State {
     WAIT,
+    EDF,
     CLEAN,
     STOP
 };
