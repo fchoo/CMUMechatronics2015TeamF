@@ -17,9 +17,12 @@
 // IMU Constant
 #define ROLL_FLAT 0
 // Motor Constant
-#define D_TORQ_MIN 160
-#define D_TORQ_MAX 255
-#define D_TORQ_DEFAULT 230
+#define D_TORQ_MIN_1 100
+#define D_TORQ_MAX_1 140
+#define D_TORQ_DEFAULT_1 130
+#define D_TORQ_MIN_2 100
+#define D_TORQ_MAX_2 140
+#define D_TORQ_DEFAULT_2 130
 
 // EDF Control
 #define EDF_MIN 124

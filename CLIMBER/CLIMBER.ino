@@ -26,8 +26,8 @@ long edf_utime = 0;
 float roll;
 int roll_scaled;
 // Variables for Motors
-int torq_left = D_TORQ_DEFAULT;
-int torq_right = D_TORQ_DEFAULT;
+int torq_left = D_TORQ_DEFAULT_1;
+int torq_right = D_TORQ_DEFAULT_2;
 // Switches variables
 int SW_cur, SW_old;
 State state;
@@ -44,13 +44,15 @@ void setup() {
   pinMode(PIN_LEFTMOTOR_2, OUTPUT);
   // declare input pins
   pinMode(PIN_SW, INPUT_PULLUP);
+  // LED
+  pinMode(PIN_LED_RED1, OUTPUT);
+  pinMode(PIN_LED_RED2, OUTPUT);
+  pinMode(PIN_LED_GREEN, OUTPUT);
   // Init IMU
   IMU_init();
   // Init EDF
   EDF_init();
 
-  pinMode(PIN_LED, OUTPUT);
-  analogWrite(PIN_LED, LOW);
 }
 
 void loop() {
@@ -66,11 +68,18 @@ void loop() {
   // Serial.print(torq_left);
   // Serial.print(" rightT: ");
   // Serial.println(torq_right);
-
+  // printdata();
   readSensors();
-  // if edf is max, activate indicator
-  if (edf_val == EDF_MAX)
-    analogWrite(PIN_LED, HIGH);
+  // LED
+  LED_rst();
+  if (state == WAIT || state == EDF)
+    digitalWrite(PIN_LED_RED1, HIGH);
+  if ((state == EDF) && (edf_val == EDF_MAX))
+    digitalWrite(PIN_LED_RED2, HIGH);
+  if (state == CLEAN)
+    digitalWrite(PIN_LED_GREEN, HIGH);
+  if (state == STOP)
+    LED_flash();
   // ramping EDF to max
   if ((state == EDF) && (edf_val<EDF_MAX))
     step_PWM(1);
@@ -82,6 +91,26 @@ void loop() {
   }
   else
     stop();
+}
+
+void LED_rst()
+{
+  digitalWrite(PIN_LED_RED1, LOW);
+  digitalWrite(PIN_LED_RED2, LOW);
+  digitalWrite(PIN_LED_GREEN, LOW);
+}
+
+void LED_flash()
+{
+  digitalWrite(PIN_LED_RED1, HIGH);
+  delay(100);
+  digitalWrite(PIN_LED_RED1, LOW);
+  digitalWrite(PIN_LED_RED2, HIGH);
+  delay(100);
+  digitalWrite(PIN_LED_RED2, LOW);
+  digitalWrite(PIN_LED_GREEN, HIGH);
+  delay(100);
+  digitalWrite(PIN_LED_GREEN, LOW);
 }
 
 void readSensors()
@@ -114,7 +143,7 @@ void checkSW()
 
 void motorPID()
 {
-  roll_scaled = map(abs(roll), 0, 180, 0, 45);
+  roll_scaled = map(abs(roll), 0, 180, 0, 90);
   if (roll_scaled>ROLL_FLAT)
   {
     compensateRight();
@@ -123,12 +152,12 @@ void motorPID()
   {
     compensateLeft();
   }
-  else
-  {
-    // Reset torq variables when level
-    torq_left = D_TORQ_DEFAULT;
-    torq_right = D_TORQ_DEFAULT;
-  }
+  // else
+  // {
+  //   // Reset torq variables when level
+  //   torq_left = D_TORQ_DEFAULT;
+  //   torq_right = D_TORQ_DEFAULT;
+  // }
 }
 
 void moveUp()
@@ -148,8 +177,8 @@ void stop()
   analogWrite(PIN_LEFTMOTOR_1,0);
   analogWrite(PIN_LEFTMOTOR_2,0);
   // Reset torq variables
-  torq_left = D_TORQ_DEFAULT;
-  torq_right = D_TORQ_DEFAULT;
+  torq_left = D_TORQ_DEFAULT_1;
+  torq_right = D_TORQ_DEFAULT_2;
 }
 
 /**
@@ -158,8 +187,8 @@ void stop()
  */
 void compensateRight()
 {
-  changeTorq(&torq_left, -1);
-  changeTorq(&torq_right, 1);
+  changeTorq(1, &torq_left, -1);
+  changeTorq(2, &torq_right, 1);
 }
 
 /**
@@ -168,17 +197,25 @@ void compensateRight()
  */
 void compensateLeft()
 {
-  changeTorq(&torq_left, 1);
-  changeTorq(&torq_right, -1);
+  changeTorq(1, &torq_left, 1);
+  changeTorq(2, &torq_right, -1);
 }
 
 /**
  * Change PWM within the boundaries of 0-254
  */
-void changeTorq(int *torque, int dir)
+void changeTorq(int id, int *torque, int dir)
 {
-  if (dir<0 && (*torque)>D_TORQ_MIN) (*torque)--;
-  if (dir>0 && (*torque)<D_TORQ_MAX) (*torque)++;
+  if (id == 1)
+  {
+    if (dir<0 && (*torque)>D_TORQ_MIN_1) (*torque)--;
+    if (dir>0 && (*torque)<D_TORQ_MAX_1) (*torque)++;
+  }
+  if (id == 2)
+  {
+    if (dir<0 && (*torque)>D_TORQ_MIN_2) (*torque)--;
+    if (dir>0 && (*torque)<D_TORQ_MAX_2) (*torque)++;
+  }
 }
 
 

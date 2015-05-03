@@ -15,9 +15,9 @@
  *****************************************************************************/
 
 // Drive motors
-#define PIN_RIGHTMOTOR_1 10  // up
-#define PIN_RIGHTMOTOR_2 9
-#define PIN_LEFTMOTOR_1  6  // up
+#define PIN_RIGHTMOTOR_1 9
+#define PIN_RIGHTMOTOR_2 10
+#define PIN_LEFTMOTOR_1  6
 #define PIN_LEFTMOTOR_2  5
 
 // Switches
@@ -26,4 +26,7 @@
  // EDFs
 #define PIN_EDF 3
 
-#define PIN_LED 13
+// LEDs
+#define PIN_LED_RED1 7
+#define PIN_LED_RED2 4
+#define PIN_LED_GREEN 2
