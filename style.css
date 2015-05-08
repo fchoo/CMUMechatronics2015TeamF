@@ -163,7 +163,14 @@
 		text-align:center;
 		width:700px;
 		margin:0 auto;
-		margin-bottom:60px;
+		margin-bottom:20px;
+	}
+
+	.section-title-vid {
+		text-align:center;
+		width:1180px;
+		margin:0 auto;
+		margin-bottom:0px;
 	}
 
 	.border {
@@ -3094,10 +3101,10 @@
 	.video-container {
 		position: relative;
 		padding-bottom: 56.25%;
-		padding-top: 10px;
+		/*padding-top: 10px;*/
 		height: 0;
 		overflow: hidden;
-		margin-bottom:30px;
+		/*margin-bottom:30px;*/
 	}
 
 	.video-container iframe, .video-container object, .video-container embed {
